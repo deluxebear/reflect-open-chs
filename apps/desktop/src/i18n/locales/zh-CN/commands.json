@@ -10,7 +10,19 @@
     "settings": "设置…",
     "hide": "隐藏 Reflect",
     "quit": "退出 Reflect",
-    "zoom": "缩放"
+    "zoom": "缩放",
+    "services": "服务",
+    "hideOthers": "隐藏其他",
+    "showAll": "全部显示",
+    "undo": "撤销",
+    "redo": "重做",
+    "cut": "剪切",
+    "copy": "拷贝",
+    "paste": "粘贴",
+    "selectAll": "全选",
+    "closeWindow": "关闭",
+    "minimize": "最小化",
+    "bringAllToFront": "前置全部窗口"
   },
   "graph": {
     "switch1": {

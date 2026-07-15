@@ -10,7 +10,19 @@
     "settings": "Settings…",
     "hide": "Hide Reflect",
     "quit": "Quit Reflect",
-    "zoom": "Zoom"
+    "zoom": "Zoom",
+    "services": "Services",
+    "hideOthers": "Hide Others",
+    "showAll": "Show All",
+    "undo": "Undo",
+    "redo": "Redo",
+    "cut": "Cut",
+    "copy": "Copy",
+    "paste": "Paste",
+    "selectAll": "Select All",
+    "closeWindow": "Close",
+    "minimize": "Minimize",
+    "bringAllToFront": "Bring All to Front"
   },
   "graph": {
     "switch1": {

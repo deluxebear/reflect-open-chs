@@ -7,7 +7,9 @@
     "tasks": "任务",
     "chat": "对话",
     "searchPlaceholder": "搜索任意内容…",
-    "pinned": "置顶笔记"
+    "pinned": "置顶笔记",
+    "unpinNote": "取消置顶",
+    "openingNoteMenu": "正在打开笔记菜单"
   },
   "mobileTabs": {
     "aria": "分区",

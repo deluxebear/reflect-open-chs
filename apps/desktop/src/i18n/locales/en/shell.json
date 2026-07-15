@@ -7,7 +7,9 @@
     "tasks": "Tasks",
     "chat": "Chat",
     "searchPlaceholder": "Search anything...",
-    "pinned": "Pinned notes"
+    "pinned": "Pinned notes",
+    "unpinNote": "Unpin Note",
+    "openingNoteMenu": "Opening note menu"
   },
   "mobileTabs": {
     "aria": "Sections",
