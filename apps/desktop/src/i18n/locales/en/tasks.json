@@ -1,0 +1,41 @@
+{
+  "aria": "Tasks",
+  "searchPlaceholder": "Search...",
+  "searchAria": "Search tasks",
+  "taskFilters": "Task filters",
+  "filtersHeading": "Tasks",
+  "filters": {
+    "pinned": "Pinned tasks",
+    "current": "Current tasks",
+    "overdue": "Overdue tasks",
+    "upcoming": "Upcoming tasks",
+    "other": "Other tasks",
+    "archived": "Show archived tasks"
+  },
+  "groups": {
+    "current": "Current",
+    "overdue": "Overdue",
+    "upcoming": "Upcoming"
+  },
+  "empty": "No tasks to show.",
+  "noMatching": "No matching tasks.",
+  "loadError": "Couldn’t load tasks.",
+  "noTasksInGroup": "No tasks",
+  "add": "Add",
+  "addToToday": "Add a task to today",
+  "addToNote": "Add a task to {{label}}",
+  "schedule": "Schedule",
+  "scheduleAria": "Schedule {{count}}",
+  "schedulePopoverAria": "Schedule",
+  "prevMonth": "Previous month",
+  "nextMonth": "Next month",
+  "clearDate": "Clear date",
+  "convertToBullet": "Convert to bullet",
+  "convertToBulletAria": "Convert to bullet {{count}}",
+  "convertToBulletTitle": "Drop the checkbox, keeping the line as a plain bullet — leaves the Tasks list",
+  "archive": "Archive",
+  "archiveAria": "Archive {{count}}",
+  "emptyTask": "Empty task",
+  "completeAria": "Complete: {{label}}",
+  "reopenAria": "Reopen: {{label}}"
+}

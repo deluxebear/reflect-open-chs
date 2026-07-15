@@ -1,0 +1,41 @@
+{
+  "aria": "任务",
+  "searchPlaceholder": "搜索…",
+  "searchAria": "搜索任务",
+  "taskFilters": "任务筛选",
+  "filtersHeading": "任务",
+  "filters": {
+    "pinned": "置顶任务",
+    "current": "当前任务",
+    "overdue": "已过期任务",
+    "upcoming": "即将到期的任务",
+    "other": "其他任务",
+    "archived": "显示已归档任务"
+  },
+  "groups": {
+    "current": "当前",
+    "overdue": "已过期",
+    "upcoming": "即将到期"
+  },
+  "empty": "没有可显示的任务。",
+  "noMatching": "没有匹配的任务。",
+  "loadError": "无法加载任务。",
+  "noTasksInGroup": "暂无任务",
+  "add": "添加",
+  "addToToday": "向今天添加任务",
+  "addToNote": "向 {{label}} 添加任务",
+  "schedule": "安排日期",
+  "scheduleAria": "安排日期 {{count}}",
+  "schedulePopoverAria": "安排日期",
+  "prevMonth": "上个月",
+  "nextMonth": "下个月",
+  "clearDate": "清除日期",
+  "convertToBullet": "转为列表项",
+  "convertToBulletAria": "转为列表项 {{count}}",
+  "convertToBulletTitle": "去掉复选框，保留为普通列表项 — 将从任务列表中移除",
+  "archive": "归档",
+  "archiveAria": "归档 {{count}}",
+  "emptyTask": "空任务",
+  "completeAria": "完成：{{label}}",
+  "reopenAria": "重新打开：{{label}}"
+}
