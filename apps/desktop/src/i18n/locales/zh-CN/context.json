@@ -1,0 +1,46 @@
+{
+  "calendar": {
+    "aria": "日历",
+    "prevMonth": "上个月",
+    "nextMonth": "下个月",
+    "jumpToday": "跳到今天",
+    "jumpTodayHint": "回到今天"
+  },
+  "noteActions": {
+    "title": "笔记操作",
+    "pin": "置顶此笔记",
+    "unpin": "取消置顶",
+    "pinFailure": "更新置顶状态",
+    "lock": "锁定笔记",
+    "unlock": "解锁笔记",
+    "privacyFailure": "更新私密状态",
+    "lockTooltip": "锁定后此笔记不会发送给 AI。备份与同步仍会包含它。",
+    "shareLink": "用私密链接分享",
+    "unpublishLink": "取消发布链接",
+    "publishing": "正在发布…",
+    "unpublishing": "正在取消发布…",
+    "shareTooltip": "创建私密 GitHub gist 并复制其链接",
+    "unpublishTooltip": "删除此笔记的私密 GitHub gist",
+    "trash": "移到废纸篓",
+    "trashConfirmTitle": "移到废纸篓？",
+    "trashConfirmDescription": "笔记会移到系统废纸篓，可从中恢复。",
+    "trashing": "正在移到废纸篓",
+    "cancel": "取消"
+  },
+  "events": {
+    "title": "日程",
+    "addToDaily": "添加到日记"
+  },
+  "similar": {
+    "title": "相似笔记"
+  },
+  "published": {
+    "title": "已发布链接",
+    "copy": "复制已发布链接",
+    "copied": "已复制",
+    "update": "更新已发布的 gist",
+    "updateStale": "用最新笔记内容更新 gist",
+    "copySuccess": "已复制发布链接",
+    "copyFailure": "复制发布链接"
+  }
+}

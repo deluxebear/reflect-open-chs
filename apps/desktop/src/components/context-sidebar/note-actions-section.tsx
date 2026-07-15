@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Lock } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { PinIcon } from '@/components/icons/pin-icon'
 import { useNoteRow } from '@/hooks/use-note-row'
 import { usePinnedNotes } from '@/hooks/use-pinned-notes'
@@ -37,20 +38,21 @@ export function NoteActionsSection({
   path,
   showTrash = false,
 }: NoteActionsSectionProps): ReactElement {
+  const { t } = useTranslation('context')
   const isPinned = usePinnedNotes().some((note) => note.path === path)
   const noteRow = useNoteRow(path)
   const isPrivate = noteRow?.isPrivate ?? false
   const { applyOptimisticPin, invalidateOptimisticPin } = useOptimisticPinToggle(path, noteRow)
 
   return (
-    <SidebarSection storageKey="note-actions" title="Note actions">
+    <SidebarSection storageKey="note-actions" title={t('noteActions.title')}>
       <NoteToggleAction
         path={path}
         indexActive={isPinned}
         toggle={toggleNotePinned}
         icon={<PinIcon width={20} height={20} />}
-        labels={{ active: 'Un-pin this note', inactive: 'Pin this note' }}
-        failureLabel="Updating pin"
+        labels={{ active: t('noteActions.unpin'), inactive: t('noteActions.pin') }}
+        failureLabel={t('noteActions.pinFailure')}
         keybinding={PIN_KEYBINDING}
         applyOptimistic={applyOptimisticPin}
         onFailure={invalidateOptimisticPin}
@@ -61,12 +63,12 @@ export function NoteActionsSection({
         toggle={toggleNotePrivate}
         icon={<Lock size={14} aria-hidden />}
         labels={{
-          active: 'Unlock note',
-          inactive: 'Lock note',
+          active: t('noteActions.unlock'),
+          inactive: t('noteActions.lock'),
         }}
-        failureLabel="Updating privacy"
+        failureLabel={t('noteActions.privacyFailure')}
         keybinding={PRIVATE_KEYBINDING}
-        tooltip="Locks this note out of AI. Backup and sync still include it."
+        tooltip={t('noteActions.lockTooltip')}
       />
       <NoteGistAction path={path} keybinding={GIST_KEYBINDING} />
       {showTrash ? <NoteTrashAction path={path} /> : null}

@@ -8,12 +8,14 @@ import enCommon from './locales/en/common.json'
 import enShell from './locales/en/shell.json'
 import enSettings from './locales/en/settings.json'
 import enCommands from './locales/en/commands.json'
+import enContext from './locales/en/context.json'
 import zhCommon from './locales/zh-CN/common.json'
 import zhShell from './locales/zh-CN/shell.json'
 import zhSettings from './locales/zh-CN/settings.json'
 import zhCommands from './locales/zh-CN/commands.json'
+import zhContext from './locales/zh-CN/context.json'
 
-export const I18N_NAMESPACES = ['common', 'shell', 'settings', 'commands'] as const
+export const I18N_NAMESPACES = ['common', 'shell', 'settings', 'commands', 'context'] as const
 
 const resources = {
   en: {
@@ -21,12 +23,14 @@ const resources = {
     shell: enShell,
     settings: enSettings,
     commands: enCommands,
+    context: enContext,
   },
   'zh-CN': {
     common: zhCommon,
     shell: zhShell,
     settings: zhSettings,
     commands: zhCommands,
+    context: zhContext,
   },
 } as const
 

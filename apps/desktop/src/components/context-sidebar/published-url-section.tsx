@@ -2,6 +2,7 @@ import { useEffect, useState, type MouseEvent, type ReactElement } from 'react'
 import { openUrl } from '@tauri-apps/plugin-opener'
 import { Check, Copy, RefreshCw } from 'lucide-react'
 import { errorMessage } from '@reflect/core'
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { useNoteRow } from '@/hooks/use-note-row'
@@ -26,6 +27,7 @@ const COPY_RESET_MS = 1400
  */
 export function PublishedUrlSection({ path }: PublishedUrlSectionProps): ReactElement | null {
   const { graph } = useGraph()
+  const { t } = useTranslation('context')
   const row = useNoteRow(path)
   const url = row?.gistUrl ?? null
   const [copyState, setCopyState] = useState<CopyState>('idle')
@@ -54,9 +56,9 @@ export function PublishedUrlSection({ path }: PublishedUrlSectionProps): ReactEl
     try {
       await navigator.clipboard.writeText(url)
       setCopyState('copied')
-      startOperation('Published URL copied').done()
+      startOperation(t('published.copySuccess')).done()
     } catch (cause) {
-      startOperation('Copying the published URL').fail(errorMessage(cause))
+      startOperation(t('published.copyFailure')).fail(errorMessage(cause))
     }
   }
 
@@ -83,7 +85,7 @@ export function PublishedUrlSection({ path }: PublishedUrlSectionProps): ReactEl
   const Icon = copyState === 'copied' ? Check : Copy
 
   return (
-    <SidebarSection storageKey="published-url" title="Published URL">
+    <SidebarSection storageKey="published-url" title={t('published.title')}>
       <div className="flex items-center gap-1.5 px-3 py-1">
         <a
           href={url}
@@ -99,14 +101,16 @@ export function PublishedUrlSection({ path }: PublishedUrlSectionProps): ReactEl
               type="button"
               variant="ghost"
               size="icon-xs"
-              aria-label="Copy published URL"
+              aria-label={t('published.copy')}
               onClick={() => void copyUrl()}
               className="text-text-muted hover:text-text"
             >
               <Icon aria-hidden className="size-3.5" />
             </Button>
           </TooltipTrigger>
-          <TooltipContent>{copyState === 'copied' ? 'Copied' : 'Copy published URL'}</TooltipContent>
+          <TooltipContent>
+            {copyState === 'copied' ? t('published.copied') : t('published.copy')}
+          </TooltipContent>
         </Tooltip>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -114,7 +118,7 @@ export function PublishedUrlSection({ path }: PublishedUrlSectionProps): ReactEl
               type="button"
               variant="ghost"
               size="icon-xs"
-              aria-label="Update published gist"
+              aria-label={t('published.update')}
               onClick={() => void updateGist()}
               disabled={isUpdating}
               className={cn('text-text-muted hover:text-text', row?.gistStale === true && 'text-accent')}
@@ -123,7 +127,7 @@ export function PublishedUrlSection({ path }: PublishedUrlSectionProps): ReactEl
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            {row?.gistStale === true ? 'Update gist with latest note' : 'Update published gist'}
+            {row?.gistStale === true ? t('published.updateStale') : t('published.update')}
           </TooltipContent>
         </Tooltip>
       </div>

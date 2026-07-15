@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { ArrowUturnLeftIcon } from '@/components/icons/arrow-uturn-left-icon'
 import { useNoteLinkNavigation } from '@/hooks/use-note-link-navigation'
 import { useSimilarNotes } from '@/lib/use-similar-notes'
@@ -25,12 +26,13 @@ interface SimilarNotesSectionProps {
 export function SimilarNotesSection({ path }: SimilarNotesSectionProps): ReactElement | null {
   const navigateNoteLink = useNoteLinkNavigation(path)
   const related = useSimilarNotes(path)
+  const { t } = useTranslation('context')
   if (related.length === 0) {
     return null
   }
 
   return (
-    <SidebarSection storageKey="similar" title="Similar notes">
+    <SidebarSection storageKey="similar" title={t('similar.title')}>
       <ul className="space-y-1">
         {related.map((hit) => (
           <li key={hit.path}>

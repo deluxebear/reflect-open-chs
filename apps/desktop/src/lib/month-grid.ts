@@ -8,7 +8,9 @@ import {
   parse,
   startOfMonth,
   startOfWeek,
+  type Locale,
 } from 'date-fns'
+import { enUS } from 'date-fns/locale'
 import { addDaysIso } from './dates'
 
 /**
@@ -54,14 +56,14 @@ export function monthOf(date: string): string {
   return date.slice(0, 7)
 }
 
-/** Human label for a `YYYY-MM` month, e.g. `June 2026`. */
-export function monthLabel(month: string): string {
-  return format(parseMonth(month), 'MMMM yyyy')
+/** Human label for a `YYYY-MM` month, e.g. `June 2026` (locale-aware). */
+export function monthLabel(month: string, locale: Locale = enUS): string {
+  return format(parseMonth(month), 'MMMM yyyy', { locale })
 }
 
 /** Short label for a `YYYY-MM` month, e.g. `Jun` — month-picker grid cells. */
-export function monthShortLabel(month: string): string {
-  return format(parseMonth(month), 'MMM')
+export function monthShortLabel(month: string, locale: Locale = enUS): string {
+  return format(parseMonth(month), 'MMM', { locale })
 }
 
 /** The `YYYY-MM` month `delta` months after `month` (negative for before). */
@@ -70,13 +72,13 @@ export function addMonths(month: string, delta: number): string {
 }
 
 /**
- * Two-letter weekday labels for the grid's header row.
+ * Two-letter weekday labels for the grid's header row (locale-aware).
  * @param weekStartsOn - 1 for Monday (default, ISO 8601); 0 for Sunday.
  */
-export function weekdayLabels(weekStartsOn: 0 | 1 = 1): string[] {
+export function weekdayLabels(weekStartsOn: 0 | 1 = 1, locale: Locale = enUS): string[] {
   const weekStart = startOfWeek(new Date(), { weekStartsOn })
   return [...Array(7).keys()].map((dayOffset) =>
-    format(addDays(weekStart, dayOffset), 'EEEEEE'),
+    format(addDays(weekStart, dayOffset), 'EEEEEE', { locale }),
   )
 }
 

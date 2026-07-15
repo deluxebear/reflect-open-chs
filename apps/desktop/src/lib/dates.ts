@@ -1,4 +1,5 @@
-import { format, isSameDay, isSameWeek, parse } from 'date-fns'
+import { format, isSameDay, isSameWeek, parse, type Locale } from 'date-fns'
+import { enUS } from 'date-fns/locale'
 import type { DateFormat, TimeFormat } from '@reflect/core'
 
 /**
@@ -28,15 +29,21 @@ export function todayIso(): string {
  * Label for an ISO date per the user's date-format setting. `mdy` and `dmy`
  * keep the original app's daily-subject form (`Tue, June 9th, 2026` /
  * `Tue, 9th June, 2026`); `iso` renders the daily-note key itself.
+ * Pass a date-fns `locale` for localized weekday/month names.
  */
-export function formatDayLabel(date: string, dateFormat: DateFormat): string {
+export function formatDayLabel(
+  date: string,
+  dateFormat: DateFormat,
+  locale: Locale = enUS,
+): string {
+  const options = { locale }
   switch (dateFormat) {
     case 'dmy':
-      return format(parseIsoDate(date), 'EEE, do MMMM, yyyy')
+      return format(parseIsoDate(date), 'EEE, do MMMM, yyyy', options)
     case 'iso':
       return date
     case 'mdy':
-      return format(parseIsoDate(date), 'EEE, MMMM do, yyyy')
+      return format(parseIsoDate(date), 'EEE, MMMM do, yyyy', options)
   }
 }
 
@@ -61,14 +68,19 @@ export function formatShortDate(date: string, dateFormat: DateFormat): string {
  * `10th June, 2026` for `dmy`, and `2026-06-10` for `iso` (the forms the
  * settings screen shows as the options themselves).
  */
-export function formatFullDate(date: Date, dateFormat: DateFormat): string {
+export function formatFullDate(
+  date: Date,
+  dateFormat: DateFormat,
+  locale: Locale = enUS,
+): string {
+  const options = { locale }
   switch (dateFormat) {
     case 'dmy':
-      return format(date, 'do MMMM, yyyy')
+      return format(date, 'do MMMM, yyyy', options)
     case 'iso':
       return format(date, ISO_DATE_FORMAT)
     case 'mdy':
-      return format(date, 'MMMM do, yyyy')
+      return format(date, 'MMMM do, yyyy', options)
   }
 }
 

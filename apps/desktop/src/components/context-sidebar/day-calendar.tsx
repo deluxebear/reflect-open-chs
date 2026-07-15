@@ -1,12 +1,14 @@
 import { useMemo, useState, type ReactElement } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { dailyDatesInRange, hasBridge, type WeekStartDay } from '@reflect/core'
+import { useTranslation } from 'react-i18next'
 import { CalendarIcon } from '@/components/icons/calendar-icon'
 import { ChevronLeftIcon } from '@/components/icons/chevron-left-icon'
 import { ChevronRightIcon } from '@/components/icons/chevron-right-icon'
 import { ShortcutKeys } from '@/components/shortcut-keys'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { useNoteLinkNavigation } from '@/hooks/use-note-link-navigation'
+import { dateFnsLocaleForLanguage } from '@/i18n/date-fns-locale'
 import { keybindingFor } from '@/lib/commands/app-commands'
 import { formatDayLabel } from '@/lib/dates'
 import {
@@ -54,6 +56,8 @@ export function DayCalendar({ selectedDate, today }: DayCalendarProps): ReactEle
   const navigateNoteLink = useNoteLinkNavigation(selectedDate)
   const { graph } = useGraph()
   const { settings } = useSettings()
+  const { t, i18n } = useTranslation('context')
+  const dateLocale = dateFnsLocaleForLanguage(i18n.language)
   const weekStartsOn = toWeekStartsOn(settings.weekStartDay)
 
   const [month, setMonth] = useState(() => monthOf(selectedDate))
@@ -75,19 +79,20 @@ export function DayCalendar({ selectedDate, today }: DayCalendarProps): ReactEle
   // the query result reference-stable (structural sharing), rebuild the lookup
   // set only when the noted dates actually change.
   const noted = useMemo(() => new Set(notedDates ?? []), [notedDates])
+  const weekdays = weekdayLabels(weekStartsOn, dateLocale)
 
   return (
-    <div aria-label="Calendar" className="group min-w-36">
+    <div aria-label={t('calendar.aria')} className="group min-w-36">
       <header className="flex items-center justify-between px-4 py-4">
         <div className="cursor-default text-sm font-semibold text-text">
-          {monthLabel(month)}
+          {monthLabel(month, dateLocale)}
         </div>
         {/* window-drag-control lifts the buttons above the WindowDragRegion strip
             overlaying the title-bar band (see NavigateArrows for the contract). */}
         <nav className="window-drag-control flex items-center justify-center space-x-1 text-text-muted">
           <button
             type="button"
-            aria-label="Previous month"
+            aria-label={t('calendar.prevMonth')}
             onClick={() => setMonth(addMonths(month, -1))}
             className={HEADER_BUTTON_CLASS}
           >
@@ -97,7 +102,7 @@ export function DayCalendar({ selectedDate, today }: DayCalendarProps): ReactEle
             <TooltipTrigger asChild>
               <button
                 type="button"
-                aria-label="Jump to today"
+                aria-label={t('calendar.jumpToday')}
                 onClick={() => navigate({ kind: 'today' })}
                 className={HEADER_BUTTON_CLASS}
               >
@@ -105,12 +110,13 @@ export function DayCalendar({ selectedDate, today }: DayCalendarProps): ReactEle
               </button>
             </TooltipTrigger>
             <TooltipContent>
-              Jump to Today {TODAY_BINDING && <ShortcutKeys binding={TODAY_BINDING} />}
+              {t('calendar.jumpTodayHint')}{' '}
+              {TODAY_BINDING && <ShortcutKeys binding={TODAY_BINDING} />}
             </TooltipContent>
           </Tooltip>
           <button
             type="button"
-            aria-label="Next month"
+            aria-label={t('calendar.nextMonth')}
             onClick={() => setMonth(addMonths(month, 1))}
             className={HEADER_BUTTON_CLASS}
           >
@@ -121,8 +127,8 @@ export function DayCalendar({ selectedDate, today }: DayCalendarProps): ReactEle
 
       <div>
         <div className="grid grid-cols-7 border-b border-black/5 px-4 text-center dark:border-white/10">
-          {weekdayLabels(weekStartsOn).map((weekday) => (
-            <div key={weekday} className="py-2 text-xs font-medium text-text">
+          {weekdays.map((weekday, index) => (
+            <div key={`${weekday}-${index}`} className="py-2 text-xs font-medium text-text">
               {weekday}
             </div>
           ))}
@@ -138,7 +144,7 @@ export function DayCalendar({ selectedDate, today }: DayCalendarProps): ReactEle
                   <button
                     key={cell.date}
                     type="button"
-                    aria-label={formatDayLabel(cell.date, settings.dateFormat)}
+                    aria-label={formatDayLabel(cell.date, settings.dateFormat, dateLocale)}
                     aria-current={isToday ? 'date' : undefined}
                     aria-pressed={isSelected}
                     onClick={(event) =>
