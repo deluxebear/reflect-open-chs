@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { AboutSection } from './settings/about-section'
 import { AgentsSection } from './settings/agents-section'
 import { AiPromptsSection } from './settings/ai-prompts-section'
@@ -20,9 +21,10 @@ import { TemplatesSection } from './settings/templates-section'
  * settings provider; there is no save button.
  */
 export function SettingsScreen(): ReactElement {
+  const { t } = useTranslation('settings')
   return (
-    <div aria-label="Settings">
-      <h1 className="text-lg font-semibold text-text">Settings</h1>
+    <div aria-label={t('pageAria')}>
+      <h1 className="text-lg font-semibold text-text">{t('pageTitle')}</h1>
       <div className="mt-6">
         <AppearanceSection />
         <EditorSection />

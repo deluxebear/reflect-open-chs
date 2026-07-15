@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from '@/lib/query-client'
 import { registerAppCommands } from '@/lib/commands/app-commands'
+import { initI18n } from '@/i18n'
+import { LocaleProvider } from '@/i18n/locale-provider'
 import { initializeExceptionTelemetry } from '@/lib/exception-telemetry'
 import { installNativeMenu } from '@/lib/native-menu/menu'
 import { installTauriBridge } from '@/lib/tauri-bridge'
@@ -15,6 +17,8 @@ import '@/styles/index.css'
 
 const reactRootOptions = initializeExceptionTelemetry()
 installTauriBridge()
+// Catalogs must exist before the native menu and any pre-React `t()` calls.
+initI18n('system')
 // Start the platform resolve + surface-chunk fetch (and, on mobile, the
 // iCloud-container resolve) now, ahead of React's first render — the lazy
 // gate in PlatformRoot would otherwise serialize all of it behind the mount.
@@ -36,11 +40,13 @@ createRoot(rootElement, reactRootOptions).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <SettingsProvider>
-        <EditorFullWidthEffect />
-        <EditorTextSizeEffect />
-        <ThemeProvider>
-          <PlatformRoot />
-        </ThemeProvider>
+        <LocaleProvider>
+          <EditorFullWidthEffect />
+          <EditorTextSizeEffect />
+          <ThemeProvider>
+            <PlatformRoot />
+          </ThemeProvider>
+        </LocaleProvider>
       </SettingsProvider>
     </QueryClientProvider>
   </StrictMode>,

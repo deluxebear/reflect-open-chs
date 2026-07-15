@@ -9,6 +9,7 @@ import {
   hasBridge,
   type AgentSkillStatus,
 } from '@reflect/core'
+import { useTranslation } from 'react-i18next'
 import { SettingsField } from '@/components/settings/field'
 import { SettingsSection } from '@/components/settings/section'
 import { Button } from '@/components/ui/button'
@@ -25,6 +26,7 @@ import { useGraph } from '@/providers/graph-provider'
 export function AgentsSection(): ReactElement | null {
   const { graph } = useGraph()
   const queryClient = useQueryClient()
+  const { t } = useTranslation('settings')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const queryKey = ['agent-skill', graph?.root]
@@ -57,8 +59,8 @@ export function AgentsSection(): ReactElement | null {
   return (
     <SettingsSection id="agents">
       <SettingsField
-        legend="Agent skill"
-        description={`Teach Claude Code and other agents to read “${graph.name}” with the reflect CLI.`}
+        legend={t('agents.skill.legend')}
+        description={t('agents.skill.description', { name: graph.name })}
       >
         {status !== undefined ? (
           <div className="mt-2 flex flex-col gap-2">
@@ -66,19 +68,19 @@ export function AgentsSection(): ReactElement | null {
               {status.skillPath}
             </p>
             {status.installState === 'conflict' ? (
-              <p className="text-xs text-destructive">
-                A file Reflect doesn’t manage already exists there. Move it aside to install.
-              </p>
+              <p className="text-xs text-destructive">{t('agents.skill.conflict')}</p>
             ) : (
               <div className="flex items-center gap-2">
                 {installed ? (
                   <span className="inline-flex items-center gap-1 text-xs text-text-secondary">
                     <Check aria-hidden className="size-3.5" />
-                    Installed
+                    {t('agents.skill.installed')}
                   </span>
                 ) : (
                   <Button size="xs" disabled={busy} onClick={() => void run(agentSkillInstall)}>
-                    {status.installState === 'stale' ? 'Update skill' : 'Install skill'}
+                    {status.installState === 'stale'
+                      ? t('agents.skill.update')
+                      : t('agents.skill.install')}
                   </Button>
                 )}
                 {status.installState !== 'missing' ? (
@@ -88,7 +90,7 @@ export function AgentsSection(): ReactElement | null {
                     disabled={busy}
                     onClick={() => void run(agentSkillUninstall)}
                   >
-                    Remove
+                    {t('agents.skill.remove')}
                   </Button>
                 ) : null}
               </div>

@@ -1,7 +1,11 @@
+import { t } from '@/i18n'
+
 /**
- * The canonical, ordered registry of settings page sections. The section
- * cards and the sticky navigator both render from this list, so the
- * navigator's labels and jump targets can never drift from the page itself.
+ * The canonical, ordered registry of settings page sections. Titles are
+ * English source labels; UI renders via {@link settingsSectionTitle} which
+ * localizes through i18n. The section cards and the sticky navigator both
+ * render from this list, so the navigator's labels and jump targets can never
+ * drift from the page itself.
  */
 export const SETTINGS_SECTIONS = [
   { id: 'appearance', title: 'Appearance' },
@@ -27,7 +31,8 @@ export type SettingsSectionId = (typeof SETTINGS_SECTIONS)[number]['id']
 
 /** The heading a section renders — shared by its card and the navigator. */
 export function settingsSectionTitle(id: SettingsSectionId): string {
-  return SETTINGS_SECTIONS.find((section) => section.id === id)?.title ?? id
+  const fallback = SETTINGS_SECTIONS.find((section) => section.id === id)?.title ?? id
+  return t(`settings:sections.${id}`, { defaultValue: fallback }) as string
 }
 
 /** The DOM id a section card carries (prefixed to keep document ids unique). */

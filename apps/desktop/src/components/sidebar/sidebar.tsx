@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react'
 import { isUntitledNotePath, type GraphInfo } from '@reflect/core'
 import { ListChecks, MessageSquare, SquarePen } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { AudioMemoButton } from '@/components/audio-memo/audio-memo-button'
 import { ListIcon } from '@/components/icons/list-icon'
 import { PencilIcon } from '@/components/icons/pencil-icon'
@@ -38,6 +39,7 @@ export function Sidebar({ graph, context }: SidebarProps): ReactElement {
   const { route } = useRouter()
   const today = useToday()
   const pinned = usePinnedNotes()
+  const { t } = useTranslation('shell')
   const currentNotePath = notePathForRoute(route, today)
   const hasActivePinnedNote =
     currentNotePath !== null && pinned.some((note) => note.path === currentNotePath)
@@ -67,10 +69,10 @@ export function Sidebar({ graph, context }: SidebarProps): ReactElement {
           <AudioMemoButton />
         </div>
 
-        <nav aria-label="Primary" className="mt-6 space-y-1 px-4">
+        <nav aria-label={t('sidebar.primary')} className="mt-6 space-y-1 px-4">
           <SidebarItem
             icon={<PencilIcon className="shrink-0" />}
-            label="Daily notes"
+            label={t('sidebar.dailyNotes')}
             binding={keybindingFor('nav.today') ?? undefined}
             active={(route.kind === 'today' || route.kind === 'daily') && !hasActivePinnedNote}
             onClick={() => void runCommand('nav.today', context)}
@@ -81,7 +83,7 @@ export function Sidebar({ graph, context }: SidebarProps): ReactElement {
                 <SquarePen aria-hidden strokeWidth={1.75} className="size-4" />
               </span>
             }
-            label="New note"
+            label={t('sidebar.newNote')}
             binding={keybindingFor('note.new') ?? undefined}
             // Active while the open note is still on its ULID placeholder
             // name — the state this row creates. The birth rename onto a
@@ -92,7 +94,7 @@ export function Sidebar({ graph, context }: SidebarProps): ReactElement {
           />
           <SidebarItem
             icon={<ListIcon className="shrink-0" />}
-            label="All notes"
+            label={t('sidebar.allNotes')}
             binding={keybindingFor('nav.allNotes') ?? undefined}
             // A named note lives in the All Notes collection, so keep this row
             // lit while editing one. A brand-new note is still an untitled
@@ -110,7 +112,7 @@ export function Sidebar({ graph, context }: SidebarProps): ReactElement {
                 <ListChecks aria-hidden strokeWidth={1.75} className="size-4" />
               </span>
             }
-            label="Tasks"
+            label={t('sidebar.tasks')}
             binding={keybindingFor('nav.tasks') ?? undefined}
             active={route.kind === 'tasks'}
             onClick={() => void runCommand('nav.tasks', context)}
@@ -121,7 +123,7 @@ export function Sidebar({ graph, context }: SidebarProps): ReactElement {
                 <MessageSquare aria-hidden strokeWidth={1.75} className="size-4" />
               </span>
             }
-            label="Chat"
+            label={t('sidebar.chat')}
             binding={keybindingFor('chat.open') ?? undefined}
             active={route.kind === 'chat'}
             onClick={() => void runCommand('chat.open', context)}

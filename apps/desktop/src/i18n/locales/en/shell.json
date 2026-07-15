@@ -1,0 +1,36 @@
+{
+  "sidebar": {
+    "primary": "Primary",
+    "dailyNotes": "Daily notes",
+    "newNote": "New note",
+    "allNotes": "All notes",
+    "tasks": "Tasks",
+    "chat": "Chat",
+    "searchPlaceholder": "Search anything...",
+    "pinned": "Pinned notes"
+  },
+  "shortcuts": {
+    "title": "Keyboard shortcuts",
+    "app": "App",
+    "editor": "Editor"
+  },
+  "header": {
+    "indexing": "Indexing…",
+    "lightMode": "Light mode",
+    "darkMode": "Dark mode",
+    "openSettings": "Open settings",
+    "settingsTooltip": "Settings"
+  },
+  "audioMemo": {
+    "record": "Record audio memo",
+    "stop": "Stop recording",
+    "discard": "Discard audio memo",
+    "noProvider": "Add an OpenAI or Gemini model in Settings to record audio memos",
+    "unsupported": "Audio recording is not supported on this platform",
+    "micDeniedMac": "Microphone access was denied. Allow it in System Settings → Privacy & Security → Microphone.",
+    "micDeniedOther": "Microphone access was denied. Allow microphone access for Reflect in your system settings.",
+    "retry": "Retry",
+    "discardAction": "Discard",
+    "transcribing": "Transcribing…"
+  }
+}

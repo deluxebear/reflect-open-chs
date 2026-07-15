@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { ArrowDownToLine, RefreshCw, RotateCw } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import { useUpdate } from '@/providers/update-provider'
 import { SettingsField } from './field'
@@ -10,6 +11,7 @@ import { SettingsField } from './field'
  */
 export function UpdateField(): ReactElement {
   const { state, checkNow, install, restart } = useUpdate()
+  const { t } = useTranslation('settings')
 
   const action: {
     label: string
@@ -19,33 +21,40 @@ export function UpdateField(): ReactElement {
   } = (() => {
     switch (state.phase) {
       case 'checking':
-        return { label: 'Checking…', icon: RefreshCw, run: undefined, spinning: true }
+        return { label: t('about.updates.checking'), icon: RefreshCw, run: undefined, spinning: true }
       case 'available':
-        return { label: `Install ${state.version}`, icon: ArrowDownToLine, run: install }
+        return {
+          label: t('about.updates.install', { version: state.version }),
+          icon: ArrowDownToLine,
+          run: install,
+        }
       case 'downloading':
         return {
-          label: `Downloading${state.percent !== null ? ` ${state.percent}%` : '…'}`,
+          label:
+            state.percent !== null
+              ? t('about.updates.downloadingPercent', { percent: state.percent })
+              : t('about.updates.downloading'),
           icon: ArrowDownToLine,
           run: undefined,
         }
       case 'ready':
-        return { label: 'Restart to update', icon: RotateCw, run: restart }
+        return { label: t('about.updates.restart'), icon: RotateCw, run: restart }
       case 'error':
         // Retry what actually failed: a failed install still has its found
         // update (same contract as the sidebar row); a failed check re-checks.
         return state.during === 'install'
-          ? { label: 'Retry install', icon: ArrowDownToLine, run: install }
-          : { label: 'Check for updates', icon: RefreshCw, run: checkNow }
+          ? { label: t('about.updates.retryInstall'), icon: ArrowDownToLine, run: install }
+          : { label: t('about.updates.check'), icon: RefreshCw, run: checkNow }
       default:
-        return { label: 'Check for updates', icon: RefreshCw, run: checkNow }
+        return { label: t('about.updates.check'), icon: RefreshCw, run: checkNow }
     }
   })()
 
   const run = action.run
   return (
     <SettingsField
-      legend="Updates"
-      description="Reflect checks for new versions on launch and installs them only when you say so."
+      legend={t('about.updates.legend')}
+      description={t('about.updates.description')}
     >
       <div className="mt-3 flex items-center gap-3">
         <Button
@@ -65,7 +74,7 @@ export function UpdateField(): ReactElement {
         </Button>
         {state.phase === 'upToDate' ? (
           <span role="status" className="text-xs text-text-muted">
-            You're up to date.
+            {t('about.updates.upToDate')}
           </span>
         ) : null}
         {state.phase === 'error' ? (

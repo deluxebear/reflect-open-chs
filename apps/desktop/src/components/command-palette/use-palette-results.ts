@@ -8,6 +8,8 @@ import {
   suggestWikiTargets,
 } from '@reflect/core'
 import { listCommands } from '@/lib/commands/registry'
+import { localizeCommands } from '@/i18n/localize-commands'
+import { i18n } from '@/i18n'
 import { todayIso } from '@/lib/dates'
 import { INDEX_QUERY_SCOPE } from '@/lib/query-client'
 import { useEmbedStatus } from '@/lib/use-embed-status'
@@ -126,9 +128,11 @@ export function usePaletteResults(open: boolean, query: string): PaletteResults 
         suggestions: suggestions ?? [],
         hits: hits ?? [],
         filtered: parsed.filtered,
-        commands: listCommands(),
+        commands: localizeCommands(listCommands()),
       }),
-    [query, trimmed, suggestions, hits, parsed.filtered],
+    // Recompute when the active catalog changes so palette titles stay in language.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- i18n.language is the locale signal
+    [query, trimmed, suggestions, hits, parsed.filtered, i18n.language],
   )
 
   return { sections, resultsSettled, searchFailed }

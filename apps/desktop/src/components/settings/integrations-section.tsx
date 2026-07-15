@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactElement } from 'react'
 import { openUrl } from '@tauri-apps/plugin-opener'
 import { requestContactsAccess } from '@reflect/core'
+import { useTranslation } from 'react-i18next'
 import { InlineAlert } from '@/components/inline-alert'
 import {
   useContactsAuthorization,
@@ -33,6 +34,7 @@ const CONTACTS_PRIVACY_PANE =
  */
 export function IntegrationsSection(): ReactElement | null {
   const { settings, updateSettings } = useSettings()
+  const { t } = useTranslation('settings')
   const authorization = useContactsAuthorization()
   const refreshAuthorization = useRefreshContactsAuthorization()
   const [isPrompting, setIsPrompting] = useState(false)
@@ -92,8 +94,8 @@ export function IntegrationsSection(): ReactElement | null {
       {contactsAvailable ? (
         <div>
           <SettingsSwitchField
-            legend="Contacts"
-            description="Suggest a contact's email and phone when a note's title matches their name."
+            legend={t('integrations.contacts.legend')}
+            description={t('integrations.contacts.description')}
             checked={settings.contactsEnabled}
             onCheckedChange={(checked) => {
               if (checked) {
@@ -106,7 +108,7 @@ export function IntegrationsSection(): ReactElement | null {
           {showDenied ? (
             <div className="px-4 pb-3.5">
               <InlineAlert tone="warning">
-                Reflect doesn’t have contacts access.{' '}
+                {t('integrations.contacts.denied')}{' '}
                 <button
                   type="button"
                   className="font-medium underline underline-offset-2"
@@ -119,22 +121,22 @@ export function IntegrationsSection(): ReactElement | null {
                     })
                   }}
                 >
-                  Open System Settings
+                  {t('integrations.contacts.openSettings')}
                 </button>{' '}
-                to allow it, then return here.
+                {t('integrations.contacts.deniedHint')}
               </InlineAlert>
             </div>
           ) : null}
           {showPrompt ? (
             <div className="px-4 pb-3.5">
               <InlineAlert tone="warning">
-                Reflect hasn’t asked for contacts access yet.{' '}
+                {t('integrations.contacts.notAsked')}{' '}
                 <button
                   type="button"
                   className="font-medium underline underline-offset-2"
                   onClick={() => void promptForAccess()}
                 >
-                  Allow contacts access
+                  {t('integrations.contacts.allowAccess')}
                 </button>
               </InlineAlert>
             </div>

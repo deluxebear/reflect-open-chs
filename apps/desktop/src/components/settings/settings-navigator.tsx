@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 import { scrollToSettingsSection } from './section-scrolling'
-import { type SettingsSectionId } from './sections'
+import { settingsSectionTitle, type SettingsSectionId } from './sections'
 import { useActiveSettingsSection } from './use-active-settings-section'
 import { useVisibleSettingsSections } from './use-visible-settings-sections'
 
@@ -25,6 +26,7 @@ interface SettingsNavigatorProps {
  * gains a size.
  */
 export function SettingsNavigator({ className }: SettingsNavigatorProps): ReactElement {
+  const { t } = useTranslation('settings')
   const navRef = useRef<HTMLElement | null>(null)
   const itemRefs = useRef(new Map<SettingsSectionId, HTMLButtonElement>())
   const activeId = useActiveSettingsSection(navRef)
@@ -54,8 +56,12 @@ export function SettingsNavigator({ className }: SettingsNavigatorProps): ReactE
     return () => resizeObserver.disconnect()
   }, [measure])
 
-  return (
-    <nav ref={navRef} aria-label="Settings sections" className={cn('text-[13px]', className)}>
+return (
+    <nav
+      ref={navRef}
+      aria-label={t('navigator.ariaLabel')}
+      className={cn('text-[13px]', className)}
+    >
       <div className="relative flex flex-col border-l border-border">
         {marker !== null && (
           <span
@@ -89,7 +95,7 @@ export function SettingsNavigator({ className }: SettingsNavigatorProps): ReactE
                 isActive ? 'text-text' : 'text-text-secondary hover:text-text',
               )}
             >
-              {section.title}
+              {settingsSectionTitle(section.id)}
             </button>
           )
         })}

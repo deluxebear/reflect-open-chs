@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { RecordingWaveform } from '@/components/audio-memo/recording-waveform'
 import { Button } from '@/components/ui/button'
 import { PopoverContent } from '@/components/ui/popover'
@@ -18,6 +19,7 @@ import { useAudioMemo } from '@/providers/audio-memo-provider'
  */
 export function RecordingPopover(): ReactElement {
   const memo = useAudioMemo()
+  const { t } = useTranslation('shell')
 
   return (
     <PopoverContent
@@ -41,18 +43,18 @@ export function RecordingPopover(): ReactElement {
           <div className="flex gap-1.5">
             {memo.canRetry ? (
               <Button size="xs" variant="secondary" onClick={() => memo.retry()}>
-                Retry
+                {t('audioMemo.retry')}
               </Button>
             ) : null}
             <Button size="xs" variant="ghost" onClick={() => memo.discard()}>
-              Discard
+              {t('audioMemo.discardAction')}
             </Button>
           </div>
         </div>
       ) : memo.phase === 'transcribing' ? (
         <div className="flex items-center gap-2 text-sm text-text-muted">
           <Spinner />
-          Transcribing…
+          {t('audioMemo.transcribing')}
         </div>
       ) : (
         <div className="flex items-center gap-3">

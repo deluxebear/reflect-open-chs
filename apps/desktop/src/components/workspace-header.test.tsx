@@ -1,8 +1,13 @@
 import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeAll, describe, expect, it, vi } from 'vitest'
 import { TooltipProvider } from '@/components/ui/tooltip'
+import { initI18n } from '@/i18n'
 import { WorkspaceHeader } from './workspace-header'
+
+beforeAll(() => {
+  initI18n('en')
+})
 
 function renderHeader(overrides: Partial<Parameters<typeof WorkspaceHeader>[0]> = {}) {
   const onToggleTheme = vi.fn()

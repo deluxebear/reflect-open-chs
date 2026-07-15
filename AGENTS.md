@@ -56,6 +56,15 @@ into it for a stable release. Versions on `next` carry a prerelease suffix
 (`0.2.0-beta.1`), which the release pipeline publishes as GitHub pre-releases — see
 [docs/macos-distribution.md](docs/macos-distribution.md).
 
+**This repository is the CHS / second-development fork.** Extra branch, version-suffix,
+and remote rules (pure i18n on `master` → `vX.Y.Z-chs`; new features on `next`; never
+push to upstream unless explicitly asked) live in
+[docs/fork-chs-development.md](docs/fork-chs-development.md). Follow that file for all
+fork-specific work; the rest of this document still applies for code style and upstream
+shape. When merging upstream or between `master`/`next`, **do not overwrite existing
+translations** (keep `zh-CN` entries and `t()` wiring; only add keys for new UI) — see
+fork doc §6.4 and [docs/plans/chs-i18n.md](docs/plans/chs-i18n.md) §5.1.
+
 PR titles must be conventional commits (`feat:` / `fix:` / `chore:` …, enforced by
 CI). The title becomes the squash-commit message, drives the release-please version
 bump, and — for `feat`/`fix` — is the user-facing changelog entry, so write it

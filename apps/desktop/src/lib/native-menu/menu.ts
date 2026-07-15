@@ -6,6 +6,7 @@ import {
   type PredefinedMenuItemOptions,
 } from '@tauri-apps/api/menu'
 import { APP_COMMANDS } from '@/lib/commands/app-commands'
+import { t } from '@/i18n'
 import { isMainWindow } from '@/lib/windows/window-role'
 import { bindingToAccelerator } from './accelerator'
 import { dispatchMenuCommand } from './dispatch'
@@ -64,23 +65,29 @@ function separator(): AppMenuEntry {
 export function appMenuLayout(): AppSubmenuLayout[] {
   return [
     {
-      text: 'Reflect',
+      text: t('commands:menu.reflect', { defaultValue: 'Reflect' }),
       entries: [
-        predefined({ About: null }, 'About Reflect'),
+        predefined(
+          { About: null },
+          t('commands:menu.about', { defaultValue: 'About Reflect' }),
+        ),
         separator(),
-        command('settings.open', 'Settings…'),
+        command(
+          'settings.open',
+          t('commands:menu.settings', { defaultValue: 'Settings…' }),
+        ),
         separator(),
         predefined('Services'),
         separator(),
-        predefined('Hide', 'Hide Reflect'),
+        predefined('Hide', t('commands:menu.hide', { defaultValue: 'Hide Reflect' })),
         predefined('HideOthers'),
         predefined('ShowAll'),
         separator(),
-        predefined('Quit', 'Quit Reflect'),
+        predefined('Quit', t('commands:menu.quit', { defaultValue: 'Quit Reflect' })),
       ],
     },
     {
-      text: 'File',
+      text: t('commands:menu.file', { defaultValue: 'File' }),
       entries: [
         command('note.new'),
         command('note.attachFile'),
@@ -89,7 +96,7 @@ export function appMenuLayout(): AppSubmenuLayout[] {
       ],
     },
     {
-      text: 'Edit',
+      text: t('commands:menu.edit', { defaultValue: 'Edit' }),
       entries: [
         predefined('Undo'),
         predefined('Redo'),
@@ -101,7 +108,7 @@ export function appMenuLayout(): AppSubmenuLayout[] {
       ],
     },
     {
-      text: 'View',
+      text: t('commands:menu.view', { defaultValue: 'View' }),
       entries: [
         command('palette.open'),
         command('nav.today'),
@@ -117,19 +124,19 @@ export function appMenuLayout(): AppSubmenuLayout[] {
       ],
     },
     {
-      text: 'Window',
+      text: t('commands:menu.window', { defaultValue: 'Window' }),
       nsAppRole: 'windows',
       entries: [
         command('note.openInNewWindow'),
         separator(),
         predefined('Minimize'),
-        predefined('Maximize', 'Zoom'),
+        predefined('Maximize', t('commands:menu.zoom', { defaultValue: 'Zoom' })),
         separator(),
         predefined('BringAllToFront'),
       ],
     },
     {
-      text: 'Help',
+      text: t('commands:menu.help', { defaultValue: 'Help' }),
       nsAppRole: 'help',
       entries: [command('shortcuts.show')],
     },
@@ -142,9 +149,10 @@ function menuItemOptions(commandId: string, text?: string): MenuItemOptions {
     throw new Error(`native menu references unknown command: ${commandId}`)
   }
   const accelerator = appCommand.keybinding ? bindingToAccelerator(appCommand.keybinding) : undefined
+  const localizedTitle = t(`commands:${commandId}.title`, { defaultValue: appCommand.title })
   return {
     id: appCommand.id,
-    text: text ?? appCommand.title,
+    text: text ?? localizedTitle,
     ...(accelerator !== undefined ? { accelerator } : {}),
     action: dispatchMenuCommand,
   }
@@ -172,8 +180,8 @@ function isMacosDesktop(): boolean {
 
 /**
  * Build the application menu and install it, replacing Tauri's default.
- * Call once at startup, before React mounts — the menu holds command ids, not
- * state, so it never needs rebuilding.
+ * Call at startup and again when the UI language changes so labels stay in
+ * sync with i18n.
  *
  * macOS-only for now: other desktop platforms would render an in-window
  * menubar we haven't designed for, and every shortcut already works there
@@ -218,4 +226,9 @@ export async function installNativeMenu(): Promise<void> {
       await submenu.setAsHelpMenuForNSApp()
     }
   }
+}
+
+/** Rebuild the native menu after a locale change (same path as first install). */
+export async function reinstallNativeMenu(): Promise<void> {
+  await installNativeMenu()
 }

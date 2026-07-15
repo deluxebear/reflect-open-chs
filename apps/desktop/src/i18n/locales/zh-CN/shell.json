@@ -1,0 +1,36 @@
+{
+  "sidebar": {
+    "primary": "主导航",
+    "dailyNotes": "日记",
+    "newNote": "新建笔记",
+    "allNotes": "全部笔记",
+    "tasks": "任务",
+    "chat": "对话",
+    "searchPlaceholder": "搜索任意内容…",
+    "pinned": "置顶笔记"
+  },
+  "shortcuts": {
+    "title": "键盘快捷键",
+    "app": "应用",
+    "editor": "编辑器"
+  },
+  "header": {
+    "indexing": "正在索引…",
+    "lightMode": "浅色模式",
+    "darkMode": "深色模式",
+    "openSettings": "打开设置",
+    "settingsTooltip": "设置"
+  },
+  "audioMemo": {
+    "record": "录制语音备忘",
+    "stop": "停止录制",
+    "discard": "丢弃语音备忘",
+    "noProvider": "请在设置中添加 OpenAI 或 Gemini 模型后再录制语音备忘",
+    "unsupported": "当前平台不支持录音",
+    "micDeniedMac": "麦克风权限被拒绝。请在系统设置 → 隐私与安全性 → 麦克风中允许 Reflect。",
+    "micDeniedOther": "麦克风权限被拒绝。请在系统设置中允许 Reflect 使用麦克风。",
+    "retry": "重试",
+    "discardAction": "丢弃",
+    "transcribing": "正在转写…"
+  }
+}

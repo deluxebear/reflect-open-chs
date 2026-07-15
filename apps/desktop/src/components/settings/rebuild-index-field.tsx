@@ -1,4 +1,5 @@
 import { useState, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import { rebuildIndexVisibly } from '@/lib/rebuild-index'
 import { useGraph } from '@/providers/graph-provider'
@@ -14,6 +15,7 @@ import { SettingsField } from './field'
  */
 export function RebuildIndexField(): ReactElement {
   const { indexGeneration } = useGraph()
+  const { t } = useTranslation('settings')
   const [rebuilding, setRebuilding] = useState(false)
 
   const rebuild = async (): Promise<void> => {
@@ -30,8 +32,8 @@ export function RebuildIndexField(): ReactElement {
 
   return (
     <SettingsField
-      legend="Rebuild index"
-      description="Reflect keeps a local index of your notes to power search and links. If results ever look stale or incomplete, rebuild it — your notes are never changed."
+      legend={t('search.rebuild.legend')}
+      description={t('search.rebuild.description')}
     >
       <div className="mt-3 flex justify-start">
         <Button
@@ -42,7 +44,7 @@ export function RebuildIndexField(): ReactElement {
           onClick={() => void rebuild()}
           className="text-text-secondary"
         >
-          {rebuilding ? 'Rebuilding…' : 'Rebuild index'}
+          {rebuilding ? t('search.rebuild.rebuilding') : t('search.rebuild.button')}
         </Button>
       </div>
     </SettingsField>
