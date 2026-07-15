@@ -1,6 +1,7 @@
 import { useEffect, type ReactElement } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { AI_PROVIDERS, aiProvider, aiProviderIdSchema, type AiProviderId } from '@reflect/core'
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -46,6 +47,8 @@ const FIELD_LABEL_CLASS = 'text-xs font-medium text-text-secondary'
  * failure keeps the dialog open with the typed key intact for a retry.
  */
 export function AddAiProviderDialog({ onAdd, onClose }: AddAiProviderDialogProps): ReactElement {
+  const { t } = useTranslation('settings')
+  const { t: tc } = useTranslation('common')
   const { register, control, handleSubmit, setValue, formState } = useForm<AddAiProviderForm>({
     defaultValues: {
       provider: AI_PROVIDERS[0].id,
@@ -85,10 +88,8 @@ export function AddAiProviderDialog({ onAdd, onClose }: AddAiProviderDialogProps
     <Dialog open onOpenChange={(isOpen) => { if (!isOpen) onClose() }}>
       <DialogContent showCloseButton={false} className="max-w-sm">
         <DialogHeader>
-          <DialogTitle>Add AI provider</DialogTitle>
-          <DialogDescription>
-            The API key is stored in your OS keychain, never in your graph.
-          </DialogDescription>
+          <DialogTitle>{t('aiProviders.dialog.title')}</DialogTitle>
+          <DialogDescription>{t('aiProviders.dialog.description')}</DialogDescription>
         </DialogHeader>
         <form
           className="flex flex-col gap-3"
@@ -97,7 +98,7 @@ export function AddAiProviderDialog({ onAdd, onClose }: AddAiProviderDialogProps
           }}
         >
           <div className="flex flex-col gap-1">
-            <span className={FIELD_LABEL_CLASS}>Provider</span>
+            <span className={FIELD_LABEL_CLASS}>{t('aiProviders.dialog.provider')}</span>
             <Select
               value={provider.id}
               onValueChange={(value) => {
@@ -107,7 +108,7 @@ export function AddAiProviderDialog({ onAdd, onClose }: AddAiProviderDialogProps
                 resetUnverified()
               }}
             >
-              <SelectTrigger aria-label="Provider" className="w-full">
+              <SelectTrigger aria-label={t('aiProviders.dialog.providerAria')} className="w-full">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -121,7 +122,7 @@ export function AddAiProviderDialog({ onAdd, onClose }: AddAiProviderDialogProps
           </div>
 
           <div className="flex flex-col gap-1">
-            <span className={FIELD_LABEL_CLASS}>Default model</span>
+            <span className={FIELD_LABEL_CLASS}>{t('aiProviders.dialog.defaultModel')}</span>
             <ModelCombobox
               value={selectedModel}
               provider={provider.id}
@@ -131,14 +132,15 @@ export function AddAiProviderDialog({ onAdd, onClose }: AddAiProviderDialogProps
           </div>
 
           <label className="flex flex-col gap-1">
-            <span className={FIELD_LABEL_CLASS}>API key</span>
+            <span className={FIELD_LABEL_CLASS}>{t('aiProviders.dialog.apiKey')}</span>
             <Input
               type="password"
               placeholder={provider.keyPlaceholder}
               autoComplete="off"
               spellCheck={false}
               {...register('apiKey', {
-                validate: (value) => value.trim().length > 0 || 'Enter an API key.',
+                validate: (value) =>
+                  value.trim().length > 0 || t('aiProviders.dialog.apiKeyRequired'),
                 onChange: () => {
                   resetUnverified()
                 },
@@ -153,23 +155,24 @@ export function AddAiProviderDialog({ onAdd, onClose }: AddAiProviderDialogProps
 
           <label className="flex items-center gap-2">
             <input type="checkbox" className="accent-accent" {...register('isDefault')} />
-            <span className="text-sm text-text">Use as the default provider</span>
+            <span className="text-sm text-text">{t('aiProviders.dialog.useAsDefault')}</span>
           </label>
 
           {submitError !== null ? <InlineAlert tone="error">{submitError}</InlineAlert> : null}
           {unverified ? (
             <InlineAlert tone="warning">
-              Couldn't reach {provider.label} to verify the key. Submit again to save it
-              unverified.
+              {t('aiProviders.dialog.unverified', { provider: provider.label })}
             </InlineAlert>
           ) : null}
 
           <div className="flex justify-end gap-2">
             <Button type="button" variant="outline" size="sm" onClick={onClose}>
-              Cancel
+              {tc('cancel')}
             </Button>
             <Button type="submit" size="sm" disabled={formState.isSubmitting}>
-              {unverified ? 'Save anyway' : 'Add provider'}
+              {unverified
+                ? t('aiProviders.dialog.saveAnyway')
+                : t('aiProviders.dialog.addProvider')}
             </Button>
           </div>
         </form>

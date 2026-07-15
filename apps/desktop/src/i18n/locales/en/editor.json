@@ -1,0 +1,13 @@
+{
+  "ai": {
+    "retry": "Retry",
+    "retryOtherModel": "Retry with another model",
+    "insertBelow": "Insert below",
+    "replaceSelection": "Replace selection",
+    "addProvider": "Add an AI provider in Settings…",
+    "addProviderFail": "Add an AI provider in Settings to use AI prompts.",
+    "privateNote": "This note is marked private, so its content is never sent to an AI provider.",
+    "noApiKey": "No API key found for this provider — re-add it in Settings → AI providers.",
+    "runAsPrompt": "Run as a prompt"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "emptyTitle": "与笔记对话",
+  "emptyBody": "添加 AI 服务商后即可开始对话。Reflect 使用你自己的密钥直接调用服务商 — 密钥保存在系统钥匙串中，私密笔记绝不会被发送。",
+  "emptyBodyDevice": "添加 AI 服务商后即可开始对话。Reflect 使用你自己的密钥直接调用服务商 — 密钥保存在设备钥匙串中，私密笔记绝不会被发送。",
+  "addProvider": "添加 AI 服务商",
+  "title": "对话",
+  "placeholder": "向笔记提问…",
+  "messageAria": "对话消息",
+  "conversationAria": "对话内容",
+  "modelAria": "模型",
+  "chooseModel": "选择模型",
+  "historyAria": "对话历史",
+  "noPastChats": "暂无历史对话",
+  "deleteChatAria": "删除“{{title}}”",
+  "newChat": "新对话",
+  "newChatTooltip": "新对话",
+  "send": "发送",
+  "stop": "停止",
+  "removeAttachmentAria": "移除 {{name}}",
+  "tools": {
+    "searched": "已搜索“{{query}}”",
+    "listed": "已列出",
+    "listedNotes": "笔记",
+    "listedRecent": "已列出最近笔记",
+    "listedDailies": "已列出日记 {{start}} – {{end}}",
+    "read": "已读取",
+    "countNotes_one": " · {{count}} 条笔记",
+    "countNotes_other": " · {{count}} 条笔记",
+    "countDays_one": " · {{count}} 天",
+    "countDays_other": " · {{count}} 天",
+    "recent": "最近"
+  }
+}

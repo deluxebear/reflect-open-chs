@@ -1,5 +1,6 @@
 import { useEffect, useState, type ReactElement } from 'react'
 import { X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import {
   addMeetingToDaily,
   contactsAuthorizationStatus,
@@ -48,6 +49,8 @@ const FIELD_LABEL_CLASS = 'text-xs font-medium text-text-secondary'
  * are pre-filled from Apple Contacts by attendee email.
  */
 export function AddMeetingDialog({ date, event, onClose }: AddMeetingDialogProps): ReactElement {
+  const { t } = useTranslation('context')
+  const { t: tc } = useTranslation('common')
   const { settings } = useSettings()
   const { graph } = useGraph()
   const [name, setName] = useState(event.title)
@@ -162,7 +165,7 @@ export function AddMeetingDialog({ date, event, onClose }: AddMeetingDialogProps
     >
       <DialogContent showCloseButton={false} className="max-w-sm">
         <DialogHeader>
-          <DialogTitle>Add event</DialogTitle>
+          <DialogTitle>{t('events.addEvent')}</DialogTitle>
           <DialogDescription>
             {formatTimeOfDay(new Date(event.startsAt), settings.timeFormat)}
           </DialogDescription>
@@ -176,7 +179,7 @@ export function AddMeetingDialog({ date, event, onClose }: AddMeetingDialogProps
         >
           <div className="space-y-1.5">
             <label htmlFor="add-meeting-name" className={FIELD_LABEL_CLASS}>
-              Meeting name
+              {t('events.meetingName')}
             </label>
             <Input
               id="add-meeting-name"
@@ -189,7 +192,7 @@ export function AddMeetingDialog({ date, event, onClose }: AddMeetingDialogProps
             {/* The combobox input's real label is cmdk's hidden one (same
                 text); an htmlFor can't reach a cmdk input. */}
             <div aria-hidden className={FIELD_LABEL_CLASS}>
-              Attendees
+              {t('events.attendees')}
             </div>
             {attendees.length > 0 && (
               <ul className="flex flex-wrap gap-1.5">
@@ -202,7 +205,7 @@ export function AddMeetingDialog({ date, event, onClose }: AddMeetingDialogProps
                     <button
                       type="button"
                       onClick={() => removeAttendee(attendee.name)}
-                      aria-label={`Remove ${attendee.name}`}
+                      aria-label={t('events.removeAttendee', { name: attendee.name })}
                       className="text-text-muted transition-colors hover:text-text"
                     >
                       <X className="size-3" />
@@ -218,15 +221,15 @@ export function AddMeetingDialog({ date, event, onClose }: AddMeetingDialogProps
               checked={createNote}
               onCheckedChange={(checked) => setCreateNote(checked === true)}
             />
-            Create backlinked note
+            {t('events.createBacklink')}
           </label>
           {error !== null && <InlineAlert tone="error">{error}</InlineAlert>}
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose}>
-              Cancel
+              {tc('cancel')}
             </Button>
             <Button type="submit" disabled={!canSubmit}>
-              Add to daily note
+              {t('events.addToDailyNote')}
             </Button>
           </DialogFooter>
         </form>

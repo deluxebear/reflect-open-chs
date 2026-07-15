@@ -1,0 +1,33 @@
+{
+  "emptyTitle": "Chat with your notes",
+  "emptyBody": "Add an AI provider to start chatting. Reflect calls the provider directly with your own key — it stays in the system keychain, and private notes are never sent.",
+  "emptyBodyDevice": "Add an AI provider to start chatting. Reflect calls the provider directly with your own key — it stays in the device keychain, and private notes are never sent.",
+  "addProvider": "Add an AI provider",
+  "title": "Chat",
+  "placeholder": "Ask about your notes…",
+  "messageAria": "Chat message",
+  "conversationAria": "Chat conversation",
+  "modelAria": "Model",
+  "chooseModel": "Choose a model",
+  "historyAria": "Chat history",
+  "noPastChats": "No past chats",
+  "deleteChatAria": "Delete “{{title}}”",
+  "newChat": "New chat",
+  "newChatTooltip": "New chat",
+  "send": "Send",
+  "stop": "Stop",
+  "removeAttachmentAria": "Remove {{name}}",
+  "tools": {
+    "searched": "Searched “{{query}}”",
+    "listed": "Listed",
+    "listedNotes": "notes",
+    "listedRecent": "Listed recent notes",
+    "listedDailies": "Listed daily notes {{start}} – {{end}}",
+    "read": "Read",
+    "countNotes_one": " · {{count}} note",
+    "countNotes_other": " · {{count}} notes",
+    "countDays_one": " · {{count}} day",
+    "countDays_other": " · {{count}} days",
+    "recent": "recent"
+  }
+}

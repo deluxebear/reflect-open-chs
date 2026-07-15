@@ -1,5 +1,6 @@
 import { type ReactElement } from 'react'
 import { ChevronRight } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { BacklinkLoadMore } from '@/components/backlink-load-more'
 import { BacklinkSourceGroup } from '@/components/backlink-source-group'
 import { useBacklinkNavigation } from '@/hooks/use-backlink-navigation'
@@ -28,6 +29,7 @@ interface BacklinksPanelProps {
  * mobile surfaces render `IncomingBacklinks` over the same data layer.
  */
 export function BacklinksPanel({ path }: BacklinksPanelProps): ReactElement | null {
+  const { t } = useTranslation('notes')
   const {
     groups,
     count,
@@ -42,9 +44,9 @@ export function BacklinksPanel({ path }: BacklinksPanelProps): ReactElement | nu
 
   if (isError) {
     return (
-      <section aria-label="Incoming backlinks" className="mt-8">
+      <section aria-label={t('backlinks.aria')} className="mt-8">
         <p role="alert" className="text-xs text-text-muted">
-          Couldn’t load backlinks.
+          {t('backlinks.loadError')}
         </p>
       </section>
     )
@@ -59,7 +61,7 @@ export function BacklinksPanel({ path }: BacklinksPanelProps): ReactElement | nu
   }
 
   return (
-    <section aria-label="Incoming backlinks" className="mt-8">
+    <section aria-label={t('backlinks.aria')} className="mt-8">
       <h3 className="text-xs font-medium text-text-muted">
         <button
           type="button"
@@ -73,9 +75,7 @@ export function BacklinksPanel({ path }: BacklinksPanelProps): ReactElement | nu
               expanded ? 'rotate-90' : ''
             }`}
           />
-          <span>
-            Incoming backlink{count === 1 ? '' : 's'} ({count})
-          </span>
+          <span>{t('backlinks.heading', { count })}</span>
         </button>
       </h3>
 

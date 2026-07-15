@@ -1,5 +1,6 @@
 import { Fragment, type ReactElement } from 'react'
 import { Plus } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { groupTaskContexts, type OpenTask, type TaskGroup } from '@reflect/core'
 import { TaskBreadcrumbs } from '@/components/tasks/task-breadcrumbs'
 import { addTargetForGroup, taskGroupHeaderStyle } from '@/lib/tasks/task-group-presentation'
@@ -36,11 +37,18 @@ export function MobileTaskGroup({
   onEdit,
   onOpen,
 }: MobileTaskGroupProps): ReactElement {
+  const { t } = useTranslation('tasks')
   const showSource = group.kind !== 'note'
   const { notePath } = group
   const { icon, colorClass } = taskGroupHeaderStyle(group)
   const addTarget = addTargetForGroup(group, today)
   const contexts = groupTaskContexts(group.tasks)
+  const groupTitle =
+    group.kind === 'current' || group.kind === 'overdue' || group.kind === 'upcoming'
+      ? t(`groups.${group.kind}`)
+      : group.label
+  const addAria =
+    group.kind === 'current' ? t('addToToday') : t('addToNote', { label: group.label })
 
   return (
     <section>
@@ -49,7 +57,7 @@ export function MobileTaskGroup({
           {icon}
           {/* The pin icon alone is invisible to screen readers (aria-hidden). */}
           {group.kind === 'note' && group.tasks[0]?.isPinned ? (
-            <span className="sr-only">Pinned:</span>
+            <span className="sr-only">{t('pinnedPrefix')}</span>
           ) : null}
           {group.kind === 'note' && notePath !== null ? (
             <button
@@ -60,17 +68,17 @@ export function MobileTaskGroup({
               }}
               className="truncate"
             >
-              {group.label}
+              {groupTitle}
             </button>
           ) : (
-            <span className="truncate">{group.label}</span>
+            <span className="truncate">{groupTitle}</span>
           )}
           <span className="text-xs font-normal text-text-muted">{group.tasks.length}</span>
         </h2>
         {addTarget !== null ? (
           <button
             type="button"
-            aria-label={`Add a task to ${group.kind === 'current' ? 'today' : group.label}`}
+            aria-label={addAria}
             onClick={() => onAdd(addTarget)}
             className="-my-1 ml-auto flex size-8 flex-none items-center justify-center text-text-muted"
           >

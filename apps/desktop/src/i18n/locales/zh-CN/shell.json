@@ -9,6 +9,13 @@
     "searchPlaceholder": "搜索任意内容…",
     "pinned": "置顶笔记"
   },
+  "mobileTabs": {
+    "aria": "分区",
+    "daily": "日记",
+    "all": "全部",
+    "tasks": "任务",
+    "chat": "对话"
+  },
   "shortcuts": {
     "title": "键盘快捷键",
     "app": "应用",

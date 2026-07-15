@@ -32,6 +32,7 @@ import type { NoteEditorHandle } from '@/editor/note-editor'
 import { useAiPrompts } from '@/hooks/use-ai-prompts'
 import { useAiProviders } from '@/hooks/use-ai-providers'
 import { useNoteRow } from '@/hooks/use-note-row'
+import { t } from '@/i18n'
 import { providerFetch } from '@/lib/provider-fetch'
 import { useRouter } from '@/routing/router'
 
@@ -158,7 +159,7 @@ export function useEditorAiMenu({
           ? defaultProvider
           : providers.find((entry) => entry.id === modelOverride.configId) ?? null
       if (base === null) {
-        fail('Add an AI provider in Settings to use AI prompts.')
+        fail(t('editor:ai.addProviderFail'))
         return
       }
       const config = modelOverride === null ? base : { ...base, model: modelOverride.modelId }
@@ -170,7 +171,7 @@ export function useEditorAiMenu({
         selection = cloudSafeSelection({ path, isPrivate }, context.selectedText)
       } catch (cause) {
         if (isPrivateNoteError(cause)) {
-          fail('This note is marked private, so its content is never sent to an AI provider.')
+          fail(t('editor:ai.privateNote'))
           return
         }
         throw cause
@@ -179,7 +180,7 @@ export function useEditorAiMenu({
       const apiKey = await getSecret(aiKeySecretName(config.id)).catch(() => null)
       if (runRef.current !== run) return
       if (apiKey === null) {
-        fail('No API key found for this provider — re-add it in Settings → AI providers.')
+        fail(t('editor:ai.noApiKey'))
         return
       }
 
@@ -229,7 +230,7 @@ export function useEditorAiMenu({
         return [
           {
             id: 'configure-provider',
-            label: 'Add an AI provider in Settings…',
+            label: t('editor:ai.addProvider'),
             onSelect: () => navigate({ kind: 'settings' }),
           },
         ]
@@ -246,7 +247,7 @@ export function useEditorAiMenu({
         items.push({
           id: 'ad-hoc-query',
           label: adHoc,
-          detail: 'Run as a prompt',
+          detail: t('editor:ai.runAsPrompt'),
           onSelect: (context) =>
             runPrompt({ id: 'ad-hoc-query', label: adHoc, body: adHoc, mode: 'replace' }, context),
         })

@@ -37,5 +37,18 @@
   "archiveAria": "Archive {{count}}",
   "emptyTask": "Empty task",
   "completeAria": "Complete: {{label}}",
-  "reopenAria": "Reopen: {{label}}"
+  "reopenAria": "Reopen: {{label}}",
+  "addATask": "Add a task",
+  "newTask": "New task",
+  "loadingAria": "Loading tasks",
+  "archiveCompletedAria": "Archive {{count}} completed",
+  "mobileFilters": {
+    "pinned": "Pinned notes",
+    "current": "Current",
+    "overdue": "Overdue",
+    "upcoming": "Upcoming",
+    "other": "Other notes",
+    "archived": "Show archived"
+  },
+  "pinnedPrefix": "Pinned:"
 }

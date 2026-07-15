@@ -1,5 +1,6 @@
 import { useState, type ReactElement } from 'react'
 import { History, MessageSquare, Plus } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { ChatTurnList } from '@/components/chat/chat-turn-list'
 import { Button } from '@/components/ui/button'
 import { MobileChatComposer } from '@/mobile/chat-composer'
@@ -17,6 +18,7 @@ import { useRouter } from '@/routing/router'
  * call-to-action into Settings, where keys are added per device.
  */
 export function MobileChat(): ReactElement {
+  const { t } = useTranslation('chat')
   const { providers, turns, newChat } = useChatSession()
   const { navigate } = useRouter()
   const [historyOpen, setHistoryOpen] = useState(false)
@@ -28,18 +30,18 @@ export function MobileChat(): ReactElement {
       style={{ paddingTop: 'env(safe-area-inset-top)' }}
     >
       <header className="flex h-11 shrink-0 items-center gap-1 border-b border-border pl-4 pr-1">
-        <h1 className="min-w-0 flex-1 truncate text-base font-semibold">Chat</h1>
+        <h1 className="min-w-0 flex-1 truncate text-base font-semibold">{t('title')}</h1>
         {hasProvider ? (
           <>
             {turns.length > 0 ? (
-              <Button variant="ghost" size="icon" aria-label="New chat" onClick={newChat}>
+              <Button variant="ghost" size="icon" aria-label={t('newChat')} onClick={newChat}>
                 <Plus aria-hidden />
               </Button>
             ) : null}
             <Button
               variant="ghost"
               size="icon"
-              aria-label="Chat history"
+              aria-label={t('historyAria')}
               onClick={() => setHistoryOpen(true)}
             >
               <History aria-hidden />
@@ -56,13 +58,10 @@ export function MobileChat(): ReactElement {
         <div className="flex flex-1 items-center justify-center px-6">
           <div className="flex max-w-sm flex-col items-center text-center">
             <MessageSquare aria-hidden strokeWidth={1.5} className="size-8 text-text-muted" />
-            <h2 className="mt-4 text-lg font-semibold text-text">Chat with your notes</h2>
-            <p className="mt-2 text-sm text-text-muted">
-              Add an AI provider to start chatting. Reflect calls the provider directly with your
-              own key — it stays in the device keychain, and private notes are never sent.
-            </p>
+            <h2 className="mt-4 text-lg font-semibold text-text">{t('emptyTitle')}</h2>
+            <p className="mt-2 text-sm text-text-muted">{t('emptyBodyDevice')}</p>
             <Button className="mt-5" onClick={() => navigate({ kind: 'settings' })}>
-              Add an AI provider
+              {t('addProvider')}
             </Button>
           </div>
         </div>

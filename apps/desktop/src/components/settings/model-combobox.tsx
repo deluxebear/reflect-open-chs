@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactElement } from 'react'
 import { useCommandState } from 'cmdk'
 import { ChevronsUpDownIcon } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { aiModelLabel, type AiModelOption, type AiProviderId } from '@reflect/core'
 import { Button } from '@/components/ui/button'
 import {
@@ -52,6 +53,7 @@ export function ModelCombobox({
   models,
   onChange,
 }: ModelComboboxProps): ReactElement {
+  const { t } = useTranslation('settings')
   const [open, setOpen] = useState(false)
   const [inputValue, setInputValue] = useState('')
   const filteredCountRef = useRef(models.length)
@@ -92,7 +94,7 @@ export function ModelCombobox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          aria-label="Default model"
+          aria-label={t('aiProviders.dialog.defaultModelAria')}
           className="w-full justify-between font-normal"
         >
           <span className="truncate">{aiModelLabel(provider, value)}</span>
@@ -107,16 +109,14 @@ export function ModelCombobox({
         <Command>
           <FilterCountSync countRef={filteredCountRef} />
           <CommandInput
-            placeholder="Search or type a model name…"
+            placeholder={t('aiProviders.dialog.modelSearchPlaceholder')}
             value={inputValue}
             onValueChange={setInputValue}
             onKeyDown={handleKeyDown}
           />
           <CommandList>
             <CommandEmpty>
-              Press{' '}
-              <kbd className="rounded bg-muted px-1 py-0.5 font-mono text-xs">Enter</kbd>{' '}
-              to use &ldquo;{inputValue}&rdquo;
+              {t('aiProviders.dialog.modelUseTyped', { value: inputValue })}
             </CommandEmpty>
             <CommandGroup>
               {models.map((model) => (

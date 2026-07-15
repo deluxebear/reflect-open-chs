@@ -9,6 +9,13 @@
     "searchPlaceholder": "Search anything...",
     "pinned": "Pinned notes"
   },
+  "mobileTabs": {
+    "aria": "Sections",
+    "daily": "Daily",
+    "all": "All",
+    "tasks": "Tasks",
+    "chat": "Chat"
+  },
   "shortcuts": {
     "title": "Keyboard shortcuts",
     "app": "App",

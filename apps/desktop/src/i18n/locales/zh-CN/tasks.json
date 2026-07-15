@@ -37,5 +37,18 @@
   "archiveAria": "归档 {{count}}",
   "emptyTask": "空任务",
   "completeAria": "完成：{{label}}",
-  "reopenAria": "重新打开：{{label}}"
+  "reopenAria": "重新打开：{{label}}",
+  "addATask": "添加任务",
+  "newTask": "新建任务",
+  "loadingAria": "正在加载任务",
+  "archiveCompletedAria": "归档 {{count}} 个已完成",
+  "mobileFilters": {
+    "pinned": "置顶笔记",
+    "current": "当前",
+    "overdue": "已过期",
+    "upcoming": "即将到期",
+    "other": "其他笔记",
+    "archived": "显示已归档"
+  },
+  "pinnedPrefix": "置顶："
 }

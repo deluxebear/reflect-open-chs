@@ -29,7 +29,16 @@
   },
   "events": {
     "title": "日程",
-    "addToDaily": "添加到日记"
+    "addToDaily": "添加到日记",
+    "addEvent": "添加日程",
+    "meetingName": "会议名称",
+    "attendees": "参会人",
+    "addAttendee": "添加参会人",
+    "addAttendeeNamed": "添加“{{title}}”",
+    "removeAttendee": "移除 {{name}}",
+    "contact": "联系人",
+    "createBacklink": "创建反向链接笔记",
+    "addToDailyNote": "添加到日记"
   },
   "similar": {
     "title": "相似笔记"

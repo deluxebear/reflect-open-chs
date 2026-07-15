@@ -1,5 +1,6 @@
 import { Fragment, type MouseEvent, type ReactElement, type ReactNode } from 'react'
 import { CalendarDays, FileText, History, Paperclip, Search } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { isTagName, isToolPending, type AssistantPart, type NoteHitSummary } from '@reflect/core'
 import { Marker, MarkerContent, MarkerIcon } from '@/components/ui/marker'
 import { Spinner } from '@/components/ui/spinner'
@@ -9,11 +10,6 @@ import { useRouter } from '@/routing/router'
 
 interface ChatToolChipProps {
   part: Extract<AssistantPart, { kind: 'tool' }>
-}
-
-/** ` · 3 notes` — the settled count suffix of a listing chip. */
-function countSuffix(count: number, noun: string): string {
-  return ` · ${count} ${noun}${count === 1 ? '' : 's'}`
 }
 
 /** An asset chip labels entries by filename — the path adds only noise. */
@@ -74,6 +70,7 @@ function NoteLinks({ notes, onOpen }: NoteLinksProps): ReactElement | null {
  * UI that knows tool names — new tools extend `tools.ts` and this switch.
  */
 export function ChatToolChip({ part }: ChatToolChipProps): ReactElement {
+  const { t } = useTranslation('chat')
   const { navigate } = useRouter()
   const navigateNoteLink = useNoteLinkNavigation()
   const openNote = (path: string, event: MouseEvent<HTMLButtonElement>): void => {
@@ -81,13 +78,15 @@ export function ChatToolChip({ part }: ChatToolChipProps): ReactElement {
   }
   const pending = isToolPending(part)
   const call = part.call
+  const notesSuffix = (count: number): string => t('tools.countNotes', { count })
+  const daysSuffix = (count: number): string => t('tools.countDays', { count })
 
   if (call.tool === 'search') {
     const result = part.result?.tool === 'search' ? part.result : null
     return (
       <ChipFrame pending={pending} icon={<Search aria-hidden className="size-3.5" />}>
-        Searched “{call.query}”
-        {result !== null ? countSuffix(result.hits.length, 'note') : ''}
+        {t('tools.searched', { query: call.query })}
+        {result !== null ? notesSuffix(result.hits.length) : ''}
         {result !== null ? <NoteLinks notes={result.hits} onOpen={openNote} /> : null}
       </ChipFrame>
     )
@@ -104,16 +103,22 @@ export function ChatToolChip({ part }: ChatToolChipProps): ReactElement {
         >
           #{call.tag}
         </button>
-      ) : (
-        (call.tag !== null ? `#${call.tag}` : 'recent')
-      )
+      ) : call.tag !== null ? (
+        `#${call.tag}`
+      ) : null
     return (
       <ChipFrame pending={pending} icon={<History aria-hidden className="size-3.5" />}>
-        Listed {tagLabel} notes
+        {tagLabel === null ? (
+          t('tools.listedRecent')
+        ) : (
+          <>
+            {t('tools.listed')} {tagLabel} {t('tools.listedNotes')}
+          </>
+        )}
         {result !== null
           ? result.error !== null
             ? ` — ${result.error}`
-            : countSuffix(result.notes.length, 'note')
+            : notesSuffix(result.notes.length)
           : ''}
         {result !== null && result.error === null ? (
           <NoteLinks notes={result.notes} onOpen={openNote} />
@@ -126,8 +131,8 @@ export function ChatToolChip({ part }: ChatToolChipProps): ReactElement {
     const result = part.result?.tool === 'dailies' ? part.result : null
     return (
       <ChipFrame pending={pending} icon={<CalendarDays aria-hidden className="size-3.5" />}>
-        Listed daily notes {call.start} – {call.end}
-        {result !== null ? countSuffix(result.days.length, 'day') : ''}
+        {t('tools.listedDailies', { start: call.start, end: call.end })}
+        {result !== null ? daysSuffix(result.days.length) : ''}
         {result !== null ? <NoteLinks notes={result.days} onOpen={openNote} /> : null}
       </ChipFrame>
     )
@@ -148,7 +153,7 @@ export function ChatToolChip({ part }: ChatToolChipProps): ReactElement {
     const assets = result?.assets ?? call.paths.map((path) => ({ path, error: null }))
     return (
       <ChipFrame pending={pending} icon={<Paperclip aria-hidden className="size-3.5" />}>
-        Read{' '}
+        {t('tools.read')}{' '}
         {assets.map((asset, index) => (
           <Fragment key={`${asset.path}-${index}`}>
             {index > 0 ? ', ' : ''}
@@ -176,7 +181,7 @@ export function ChatToolChip({ part }: ChatToolChipProps): ReactElement {
   const notes = result?.notes ?? call.paths.map((path) => ({ path, title: null, error: null }))
   return (
     <ChipFrame pending={pending} icon={<FileText aria-hidden className="size-3.5" />}>
-      Read{' '}
+      {t('tools.read')}{' '}
       {notes.map((note, index) => {
         const label = note.title ?? note.path
         return (

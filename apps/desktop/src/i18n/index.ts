@@ -10,12 +10,18 @@ import enSettings from './locales/en/settings.json'
 import enCommands from './locales/en/commands.json'
 import enContext from './locales/en/context.json'
 import enTasks from './locales/en/tasks.json'
+import enChat from './locales/en/chat.json'
+import enNotes from './locales/en/notes.json'
+import enEditor from './locales/en/editor.json'
 import zhCommon from './locales/zh-CN/common.json'
 import zhShell from './locales/zh-CN/shell.json'
 import zhSettings from './locales/zh-CN/settings.json'
 import zhCommands from './locales/zh-CN/commands.json'
 import zhContext from './locales/zh-CN/context.json'
 import zhTasks from './locales/zh-CN/tasks.json'
+import zhChat from './locales/zh-CN/chat.json'
+import zhNotes from './locales/zh-CN/notes.json'
+import zhEditor from './locales/zh-CN/editor.json'
 
 export const I18N_NAMESPACES = [
   'common',
@@ -24,6 +30,9 @@ export const I18N_NAMESPACES = [
   'commands',
   'context',
   'tasks',
+  'chat',
+  'notes',
+  'editor',
 ] as const
 
 const resources = {
@@ -34,6 +43,9 @@ const resources = {
     commands: enCommands,
     context: enContext,
     tasks: enTasks,
+    chat: enChat,
+    notes: enNotes,
+    editor: enEditor,
   },
   'zh-CN': {
     common: zhCommon,
@@ -42,6 +54,9 @@ const resources = {
     commands: zhCommands,
     context: zhContext,
     tasks: zhTasks,
+    chat: zhChat,
+    notes: zhNotes,
+    editor: zhEditor,
   },
 } as const
 

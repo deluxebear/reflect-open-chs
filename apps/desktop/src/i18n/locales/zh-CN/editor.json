@@ -1,0 +1,13 @@
+{
+  "ai": {
+    "retry": "重试",
+    "retryOtherModel": "用其他模型重试",
+    "insertBelow": "插入到下方",
+    "replaceSelection": "替换选中内容",
+    "addProvider": "在设置中添加 AI 服务商…",
+    "addProviderFail": "请先在设置中添加 AI 服务商，才能使用 AI 提示词。",
+    "privateNote": "此笔记已标记为私密，其内容绝不会发送给 AI 服务商。",
+    "noApiKey": "未找到此服务商的 API 密钥 — 请在设置 → AI 服务商中重新添加。",
+    "runAsPrompt": "作为提示词运行"
+  }
+}

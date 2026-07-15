@@ -159,7 +159,23 @@
   },
   "aiProviders": {
     "empty": "No AI providers configured. Add a provider API key to use AI features — keys are stored in your OS keychain and calls go directly to the provider.",
-    "add": "Add provider"
+    "add": "Add provider",
+    "dialog": {
+      "title": "Add AI provider",
+      "description": "The API key is stored in your OS keychain, never in your graph.",
+      "provider": "Provider",
+      "providerAria": "Provider",
+      "defaultModel": "Default model",
+      "defaultModelAria": "Default model",
+      "modelSearchPlaceholder": "Search or type a model name…",
+      "modelUseTyped": "Press Enter to use “{{value}}”",
+      "apiKey": "API key",
+      "apiKeyRequired": "Enter an API key.",
+      "useAsDefault": "Use as the default provider",
+      "unverified": "Couldn't reach {{provider}} to verify the key. Submit again to save it unverified.",
+      "saveAnyway": "Save anyway",
+      "addProvider": "Add provider"
+    }
   },
   "aiPrompts": {
     "empty": "No saved prompts. Select text in a note and press ⌘⇧J to run the built-in prompts; prompts you save here appear after them.",
@@ -171,7 +187,25 @@
     "dialogTitle": "Import Reflect V1 export",
     "zipFilter": "Zip archives",
     "importZip": "Import zip...",
-    "importing": "Importing..."
+    "importing": "Importing...",
+    "runningTitle": "Importing from Reflect V1",
+    "doneTitle": "Import complete",
+    "failedTitle": "Import failed",
+    "done": "Done",
+    "cancelling": "Cancelling…",
+    "reading": "Reading the export…",
+    "downloading": "Downloading attachments… {{done}} of {{total}}",
+    "addingNotes": "Adding notes… {{done}} of {{total}}",
+    "filesImported_one": "{{count}} file imported",
+    "filesImported_other": "{{count}} files imported",
+    "dailiesMerged_one": "{{count}} daily note merged",
+    "dailiesMerged_other": "{{count}} daily notes merged",
+    "renamed": "{{count}} renamed to avoid a name clash",
+    "skipped": "{{count}} already present",
+    "attachmentsDownloaded_one": "{{count}} attachment downloaded",
+    "attachmentsDownloaded_other": "{{count}} attachments downloaded",
+    "failedAssets_one": " {{count}} attachment couldn't be downloaded and still links to Reflect V1.",
+    "failedAssets_other": " {{count}} attachments couldn't be downloaded and still link to Reflect V1."
   },
   "about": {
     "productName": "Reflect Open",

@@ -159,7 +159,23 @@
   },
   "aiProviders": {
     "empty": "尚未配置 AI 服务商。添加服务商 API 密钥即可使用 AI 功能 — 密钥保存在系统钥匙串中，请求直达服务商。",
-    "add": "添加服务商"
+    "add": "添加服务商",
+    "dialog": {
+      "title": "添加 AI 服务商",
+      "description": "API 密钥保存在系统钥匙串中，不会写入你的笔记图。",
+      "provider": "服务商",
+      "providerAria": "服务商",
+      "defaultModel": "默认模型",
+      "defaultModelAria": "默认模型",
+      "modelSearchPlaceholder": "搜索或输入模型名称…",
+      "modelUseTyped": "按 Enter 使用“{{value}}”",
+      "apiKey": "API 密钥",
+      "apiKeyRequired": "请输入 API 密钥。",
+      "useAsDefault": "设为默认服务商",
+      "unverified": "无法连接 {{provider}} 以验证密钥。再次提交将在未验证状态下保存。",
+      "saveAnyway": "仍然保存",
+      "addProvider": "添加服务商"
+    }
   },
   "aiPrompts": {
     "empty": "暂无已保存提示词。在笔记中选中文字并按 ⌘⇧J 可运行内置提示词；此处保存的提示词会出现在它们之后。",
@@ -171,7 +187,25 @@
     "dialogTitle": "导入 Reflect V1 导出",
     "zipFilter": "Zip 压缩包",
     "importZip": "导入 zip…",
-    "importing": "正在导入…"
+    "importing": "正在导入…",
+    "runningTitle": "正在从 Reflect V1 导入",
+    "doneTitle": "导入完成",
+    "failedTitle": "导入失败",
+    "done": "完成",
+    "cancelling": "正在取消…",
+    "reading": "正在读取导出…",
+    "downloading": "正在下载附件… {{done}} / {{total}}",
+    "addingNotes": "正在添加笔记… {{done}} / {{total}}",
+    "filesImported_one": "已导入 {{count}} 个文件",
+    "filesImported_other": "已导入 {{count}} 个文件",
+    "dailiesMerged_one": "已合并 {{count}} 篇日记",
+    "dailiesMerged_other": "已合并 {{count}} 篇日记",
+    "renamed": "{{count}} 个因重名而重命名",
+    "skipped": "{{count}} 个已存在而跳过",
+    "attachmentsDownloaded_one": "已下载 {{count}} 个附件",
+    "attachmentsDownloaded_other": "已下载 {{count}} 个附件",
+    "failedAssets_one": " 有 {{count}} 个附件无法下载，仍链接到 Reflect V1。",
+    "failedAssets_other": " 有 {{count}} 个附件无法下载，仍链接到 Reflect V1。"
   },
   "about": {
     "productName": "Reflect Open",

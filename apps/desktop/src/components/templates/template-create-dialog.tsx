@@ -1,6 +1,7 @@
 import { useState, type ReactElement } from 'react'
 import { useForm } from 'react-hook-form'
 import { errorMessage } from '@reflect/core'
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -32,6 +33,8 @@ interface TemplateCreateForm {
 }
 
 export function TemplateCreateDialog({ context }: TemplateCreateDialogProps): ReactElement | null {
+  const { t } = useTranslation('notes')
+  const { t: tc } = useTranslation('common')
   const { createOpen, closeTemplateCreate } = useNoteTemplates()
   const { register, handleSubmit, formState } = useForm<TemplateCreateForm>({
     defaultValues: { name: '' },
@@ -68,9 +71,9 @@ export function TemplateCreateDialog({ context }: TemplateCreateDialogProps): Re
     >
       <DialogContent showCloseButton={false} className="max-w-sm">
         <DialogHeader>
-          <DialogTitle>New template</DialogTitle>
+          <DialogTitle>{t('templates.createTitle')}</DialogTitle>
           <DialogDescription>
-            A markdown file in your graph's <code>templates/</code> folder.
+            {t('templates.createDescription')}
           </DialogDescription>
         </DialogHeader>
         <form
@@ -81,11 +84,11 @@ export function TemplateCreateDialog({ context }: TemplateCreateDialogProps): Re
         >
           <Input
             autoFocus
-            placeholder="Template name"
+            placeholder={t('templates.namePlaceholder')}
             autoComplete="off"
             spellCheck={false}
             {...register('name', {
-              validate: (value) => value.trim().length > 0 || 'Enter a name.',
+              validate: (value) => value.trim().length > 0 || t('templates.nameRequired'),
             })}
           />
           {formState.errors.name ? (
@@ -98,10 +101,10 @@ export function TemplateCreateDialog({ context }: TemplateCreateDialogProps): Re
 
           <div className="flex justify-end gap-2">
             <Button type="button" variant="outline" size="sm" onClick={closeTemplateCreate}>
-              Cancel
+              {tc('cancel')}
             </Button>
             <Button type="submit" size="sm" disabled={formState.isSubmitting}>
-              Create
+              {t('templates.create')}
             </Button>
           </div>
         </form>

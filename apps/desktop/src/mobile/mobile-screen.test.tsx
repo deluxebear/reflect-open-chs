@@ -581,7 +581,7 @@ describe('MobileShell', () => {
     await user.click(view.getByRole('button', { name: 'Tasks' }))
     expect(view.getByRole('searchbox', { name: 'Search tasks' })).toBeTruthy()
     // The fake bridge's index is empty, so the tab lands on its empty state.
-    expect((await view.findByText('No tasks to show')).textContent).toBe('No tasks to show')
+    expect((await view.findByText('No tasks to show.')).textContent).toBe('No tasks to show.')
   })
 
   it('double-tapping Tasks selects the task search filter', async () => {

@@ -1,0 +1,58 @@
+{
+  "aria": "All notes",
+  "title": "Notes",
+  "newNote": "New note",
+  "trash": "Trash",
+  "trashCountAria": "Trash ({{count}})",
+  "filterByTagAria": "Filter by tag",
+  "filterAll": "All",
+  "filterCustom": "Custom",
+  "filterByTagCommand": "Filter by another tag",
+  "filterByTagPlaceholder": "Filter by any tag…",
+  "filterByTyped": "Filter by #{{tag}}",
+  "noMatchingTags": "No matching tags.",
+  "typeTagToFilter": "Type a tag to filter by.",
+  "invalidTagName": "Not a valid tag name.",
+  "columns": {
+    "subject": "Subject",
+    "snippet": "Snippet",
+    "tags": "Tags",
+    "updated": "Updated"
+  },
+  "empty": "No notes yet.",
+  "emptyTagged": "No notes tagged #{{tag}}.",
+  "trashTitle_one": "Trash {{count}} note?",
+  "trashTitle_other": "Trash {{count}} notes?",
+  "trashDescription_one": "It moves to your system Trash, where you can restore it.",
+  "trashDescription_other": "They move to your system Trash, where you can restore them.",
+  "backlinks": {
+    "aria": "Incoming backlinks",
+    "loadError": "Couldn’t load backlinks.",
+    "heading_one": "Incoming backlink ({{count}})",
+    "heading_other": "Incoming backlinks ({{count}})"
+  },
+  "templates": {
+    "insertTitle": "Insert template",
+    "insertDescription": "Choose a template to insert at the cursor",
+    "insertPlaceholder": "Insert template…",
+    "empty": "No templates",
+    "newTemplate": "New template",
+    "createTitle": "New template",
+    "createDescription": "A markdown file in your graph’s templates/ folder.",
+    "namePlaceholder": "Template name",
+    "nameRequired": "Enter a name.",
+    "create": "Create"
+  },
+  "conflict": {
+    "title": "This note was edited on two devices at once.",
+    "body": "Both versions are highlighted below. Choose what to keep — every version stays recoverable in the backup history.",
+    "keepNamed": "Keep “{{name}}”",
+    "keepOurs": "Keep this device’s version",
+    "keepTheirs": "Keep the other device’s",
+    "keepOtherVersions": "Keep the other versions",
+    "keepBoth": "Keep both",
+    "keepAll": "Keep all",
+    "resolveError": "Couldn’t resolve: {{error}}"
+  }
+}
+

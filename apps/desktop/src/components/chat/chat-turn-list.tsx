@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   MessageScroller,
   MessageScrollerButton,
@@ -15,12 +16,13 @@ import { ChatTurn } from './chat-turn'
  * scroller, which owns scroll anchoring while a response streams.
  */
 export function ChatTurnList(): ReactElement {
+  const { t } = useTranslation('chat')
   const { turns } = useChatSession()
 
   return (
     <MessageScrollerProvider autoScroll defaultScrollPosition="end">
       <MessageScroller className="min-h-0 flex-1">
-        <MessageScrollerViewport className="px-6" aria-label="Chat conversation">
+        <MessageScrollerViewport className="px-6" aria-label={t('conversationAria')}>
           {turns.length > 0 ? (
             <div className="mx-auto w-full max-w-2xl">
               <MessageScrollerContent className="gap-6 py-8">

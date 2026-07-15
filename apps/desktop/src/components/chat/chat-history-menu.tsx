@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { formatDistanceToNow } from 'date-fns'
 import { hasBridge, listChatConversations } from '@reflect/core'
 import { Check, History, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -10,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { dateFnsLocaleForLanguage } from '@/i18n/date-fns-locale'
 import { CHAT_QUERY_SCOPE } from '@/lib/query-client'
 import { useChatSession } from '@/providers/chat-provider'
 import { useGraph } from '@/providers/graph-provider'
@@ -21,6 +23,8 @@ import { useGraph } from '@/providers/graph-provider'
  * save and delete, so the list updates while a new conversation streams.
  */
 export function ChatHistoryMenu(): ReactElement | null {
+  const { t, i18n } = useTranslation('chat')
+  const dateLocale = dateFnsLocaleForLanguage(i18n.language)
   const { graph, indexGeneration } = useGraph()
   const { activeConversationId, openConversation, deleteConversation } = useChatSession()
 
@@ -40,14 +44,20 @@ export function ChatHistoryMenu(): ReactElement | null {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon-sm" aria-label="Chat history">
+        <Button variant="ghost" size="icon-sm" aria-label={t('historyAria')}>
           <History aria-hidden />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent aria-label="Chat history" side="top" align="end" sideOffset={6} className="w-72">
+      <DropdownMenuContent
+        aria-label={t('historyAria')}
+        side="top"
+        align="end"
+        sideOffset={6}
+        className="w-72"
+      >
         {conversations === undefined || conversations.length === 0 ? (
           <DropdownMenuItem disabled className="px-2 py-1.5 text-[13px] text-text-muted">
-            No past chats
+            {t('noPastChats')}
           </DropdownMenuItem>
         ) : (
           conversations.map((conversation) => {
@@ -64,14 +74,17 @@ export function ChatHistoryMenu(): ReactElement | null {
               >
                 <span className="min-w-0 flex-1 truncate">{conversation.title}</span>
                 <span className="shrink-0 text-xs text-text-muted">
-                  {formatDistanceToNow(conversation.updatedMs, { addSuffix: true })}
+                  {formatDistanceToNow(conversation.updatedMs, {
+                    addSuffix: true,
+                    locale: dateLocale,
+                  })}
                 </span>
                 {current ? (
                   <Check aria-hidden className="size-3.5 shrink-0 text-accent" />
                 ) : (
                   <button
                     type="button"
-                    aria-label={`Delete “${conversation.title}”`}
+                    aria-label={t('deleteChatAria', { title: conversation.title })}
                     onClick={(event) => {
                       event.stopPropagation()
                       void deleteConversation(conversation.id)

@@ -744,7 +744,7 @@ describe('MobileTasks', () => {
     const user = userEvent.setup()
     const view = renderScreen()
 
-    await view.findByText('No tasks to show')
+    await view.findByText('No tasks to show.')
     await user.click(view.getByRole('button', { name: 'Add a task' }))
 
     await waitFor(() => expect(insertTask).toHaveBeenCalledWith('daily/2026-06-14.md', 1))

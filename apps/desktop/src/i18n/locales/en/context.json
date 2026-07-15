@@ -29,7 +29,16 @@
   },
   "events": {
     "title": "Events",
-    "addToDaily": "Add to daily note"
+    "addToDaily": "Add to daily note",
+    "addEvent": "Add event",
+    "meetingName": "Meeting name",
+    "attendees": "Attendees",
+    "addAttendee": "Add attendee",
+    "addAttendeeNamed": "Add “{{title}}”",
+    "removeAttendee": "Remove {{name}}",
+    "contact": "Contact",
+    "createBacklink": "Create backlinked note",
+    "addToDailyNote": "Add to daily note"
   },
   "similar": {
     "title": "Similar notes"
