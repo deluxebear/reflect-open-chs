@@ -2,7 +2,7 @@ import type { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ShortcutList } from '@/components/shortcut-list'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { appShortcuts, EDITOR_SHORTCUTS } from '@/lib/shortcuts'
+import { appShortcuts, editorShortcuts } from '@/lib/shortcuts'
 import { useShortcuts } from '@/providers/shortcuts-provider'
 
 /**
@@ -14,8 +14,9 @@ export function ShortcutsDialog(): ReactElement {
   const { open, closeShortcuts } = useShortcuts()
   const { t, i18n } = useTranslation('shell')
   // Rebuild when language changes so descriptions track the active catalog.
-  const shortcuts = appShortcuts()
   void i18n.language
+  const shortcuts = appShortcuts()
+  const editor = editorShortcuts()
 
   return (
     <Dialog
@@ -39,7 +40,7 @@ export function ShortcutsDialog(): ReactElement {
             <ShortcutList heading={t('shortcuts.app')} shortcuts={shortcuts} />
             <ShortcutList
               heading={t('shortcuts.editor')}
-              shortcuts={EDITOR_SHORTCUTS}
+              shortcuts={editor}
               listClassName="lg:columns-2 xl:columns-3 lg:gap-8"
             />
           </div>
