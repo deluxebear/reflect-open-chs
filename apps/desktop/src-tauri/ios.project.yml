@@ -2,7 +2,8 @@ name: reflect-open
 options:
   bundleIdPrefix: app.reflect
   deploymentTarget:
-    iOS: 14.0
+    # Xcode 27 / current Simulator SDKs require 15.0+ (14.0 is no longer valid).
+    iOS: 15.0
 fileGroups: [../../src]
 configs:
   debug: debug
@@ -185,7 +186,25 @@ targets:
       - sdk: UIKit.framework
       - sdk: WebKit.framework
     preBuildScripts:
-      - script: CI=true pnpm tauri ios xcode-script -v --platform ${PLATFORM_DISPLAY_NAME:?} --sdk-root ${SDKROOT:?} --framework-search-paths "${FRAMEWORK_SEARCH_PATHS:?}" --header-search-paths "${HEADER_SEARCH_PATHS:?}" --gcc-preprocessor-definitions "${GCC_PREPROCESSOR_DEFINITIONS:-}" --configuration ${CONFIGURATION:?} ${FORCE_COLOR} ${ARCHS:?}
+      # PATH must include Homebrew + rustup (Xcode's shell has neither) and the
+      # package `scripts/swift` shim (fixes Xcode 27 SPM macOS-sysroot mixup).
+      - script: |
+          set -euo pipefail
+          # Capture Xcode's SDKROOT before ios-build-env unsets it for cargo/swift-rs.
+          _xcode_sdkroot="${SDKROOT:?}"
+          # SRCROOT is …/src-tauri/gen/apple → package root is ../../../
+          _pkg="$(cd "${SRCROOT}/../../.." && pwd)"
+          # shellcheck source=/dev/null
+          source "${_pkg}/scripts/ios-build-env.sh"
+          export CI=true
+          pnpm tauri ios xcode-script -v \
+            --platform "${PLATFORM_DISPLAY_NAME:?}" \
+            --sdk-root "${_xcode_sdkroot}" \
+            --framework-search-paths "${FRAMEWORK_SEARCH_PATHS:?}" \
+            --header-search-paths "${HEADER_SEARCH_PATHS:?}" \
+            --gcc-preprocessor-definitions "${GCC_PREPROCESSOR_DEFINITIONS:-}" \
+            --configuration "${CONFIGURATION:?}" \
+            ${FORCE_COLOR:-} ${ARCHS:?}
         name: Build Rust Code
         basedOnDependencyAnalysis: false
         outputFiles:
