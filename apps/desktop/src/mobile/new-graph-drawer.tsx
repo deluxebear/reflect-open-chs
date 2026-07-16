@@ -1,4 +1,5 @@
 import { useId, useState, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { errorMessage } from '@reflect/core'
 import { Button } from '@/components/ui/button'
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer'
@@ -33,6 +34,7 @@ export function NewGraphDrawer({
   existingRoots,
   onCreate,
 }: NewGraphDrawerProps): ReactElement {
+  const { t } = useTranslation('mobile')
   const nameId = useId()
   // The usual first graph name pre-fills only a fresh container — next to an
   // existing list it would likely collide and paint the sheet invalid.
@@ -40,7 +42,7 @@ export function NewGraphDrawer({
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const name = typedName ?? (existingRoots.length > 0 ? '' : 'Notes')
+  const name = typedName ?? (existingRoots.length > 0 ? '' : t('newGraph.defaultName'))
   const cleanName = cleanGraphName(name)
   const nameTaken = cleanName !== null && isGraphNameTaken(cleanName, existingRoots)
   const canCreate = cleanName !== null && !nameTaken && !busy
@@ -70,17 +72,17 @@ export function NewGraphDrawer({
 
   return (
     <Drawer open={open} onOpenChange={handleOpenChange}>
-      <DrawerContent aria-label="New iCloud graph">
-        <DrawerTitle>New iCloud graph</DrawerTitle>
+      <DrawerContent aria-label={t('newGraph.aria')}>
+        <DrawerTitle>{t('newGraph.title')}</DrawerTitle>
         <div className="flex flex-col gap-3 pt-3">
           <div className="flex flex-col gap-1.5">
             <label htmlFor={nameId} className="text-xs font-medium text-text-secondary">
-              Name
+              {t('newGraph.name')}
             </label>
             <Input
               id={nameId}
               value={name}
-              placeholder={existingRoots.length > 0 ? 'New name' : undefined}
+              placeholder={existingRoots.length > 0 ? t('newGraph.namePlaceholder') : undefined}
               enterKeyHint="go"
               onChange={(event) => setTypedName(event.target.value)}
               onKeyDown={(event) => {
@@ -93,12 +95,12 @@ export function NewGraphDrawer({
             />
           </div>
           {nameTaken ? (
-            <p className="text-xs text-destructive">That name already exists in iCloud Drive.</p>
+            <p className="text-xs text-destructive">{t('newGraph.nameTaken')}</p>
           ) : null}
           {error !== null ? <p className="text-xs text-destructive">{error}</p> : null}
           <Button type="button" disabled={!canCreate} onClick={create}>
             {busy ? <Spinner /> : null}
-            {busy ? 'Setting up…' : 'Create'}
+            {busy ? t('newGraph.settingUp') : t('newGraph.create')}
           </Button>
         </div>
       </DrawerContent>

@@ -1,4 +1,5 @@
 import { type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Check } from 'lucide-react'
 import { foldTag, type NoteTagFacet } from '@reflect/core'
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer'
@@ -27,13 +28,15 @@ export function TagFilterDrawer({
   selected,
   onToggle,
 }: TagFilterDrawerProps): ReactElement {
+  const { t } = useTranslation('mobile')
+
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent>
-        <DrawerTitle>Tags</DrawerTitle>
+        <DrawerTitle>{t('filters.tags')}</DrawerTitle>
         <div className="min-h-0 flex-1 overflow-y-auto">
           {facets.length === 0 && (
-            <p className="py-6 text-center text-sm text-text-muted">No tags yet</p>
+            <p className="py-6 text-center text-sm text-text-muted">{t('filters.noTagsYet')}</p>
           )}
           {facets.map((facet) => {
             const key = foldTag(facet.tag)

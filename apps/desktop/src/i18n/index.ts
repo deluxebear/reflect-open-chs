@@ -13,6 +13,7 @@ import enTasks from './locales/en/tasks.json'
 import enChat from './locales/en/chat.json'
 import enNotes from './locales/en/notes.json'
 import enEditor from './locales/en/editor.json'
+import enMobile from './locales/en/mobile.json'
 import zhCommon from './locales/zh-CN/common.json'
 import zhShell from './locales/zh-CN/shell.json'
 import zhSettings from './locales/zh-CN/settings.json'
@@ -22,6 +23,7 @@ import zhTasks from './locales/zh-CN/tasks.json'
 import zhChat from './locales/zh-CN/chat.json'
 import zhNotes from './locales/zh-CN/notes.json'
 import zhEditor from './locales/zh-CN/editor.json'
+import zhMobile from './locales/zh-CN/mobile.json'
 
 export const I18N_NAMESPACES = [
   'common',
@@ -33,6 +35,7 @@ export const I18N_NAMESPACES = [
   'chat',
   'notes',
   'editor',
+  'mobile',
 ] as const
 
 const resources = {
@@ -46,6 +49,7 @@ const resources = {
     chat: enChat,
     notes: enNotes,
     editor: enEditor,
+    mobile: enMobile,
   },
   'zh-CN': {
     common: zhCommon,
@@ -57,6 +61,7 @@ const resources = {
     chat: zhChat,
     notes: zhNotes,
     editor: zhEditor,
+    mobile: zhMobile,
   },
 } as const
 

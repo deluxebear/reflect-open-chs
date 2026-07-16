@@ -1,4 +1,5 @@
 import type { BackupState } from '@/lib/backup-controller'
+import { t } from '@/i18n'
 
 /**
  * The plain-language sync status mobile shows (Plan 19, step 10). The phone
@@ -38,23 +39,23 @@ export function mobileSyncStatus(
   }
   const status = backup.status
   if (status.state === 'syncing') {
-    return { label: 'Syncing', tone: 'active', detail: null }
+    return { label: t('mobile:sync.syncing'), tone: 'active', detail: null }
   }
   if (conflictCount > 0) {
     return {
-      label: 'Needs review',
+      label: t('mobile:sync.needsReview'),
       tone: 'attention',
       detail:
         conflictCount === 1
-          ? 'A note was edited on two devices at once — open it to choose what to keep.'
-          : `${conflictCount} notes were edited on two devices at once — open them to choose what to keep.`,
+          ? t('mobile:sync.conflictOne')
+          : t('mobile:sync.conflictMany', { count: conflictCount }),
     }
   }
   if (status.state === 'error') {
-    return { label: 'Needs attention', tone: 'attention', detail: status.message }
+    return { label: t('mobile:sync.needsAttention'), tone: 'attention', detail: status.message }
   }
   if (status.state === 'offline') {
-    return { label: 'Offline', tone: 'attention', detail: status.message }
+    return { label: t('mobile:sync.offline'), tone: 'attention', detail: status.message }
   }
-  return { label: 'Backed up', tone: 'ok', detail: null }
+  return { label: t('mobile:sync.backedUp'), tone: 'ok', detail: null }
 }

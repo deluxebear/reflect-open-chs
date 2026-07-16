@@ -1,4 +1,5 @@
 import { useDeferredValue, useState, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { hasBridge, parseSearchQuery, searchWithFilters } from '@reflect/core'
 import { Button } from '@/components/ui/button'
@@ -32,6 +33,7 @@ export function NotePickerDrawer({
   current,
   onPick,
 }: NotePickerDrawerProps): ReactElement {
+  const { t } = useTranslation('mobile')
   const { graph } = useGraph()
   const [query, setQuery] = useState('')
   const deferredQuery = useDeferredValue(query)
@@ -64,14 +66,14 @@ export function NotePickerDrawer({
       <DrawerContent>
         <DrawerTitle>{title}</DrawerTitle>
         <SearchInput
-          placeholder="Find a note…"
-          aria-label="Find a note"
+          placeholder={t('filters.findNote')}
+          aria-label={t('filters.findNoteAria')}
           value={query}
           onValueChange={setQuery}
         />
         <div className="min-h-0 flex-1 overflow-y-auto">
           {hits !== undefined && hits.length === 0 && (
-            <p className="py-6 text-center text-sm text-text-muted">No matches</p>
+            <p className="py-6 text-center text-sm text-text-muted">{t('filters.noMatches')}</p>
           )}
           {(hits ?? []).map((hit) => (
             <button
@@ -86,7 +88,7 @@ export function NotePickerDrawer({
         </div>
         {current !== null && (
           <Button variant="ghost" onClick={() => pick(null)}>
-            Clear filter
+            {t('filters.clearFilter')}
           </Button>
         )}
       </DrawerContent>

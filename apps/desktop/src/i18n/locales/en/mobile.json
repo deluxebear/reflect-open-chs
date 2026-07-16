@@ -1,0 +1,235 @@
+{
+  "errorBoundary": {
+    "title": "Something broke"
+  },
+  "settings": {
+    "title": "Settings",
+    "graph": "Graph",
+    "appearance": "Appearance",
+    "editor": "Editor",
+    "ai": "AI",
+    "aiFooter": "Keys stay in this device’s keychain and are never synced.",
+    "backup": "Backup",
+    "backupFooterConnect": "Sync notes with Reflect on your other devices.",
+    "about": "About",
+    "theme": "Theme",
+    "textSize": "Text size",
+    "language": "Language",
+    "startWithBullet": "Start with a bullet",
+    "bulletAfterHeading": "Bullet after a heading",
+    "addAiProvider": "Add AI provider",
+    "github": "GitHub",
+    "status": "Status",
+    "connectGithub": "Connect GitHub",
+    "disconnectGithub": "Disconnect GitHub",
+    "notes": "Notes",
+    "version": "Version",
+    "defaultSuffix": " · Default",
+    "thisDevice": "This device",
+    "icloudDrive": "iCloud Drive",
+    "themeSystem": "System",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "sizeSmall": "Small",
+    "sizeMedium": "Medium",
+    "sizeLarge": "Large"
+  },
+  "graphs": {
+    "title": "Graphs",
+    "icloudHeader": "iCloud Drive",
+    "icloudUnavailable": "iCloud Drive isn’t available on this device.",
+    "icloudSyncs": "Syncs with Reflect on your other devices.",
+    "lookingForNotes": "Looking for your notes…",
+    "newGraph": "New graph",
+    "localFooter": "Notes stay on this device. Sync with GitHub from Settings.",
+    "thisDevice": "This device"
+  },
+  "newGraph": {
+    "aria": "New iCloud graph",
+    "title": "New iCloud graph",
+    "name": "Name",
+    "namePlaceholder": "New name",
+    "defaultName": "Notes",
+    "nameTaken": "That name already exists in iCloud Drive.",
+    "create": "Create",
+    "settingUp": "Setting up…"
+  },
+  "onboarding": {
+    "title": "Start with iCloud sync",
+    "subtitle": "Keep your notes up to date across iPhone, iPad, and Mac with iCloud Drive.",
+    "localOnly": "Or, use this device only",
+    "settingUp": "Setting up…",
+    "icloudUnavailableDesc": "Turn on iCloud Drive to keep your notes synced between devices.",
+    "icloudSignIn": "Sign in to iCloud on this device, then reopen Reflect.",
+    "icloudSyncTitle": "iCloud sync",
+    "recommended": "Recommended",
+    "foundNotes": "We found notes in iCloud Drive. Continue with one, or start fresh.",
+    "recommendedDesc": "Recommended for most people. Your notes sync through iCloud Drive and stay available offline.",
+    "checkingIcloud": "Checking iCloud Drive…",
+    "continueWith": "Continue with {{name}}",
+    "startFresh": "Start fresh",
+    "graphName": "Graph name",
+    "personalNotesPlaceholder": "Personal notes",
+    "nameTaken": "That name already exists in iCloud Drive.",
+    "setupGraph": "Setup graph",
+    "defaultName": "Notes"
+  },
+  "note": {
+    "newNote": "New note",
+    "editNote": "Edit note"
+  },
+  "allNotes": {
+    "searchPlaceholder": "Search anything…",
+    "searchAria": "Search notes",
+    "loadingAria": "Loading notes",
+    "back": "Back"
+  },
+  "filters": {
+    "aria": "Filters",
+    "reset": "Reset",
+    "pinned": "Pinned",
+    "tags": "Tags",
+    "linkedTo": "Linked to",
+    "linkedBy": "Linked by",
+    "updated": "Updated",
+    "dailyNotes": "Daily notes",
+    "noTagsYet": "No tags yet",
+    "findNote": "Find a note…",
+    "findNoteAria": "Find a note",
+    "noMatches": "No matches",
+    "clearFilter": "Clear filter",
+    "updatedFrom": "Updated from",
+    "updatedTo": "Updated to",
+    "to": "to",
+    "applyRange": "Apply range",
+    "clear": "Clear",
+    "presetToday": "Today",
+    "presetWeek": "Last 7 days",
+    "presetMonth": "Last 30 days",
+    "since": "Since {{date}}",
+    "until": "Until {{date}}"
+  },
+  "formatting": {
+    "aria": "Formatting",
+    "slash": "Slash command",
+    "bulletList": "Bullet list",
+    "cycleChecklist": "Cycle checklist and task",
+    "linkNote": "Link note",
+    "tag": "Tag",
+    "outdent": "Outdent",
+    "indent": "Indent",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "hideKeyboard": "Hide keyboard"
+  },
+  "chat": {
+    "placeholder": "Ask about your notes…",
+    "messageAria": "Chat message",
+    "attachPhoto": "Attach a photo",
+    "model": "Model",
+    "chooseModel": "Choose a model",
+    "stop": "Stop",
+    "send": "Send",
+    "removeAttachment": "Remove {{name}}"
+  },
+  "taskSheet": {
+    "scheduleAria": "Schedule",
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "nextWeek": "Next week",
+    "pickDate": "Pick date",
+    "clear": "Clear",
+    "complete": "Complete",
+    "reopen": "Reopen",
+    "convertToBullet": "Convert to bullet",
+    "openNote": "Open note",
+    "delete": "Delete",
+    "pickDateAria": "Pick a date",
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month",
+    "emptyTask": "Empty task"
+  },
+  "audio": {
+    "record": "Record audio memo",
+    "stop": "Stop recording",
+    "showError": "Show audio memo error",
+    "waitingMic": "Waiting for the microphone…",
+    "stopAria": "Stop recording",
+    "discard": "Discard",
+    "discardConfirm": "Tap again to discard",
+    "discardAria": "Discard recording",
+    "confirmDiscardAria": "Confirm discard recording",
+    "micDenied": "Microphone access was denied. Allow it for Reflect in the Settings app."
+  },
+  "aiProvider": {
+    "addAria": "Add AI provider",
+    "addTitle": "Add AI provider",
+    "useAsDefault": "Use as the default provider",
+    "add": "Add provider",
+    "saveAnyway": "Save anyway",
+    "verifyFail": "Couldn’t reach {{provider}} to verify the key. Submit again to save it unverified.",
+    "manageAria": "Manage AI provider",
+    "defaultProvider": "Default provider",
+    "useAsDefaultAction": "Use as default",
+    "remove": "Remove provider"
+  },
+  "sync": {
+    "syncing": "Syncing",
+    "needsReview": "Needs review",
+    "conflictOne": "A note was edited on two devices at once — open it to choose what to keep.",
+    "conflictMany": "{{count}} notes were edited on two devices at once — open them to choose what to keep.",
+    "needsAttention": "Needs attention",
+    "offline": "Offline",
+    "backedUp": "Backed up"
+  },
+  "index": {
+    "preparing": "Preparing notes… {{done}} of {{total}}"
+  },
+  "audioDrawer": {
+    "aria": "Audio memo",
+    "title": "Audio memo",
+    "retry": "Retry",
+    "keySetup": "Audio memos are transcribed into your notes with your own OpenAI or Gemini API key. Add one in Settings to start recording.",
+    "openSettings": "Open Settings"
+  },
+  "chatHistory": {
+    "aria": "Chat history",
+    "title": "History",
+    "empty": "No past chats",
+    "deleteAria": "Delete “{{title}}”"
+  },
+  "chatModel": {
+    "aria": "Choose a model",
+    "title": "Model"
+  },
+  "calendar": {
+    "settings": "Settings",
+    "changeMonth": "Change month",
+    "today": "Today",
+    "prevYear": "Previous year",
+    "nextYear": "Next year"
+  },
+  "daily": {
+    "newNote": "New note"
+  },
+  "allNotesEmpty": {
+    "noNotesYet": "No notes yet",
+    "noMatchingTags": "No matching tags",
+    "matchingTagsAria": "Matching tags"
+  },
+  "backlinks": {
+    "aria": "Incoming backlinks",
+    "loadError": "Couldn’t load backlinks.",
+    "heading_one": "Incoming backlink ({{count}})",
+    "heading_other": "Incoming backlinks ({{count}})"
+  },
+  "search": {
+    "clear": "Clear search"
+  },
+  "screen": {
+    "back": "Back"
+  },
+  "taskSheetExtra": {
+    "editAria": "Edit task"
+  }
+}

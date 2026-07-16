@@ -1,4 +1,5 @@
 import { useState, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { X } from 'lucide-react'
 import { foldTag, type NoteTagFacet } from '@reflect/core'
 import { FilterChip } from './filter-chip'
@@ -26,9 +27,9 @@ interface FilterBarProps {
 }
 
 /** The Tags chip's label: the first selected tag's display casing, plus count. */
-function tagsLabel(selected: string[], facets: NoteTagFacet[]): string {
+function tagsLabel(selected: string[], facets: NoteTagFacet[], emptyLabel: string): string {
   if (selected.length === 0) {
-    return 'Tags'
+    return emptyLabel
   }
   const first = facets.find((facet) => foldTag(facet.tag) === selected[0])?.tag ?? selected[0]!
   return selected.length === 1 ? `#${first}` : `#${first} +${selected.length - 1}`
@@ -52,6 +53,7 @@ export function FilterBar({
   routeTag,
   onClearRouteTag,
 }: FilterBarProps): ReactElement {
+  const { t } = useTranslation('mobile')
   const [openDrawer, setOpenDrawer] = useState<OpenDrawer>(null)
   const active = hasActiveFilters(filters) || routeTag !== null
 
@@ -68,11 +70,11 @@ export function FilterBar({
 
   return (
     <>
-      <div className="flex gap-1.5 overflow-x-auto pb-1" role="toolbar" aria-label="Filters">
+      <div className="flex gap-1.5 overflow-x-auto pb-1" role="toolbar" aria-label={t('filters.aria')}>
         {active && (
           <FilterChip onClick={reset}>
             <X className="-ml-1 size-3.5" />
-            Reset
+            {t('filters.reset')}
           </FilterChip>
         )}
         {routeTag !== null && (
@@ -81,34 +83,38 @@ export function FilterBar({
           </FilterChip>
         )}
         <FilterChip active={filters.pinned} onClick={() => patch({ pinned: !filters.pinned })}>
-          Pinned
+          {t('filters.pinned')}
         </FilterChip>
         <FilterChip active={filters.tags.length > 0} hasMenu onClick={() => setOpenDrawer('tags')}>
-          {tagsLabel(filters.tags, facets)}
+          {tagsLabel(filters.tags, facets, t('filters.tags'))}
         </FilterChip>
         <FilterChip
           active={filters.linkedTo !== null}
           hasMenu
           onClick={() => setOpenDrawer('linkedTo')}
         >
-          <span className="max-w-40 truncate">{linkLabel('Linked to', filters.linkedTo)}</span>
+          <span className="max-w-40 truncate">
+            {linkLabel(t('filters.linkedTo'), filters.linkedTo)}
+          </span>
         </FilterChip>
         <FilterChip
           active={filters.linkedBy !== null}
           hasMenu
           onClick={() => setOpenDrawer('linkedBy')}
         >
-          <span className="max-w-40 truncate">{linkLabel('Linked by', filters.linkedBy)}</span>
+          <span className="max-w-40 truncate">
+            {linkLabel(t('filters.linkedBy'), filters.linkedBy)}
+          </span>
         </FilterChip>
         <FilterChip
           active={filters.updated !== null}
           hasMenu
           onClick={() => setOpenDrawer('updated')}
         >
-          {filters.updated?.label ?? 'Updated'}
+          {filters.updated?.label ?? t('filters.updated')}
         </FilterChip>
         <FilterChip active={filters.daily} onClick={() => patch({ daily: !filters.daily })}>
-          Daily notes
+          {t('filters.dailyNotes')}
         </FilterChip>
       </div>
 
@@ -128,14 +134,14 @@ export function FilterBar({
       <NotePickerDrawer
         open={openDrawer === 'linkedTo'}
         onOpenChange={(open) => setOpenDrawer(open ? 'linkedTo' : null)}
-        title="Linked to"
+        title={t('filters.linkedTo')}
         current={filters.linkedTo}
         onPick={(note) => patch({ linkedTo: note })}
       />
       <NotePickerDrawer
         open={openDrawer === 'linkedBy'}
         onOpenChange={(open) => setOpenDrawer(open ? 'linkedBy' : null)}
-        title="Linked by"
+        title={t('filters.linkedBy')}
         current={filters.linkedBy}
         onPick={(note) => patch({ linkedBy: note })}
       />

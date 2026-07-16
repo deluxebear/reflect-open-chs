@@ -1,4 +1,5 @@
 import { type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Circle, CircleCheck } from 'lucide-react'
 import type { OpenTask } from '@reflect/core'
 import { TaskText } from '@/components/tasks/task-text'
@@ -27,9 +28,10 @@ interface MobileTaskRowProps {
  * on touch.
  */
 export function MobileTaskRow({ task, showSource, onEdit }: MobileTaskRowProps): ReactElement {
+  const { t } = useTranslation('mobile')
   const { settings } = useSettings()
   const { toggle, isPending } = useTaskCheckboxToggle(task)
-  const label = task.text || 'Empty task'
+  const label = task.text || t('taskSheet.emptyTask')
   const edit = (): void => onEdit(task)
 
   return (

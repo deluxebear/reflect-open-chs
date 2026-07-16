@@ -1,4 +1,5 @@
 import { useMemo, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer'
 import { groupModelOptions } from '@/lib/chat-model-groups'
 import { SettingsGroup, SettingsSelectRow } from '@/mobile/settings-list'
@@ -16,6 +17,7 @@ interface ChatModelDrawerProps {
  * `selectModel` (the same `chatModelSelection` settings key) and closes.
  */
 export function ChatModelDrawer({ open, onOpenChange }: ChatModelDrawerProps): ReactElement {
+  const { t } = useTranslation('mobile')
   const { providers, modelOptions, activeModel, selectModel } = useChatSession()
   const groups = useMemo(
     () => groupModelOptions(modelOptions, providers),
@@ -24,8 +26,8 @@ export function ChatModelDrawer({ open, onOpenChange }: ChatModelDrawerProps): R
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent aria-label="Choose a model">
-        <DrawerTitle className="px-4 pt-1">Model</DrawerTitle>
+      <DrawerContent aria-label={t('chatModel.aria')}>
+        <DrawerTitle className="px-4 pt-1">{t('chatModel.title')}</DrawerTitle>
         <div className="flex max-h-[60dvh] flex-col gap-6 overflow-y-auto px-4 pb-8 pt-4">
           {groups.map((group) => (
             <SettingsGroup key={group.configId} header={group.label}>

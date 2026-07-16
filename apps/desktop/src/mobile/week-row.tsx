@@ -1,5 +1,7 @@
 import { memo, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { format } from 'date-fns'
+import { dateFnsLocaleForLanguage } from '@/i18n/date-fns-locale'
 import { addDaysIso, parseIsoDate } from '@/lib/dates'
 import { cn } from '@/lib/utils'
 import { hapticImpactLight } from '@/mobile/haptics'
@@ -29,6 +31,8 @@ function WeekRowComponent({
   todayDay,
   onSelect,
 }: WeekRowProps): ReactElement {
+  const { i18n } = useTranslation()
+  const dateLocale = dateFnsLocaleForLanguage(i18n.language)
   const days = Array.from({ length: 7 }, (_, index) => addDaysIso(weekStart, index))
   const selectedIndex = selectedDay ? days.indexOf(selectedDay) : -1
   return (
@@ -61,7 +65,7 @@ function WeekRowComponent({
           <button
             key={day}
             type="button"
-            aria-label={format(parseIsoDate(day), 'EEEE, MMMM do')}
+            aria-label={format(parseIsoDate(day), 'EEEE, MMMM do', { locale: dateLocale })}
             aria-current={selected ? 'date' : undefined}
             onClick={() => {
               hapticImpactLight()
@@ -70,7 +74,7 @@ function WeekRowComponent({
             className="relative flex flex-1 flex-col items-center gap-0.5 py-1"
           >
             <span className="text-[11px] font-medium text-text-muted">
-              {format(parseIsoDate(day), 'EEEEE')}
+              {format(parseIsoDate(day), 'EEEEE', { locale: dateLocale })}
             </span>
             <span
               className={cn(

@@ -1,4 +1,5 @@
 import { type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { isUntitledNotePath } from '@reflect/core'
 import { NotePane } from '@/components/note-pane'
 import { IncomingBacklinks } from '@/mobile/incoming-backlinks'
@@ -20,13 +21,14 @@ import { useRouter } from '@/routing/router'
  * lands on today instead.
  */
 export function MobileNote({ path }: { path: string }): ReactElement {
+  const { t } = useTranslation('mobile')
   const { back, canBack, navigate } = useRouter()
   const untitled = isUntitledNotePath(path)
 
   return (
     <div className="flex h-full w-screen flex-col" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
       <MobileScreenHeader
-        title={untitled ? 'New note' : 'Edit note'}
+        title={untitled ? t('note.newNote') : t('note.editNote')}
         onBack={() => (canBack ? back() : navigate({ kind: 'today' }))}
         trailing={
           <NoteActionsMenu

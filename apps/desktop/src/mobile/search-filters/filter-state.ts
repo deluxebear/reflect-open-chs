@@ -5,6 +5,7 @@ import {
   type FilteredSearchOptions,
   type ParsedSearchQuery,
 } from '@reflect/core'
+import { t } from '@/i18n'
 
 /**
  * The All tab's badge-filter model (Plan 19, V1 parity): AND-composed filters
@@ -184,11 +185,18 @@ function localDayStartMs(now: Date, days: number): number {
   return new Date(now.getFullYear(), now.getMonth(), now.getDate() + days).getTime()
 }
 
-/** Resolve a relative preset against `now` (injectable for tests). */
-export function updatedPresetFilter(preset: UpdatedPreset, now: Date = new Date()): UpdatedFilter {
+/**
+ * Resolve a relative preset against `now` (injectable for tests).
+ * Pass `label` from the UI (translated); defaults keep English for tests.
+ */
+export function updatedPresetFilter(
+  preset: UpdatedPreset,
+  now: Date = new Date(),
+  label?: string,
+): UpdatedFilter {
   const days = preset === 'today' ? 0 : preset === 'week' ? -6 : -29
-  const label = UPDATED_PRESETS.find((entry) => entry.preset === preset)!.label
-  return { label, afterMs: localDayStartMs(now, days), beforeMs: null }
+  const resolvedLabel = label ?? UPDATED_PRESETS.find((entry) => entry.preset === preset)!.label
+  return { label: resolvedLabel, afterMs: localDayStartMs(now, days), beforeMs: null }
 }
 
 /** Epoch ms of the local start of an ISO `YYYY-MM-DD` day, shifted by `days`. */
@@ -213,9 +221,9 @@ export function updatedRangeFilter(fromIso: string, toIso: string): UpdatedFilte
     from !== null && to !== null
       ? `${dayLabel(from)} – ${dayLabel(to)}`
       : from !== null
-        ? `Since ${dayLabel(from)}`
+        ? t('mobile:filters.since', { date: dayLabel(from) })
         : // The empty-both case returned above, so `to` is set here.
-          `Until ${dayLabel(to!)}`
+          t('mobile:filters.until', { date: dayLabel(to!) })
   return {
     label,
     afterMs: from === null ? null : isoDayStartMs(from),

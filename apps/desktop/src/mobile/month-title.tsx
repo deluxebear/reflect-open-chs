@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
+import { dateFnsLocaleForLanguage } from '@/i18n/date-fns-locale'
 import { monthLabel } from '@/lib/month-grid'
 import { cn } from '@/lib/utils'
 import { usePrefersReducedMotion } from '@/mobile/use-reduced-motion'
@@ -27,6 +29,8 @@ interface MonthTitleProps {
  * catching a mid-roll outgoing label.
  */
 export function MonthTitle({ month }: MonthTitleProps): ReactElement {
+  const { i18n } = useTranslation()
+  const dateLocale = dateFnsLocaleForLanguage(i18n.language)
   const reducedMotion = usePrefersReducedMotion()
   const [shown, setShown] = useState(month)
   const [outgoing, setOutgoing] = useState<OutgoingMonth | null>(null)
@@ -68,7 +72,7 @@ export function MonthTitle({ month }: MonthTitleProps): ReactElement {
           outgoing && (outgoing.direction === 'up' ? 'month-title-enter-up' : 'month-title-enter-down'),
         )}
       >
-        {monthLabel(shown)}
+        {monthLabel(shown, dateLocale)}
       </span>
       {outgoing ? (
         <span
@@ -83,7 +87,7 @@ export function MonthTitle({ month }: MonthTitleProps): ReactElement {
             outgoing.direction === 'up' ? 'month-title-exit-up' : 'month-title-exit-down',
           )}
         >
-          {monthLabel(outgoing.month)}
+          {monthLabel(outgoing.month, dateLocale)}
         </span>
       ) : null}
     </span>

@@ -1,12 +1,11 @@
 import { useId, useState, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Cloud, FolderOpen } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Spinner } from '@/components/ui/spinner'
 import { cleanGraphName, graphNameFromRoot, graphRootForName, isGraphNameTaken } from '@/lib/graph-names'
 import { OnboardingIcloudHeader } from '@/mobile/onboarding-icloud-header'
-
-const DEFAULT_ICLOUD_NOTES_NAME = 'Notes'
 
 interface OnboardingIcloudSectionProps {
   /** The container is still resolving — render the pending row, not the form. */
@@ -34,13 +33,15 @@ interface OnboardingIcloudSectionProps {
  */
 export function OnboardingIcloudSection(props: OnboardingIcloudSectionProps): ReactElement {
   const { pending, documentsRoot, graphs, busy, pendingChoice, onOpen, onCreate } = props
+  const { t } = useTranslation('mobile')
   const [typedName, setTypedName] = useState<string | null>(null)
   const nameId = useId()
 
   // Fresh iCloud setup still needs a user-editable graph name; keep the
   // friendly default, but only leave the field blank when creating alongside
-  // existing iCloud notes where "Notes" would usually collide.
-  const name = typedName ?? (graphs.length > 0 ? '' : DEFAULT_ICLOUD_NOTES_NAME)
+  // existing iCloud notes where the default would usually collide.
+  const defaultName = t('onboarding.defaultName')
+  const name = typedName ?? (graphs.length > 0 ? '' : defaultName)
   const cleanName = cleanGraphName(name)
   const nameTaken = cleanName !== null && isGraphNameTaken(cleanName, graphs)
 
@@ -52,9 +53,7 @@ export function OnboardingIcloudSection(props: OnboardingIcloudSectionProps): Re
   }
 
   const description =
-    graphs.length > 0
-      ? 'We found notes in iCloud Drive. Continue with one, or start fresh.'
-      : 'Recommended for most people. Your notes sync through iCloud Drive and stay available offline.'
+    graphs.length > 0 ? t('onboarding.foundNotes') : t('onboarding.recommendedDesc')
 
   return (
     <section className="flex flex-col gap-4 rounded-lg border border-primary/20 bg-surface p-4">
@@ -63,7 +62,7 @@ export function OnboardingIcloudSection(props: OnboardingIcloudSectionProps): Re
       {pending ? (
         <div className="flex items-center gap-2 text-xs text-text-muted">
           <Spinner />
-          Checking iCloud Drive…
+          {t('onboarding.checkingIcloud')}
         </div>
       ) : (
         <>
@@ -83,7 +82,9 @@ export function OnboardingIcloudSection(props: OnboardingIcloudSectionProps): Re
                     ) : (
                       <FolderOpen aria-hidden strokeWidth={1.75} />
                     )}
-                    <span className="truncate">Continue with {graphNameFromRoot(root, root)}</span>
+                    <span className="truncate">
+                      {t('onboarding.continueWith', { name: graphNameFromRoot(root, root) })}
+                    </span>
                   </Button>
                 </li>
               ))}
@@ -91,15 +92,15 @@ export function OnboardingIcloudSection(props: OnboardingIcloudSectionProps): Re
           ) : null}
 
           <div className="space-y-2">
-            {graphs.length > 0 ? <MobileDivider>Start fresh</MobileDivider> : null}
+            {graphs.length > 0 ? <MobileDivider>{t('onboarding.startFresh')}</MobileDivider> : null}
             <div className="flex flex-col gap-1.5">
               <label htmlFor={nameId} className="text-xs font-medium text-text-secondary">
-                Graph name
+                {t('onboarding.graphName')}
               </label>
               <Input
                 id={nameId}
                 value={name}
-                placeholder={graphs.length > 0 ? 'Personal notes' : undefined}
+                placeholder={graphs.length > 0 ? t('onboarding.personalNotesPlaceholder') : undefined}
                 enterKeyHint="go"
                 onChange={(event) => setTypedName(event.target.value)}
                 onKeyDown={(event) => {
@@ -112,9 +113,7 @@ export function OnboardingIcloudSection(props: OnboardingIcloudSectionProps): Re
               />
             </div>
             {nameTaken ? (
-              <p className="text-xs text-destructive">
-                That name already exists in iCloud Drive.
-              </p>
+              <p className="text-xs text-destructive">{t('onboarding.nameTaken')}</p>
             ) : null}
             <Button
               type="button"
@@ -127,7 +126,9 @@ export function OnboardingIcloudSection(props: OnboardingIcloudSectionProps): Re
               ) : (
                 <Cloud aria-hidden strokeWidth={1.75} />
               )}
-              {pendingChoice === 'icloud-create' ? 'Setting up…' : 'Setup graph'}
+              {pendingChoice === 'icloud-create'
+                ? t('onboarding.settingUp')
+                : t('onboarding.setupGraph')}
             </Button>
           </div>
         </>

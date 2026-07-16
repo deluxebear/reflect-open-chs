@@ -1,4 +1,5 @@
 import { useState, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { type WeekStartDay } from '@reflect/core'
 import { formatDayLabel } from '@/lib/dates'
@@ -28,6 +29,7 @@ function toWeekStartsOn(weekStartDay: WeekStartDay): 0 | 1 {
  * Reuses {@link buildMonthGrid}, so it shares the daily calendar's math.
  */
 export function TaskScheduleGrid({ today, selected, onPick }: TaskScheduleGridProps): ReactElement {
+  const { t } = useTranslation('mobile')
   const { settings } = useSettings()
   const weekStartsOn = toWeekStartsOn(settings.weekStartDay)
   // Open on the due date's month when there is one — that's the date being
@@ -36,13 +38,13 @@ export function TaskScheduleGrid({ today, selected, onPick }: TaskScheduleGridPr
   const grid = buildMonthGrid(month, weekStartsOn)
 
   return (
-    <div aria-label="Pick a date">
+    <div aria-label={t('taskSheet.pickDateAria')}>
       <header className="flex items-center justify-between px-1 pb-1">
         <div className="text-sm font-semibold text-text">{monthLabel(month)}</div>
         <nav className="flex items-center gap-1 text-text-muted">
           <button
             type="button"
-            aria-label="Previous month"
+            aria-label={t('taskSheet.prevMonth')}
             onClick={() => setMonth(addMonths(month, -1))}
             className="rounded-md p-2"
           >
@@ -50,7 +52,7 @@ export function TaskScheduleGrid({ today, selected, onPick }: TaskScheduleGridPr
           </button>
           <button
             type="button"
-            aria-label="Next month"
+            aria-label={t('taskSheet.nextMonth')}
             onClick={() => setMonth(addMonths(month, 1))}
             className="rounded-md p-2"
           >

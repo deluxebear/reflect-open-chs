@@ -1,4 +1,5 @@
 import { useState, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer'
@@ -37,6 +38,7 @@ export function MonthPickerDrawer({
   today,
   onPick,
 }: MonthPickerDrawerProps): ReactElement {
+  const { t } = useTranslation('mobile')
   const [year, setYear] = useState(() => yearOf(month))
   // Each open starts from the currently displayed month's year, not wherever
   // the previous visit browsed to. Adjust-on-render, mirroring MonthTitle.
@@ -55,14 +57,14 @@ export function MonthPickerDrawer({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent aria-label="Change month">
-        <DrawerTitle className="sr-only">Change month</DrawerTitle>
+      <DrawerContent aria-label={t('calendar.changeMonth')}>
+        <DrawerTitle className="sr-only">{t('calendar.changeMonth')}</DrawerTitle>
         <div className="flex items-center justify-between">
           <Button
             variant="ghost"
             size="icon"
             className="size-9"
-            aria-label="Previous year"
+            aria-label={t('calendar.prevYear')}
             onClick={() => setYear(year - 1)}
           >
             <ChevronLeft />
@@ -72,7 +74,7 @@ export function MonthPickerDrawer({
             variant="ghost"
             size="icon"
             className="size-9"
-            aria-label="Next year"
+            aria-label={t('calendar.nextYear')}
             onClick={() => setYear(year + 1)}
           >
             <ChevronRight />
