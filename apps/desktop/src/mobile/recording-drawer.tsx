@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Square, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer'
@@ -19,24 +20,23 @@ import { useRouter } from '@/routing/router'
  * starts until transcription has a key to run on.
  */
 export function RecordingDrawer(): ReactElement {
+  const { t } = useTranslation('mobile')
   const memo = useMobileAudioMemo()
 
   return (
     <Drawer open={memo.drawerOpen} onOpenChange={memo.onDrawerOpenChange}>
-      <DrawerContent aria-label="Audio memo">
-        <DrawerTitle className="sr-only">Audio memo</DrawerTitle>
+      <DrawerContent aria-label={t('audioDrawer.aria')}>
+        <DrawerTitle className="sr-only">{t('audioDrawer.title')}</DrawerTitle>
         {memo.error !== null ? (
           <div className="flex flex-col gap-3 px-2 pb-2">
             <p className="text-sm text-destructive">{memo.error}</p>
             <div className="flex gap-2">
               {memo.canRetry ? (
                 <Button variant="secondary" onClick={() => memo.retry()}>
-                  Retry
+                  {t('audioDrawer.retry')}
                 </Button>
               ) : null}
-              <Button variant="ghost" onClick={() => memo.discard()}>
-                Discard
-              </Button>
+              <DiscardButton onClick={() => memo.discard()} />
             </div>
           </div>
         ) : !memo.hasTranscriptionConfig ? (
@@ -56,27 +56,35 @@ interface LiveRecordingControlsProps {
 }
 
 function KeySetupControls({ memo }: LiveRecordingControlsProps): ReactElement {
+  const { t } = useTranslation('mobile')
   const { navigate } = useRouter()
 
   return (
     <div className="flex flex-col items-center gap-4 px-4 pb-2 text-center">
-      <p className="text-sm text-text-muted">
-        Audio memos are transcribed into your notes with your own OpenAI or Gemini API key. Add
-        one in Settings to start recording.
-      </p>
+      <p className="text-sm text-text-muted">{t('audioDrawer.keySetup')}</p>
       <Button
         onClick={() => {
           memo.onDrawerOpenChange(false)
           navigate({ kind: 'settings' })
         }}
       >
-        Open Settings
+        {t('audioDrawer.openSettings')}
       </Button>
     </div>
   )
 }
 
+function DiscardButton({ onClick }: { onClick: () => void }): ReactElement {
+  const { t } = useTranslation('mobile')
+  return (
+    <Button variant="ghost" onClick={onClick}>
+      {t('audio.discard')}
+    </Button>
+  )
+}
+
 function LiveRecordingControls({ memo }: LiveRecordingControlsProps): ReactElement {
+  const { t } = useTranslation('mobile')
   const [discardArmed, setDiscardArmed] = useState(false)
   const discardResetTimer = useRef<number | null>(null)
 
@@ -116,7 +124,7 @@ function LiveRecordingControls({ memo }: LiveRecordingControlsProps): ReactEleme
         {memo.phase === 'recording' ? (
           <RecordingLevelWaveform level={memo.level} />
         ) : (
-          <p className="text-sm text-text-muted">Waiting for the microphone…</p>
+          <p className="text-sm text-text-muted">{t('audio.waitingMic')}</p>
         )}
       </div>
       <span className="text-lg font-medium tabular-nums">{formatElapsed(memo.elapsedMs)}</span>
@@ -124,7 +132,7 @@ function LiveRecordingControls({ memo }: LiveRecordingControlsProps): ReactEleme
         <Button
           variant="destructive"
           size="icon"
-          aria-label="Stop recording"
+          aria-label={t('audio.stopAria')}
           className="size-14 rounded-full"
           disabled={memo.phase !== 'recording'}
           onClick={() => memo.stopAndSave()}
@@ -135,11 +143,11 @@ function LiveRecordingControls({ memo }: LiveRecordingControlsProps): ReactEleme
           variant={discardArmed ? 'destructive' : 'ghost'}
           size="sm"
           className={discardArmed ? undefined : 'text-text-muted'}
-          aria-label={discardArmed ? 'Confirm discard recording' : 'Discard recording'}
+          aria-label={discardArmed ? t('audio.confirmDiscardAria') : t('audio.discardAria')}
           onClick={confirmDiscard}
         >
           <Trash2 aria-hidden className="size-3.5" />
-          {discardArmed ? 'Tap again to discard' : 'Discard'}
+          {discardArmed ? t('audio.discardConfirm') : t('audio.discard')}
         </Button>
       </div>
     </div>

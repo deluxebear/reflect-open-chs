@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import type { GraphImportProgress, GraphImportSummary } from '@reflect/core'
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -9,6 +10,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Progress } from '@/components/ui/progress'
+import { t as translate } from '@/i18n'
 import type { V1ImportState } from '@/providers/v1-import-provider'
 
 interface V1ImportDialogProps {
@@ -17,43 +19,46 @@ interface V1ImportDialogProps {
   onDismiss: () => void
 }
 
-function count(quantity: number, singular: string, plural: string): string {
-  return `${quantity} ${quantity === 1 ? singular : plural}`
-}
-
 /** The one-line result the dialog shows once an import completes. */
 export function summaryText(summary: GraphImportSummary): string {
-  const parts = [`${count(summary.importedFiles, 'file', 'files')} imported`]
+  const parts = [translate('settings:import.filesImported', { count: summary.importedFiles })]
   if (summary.mergedFiles > 0) {
-    parts.push(`${count(summary.mergedFiles, 'daily note', 'daily notes')} merged`)
+    parts.push(translate('settings:import.dailiesMerged', { count: summary.mergedFiles }))
   }
   if (summary.renamedFiles > 0) {
-    parts.push(`${summary.renamedFiles} renamed to avoid a name clash`)
+    parts.push(translate('settings:import.renamed', { count: summary.renamedFiles }))
   }
   if (summary.skippedFiles > 0) {
-    parts.push(`${summary.skippedFiles} already present`)
+    parts.push(translate('settings:import.skipped', { count: summary.skippedFiles }))
   }
   if (summary.downloadedAssets > 0) {
-    parts.push(`${count(summary.downloadedAssets, 'attachment', 'attachments')} downloaded`)
+    parts.push(
+      translate('settings:import.attachmentsDownloaded', { count: summary.downloadedAssets }),
+    )
   }
   const text = `${parts.join(', ')}.`
   if (summary.failedAssetDownloads === 0) {
     return text
   }
-  if (summary.failedAssetDownloads === 1) {
-    return `${text} 1 attachment couldn't be downloaded and still links to Reflect V1.`
-  }
-  return `${text} ${summary.failedAssetDownloads} attachments couldn't be downloaded and still link to Reflect V1.`
+  return `${text}${translate('settings:import.failedAssets', {
+    count: summary.failedAssetDownloads,
+  })}`
 }
 
 function stageText(progress: GraphImportProgress | null): string {
   if (progress === null) {
-    return 'Reading the export…'
+    return translate('settings:import.reading')
   }
   if (progress.stage === 'downloading') {
-    return `Downloading attachments… ${progress.done} of ${progress.total}`
+    return translate('settings:import.downloading', {
+      done: progress.done,
+      total: progress.total,
+    })
   }
-  return `Adding notes… ${progress.done} of ${progress.total}`
+  return translate('settings:import.addingNotes', {
+    done: progress.done,
+    total: progress.total,
+  })
 }
 
 function stagePercent(progress: GraphImportProgress | null): number | undefined {
@@ -71,6 +76,8 @@ function stagePercent(progress: GraphImportProgress | null): number | undefined 
  * outcome and closes on demand.
  */
 export function V1ImportDialog({ state, onCancel, onDismiss }: V1ImportDialogProps): ReactElement {
+  const { t } = useTranslation('settings')
+  const { t: tc } = useTranslation('common')
   const running = state.phase === 'running'
   // Cancelling mid-write would leave a half-imported graph; the native side
   // only honours cancellation before writes start, so the button goes with it.
@@ -98,13 +105,15 @@ export function V1ImportDialog({ state, onCancel, onDismiss }: V1ImportDialogPro
       >
         {state.phase === 'running' ? (
           <>
-            <DialogTitle>Importing from Reflect V1</DialogTitle>
-            <DialogDescription role="status">{stageText(state.progress)}</DialogDescription>
+            <DialogTitle>{t('import.runningTitle')}</DialogTitle>
+            <DialogDescription role="status">
+              {stageText(state.progress)}
+            </DialogDescription>
             <Progress value={stagePercent(state.progress) ?? null} />
             {cancellable ? (
               <DialogFooter>
                 <Button variant="ghost" disabled={state.cancelling} onClick={onCancel}>
-                  {state.cancelling ? 'Cancelling…' : 'Cancel'}
+                  {state.cancelling ? t('import.cancelling') : tc('cancel')}
                 </Button>
               </DialogFooter>
             ) : null}
@@ -112,20 +121,20 @@ export function V1ImportDialog({ state, onCancel, onDismiss }: V1ImportDialogPro
         ) : null}
         {state.phase === 'done' ? (
           <>
-            <DialogTitle>Import complete</DialogTitle>
+            <DialogTitle>{t('import.doneTitle')}</DialogTitle>
             <DialogDescription role="status">{summaryText(state.summary)}</DialogDescription>
             <DialogFooter>
-              <Button onClick={onDismiss}>Done</Button>
+              <Button onClick={onDismiss}>{t('import.done')}</Button>
             </DialogFooter>
           </>
         ) : null}
         {state.phase === 'failed' ? (
           <>
-            <DialogTitle>Import failed</DialogTitle>
+            <DialogTitle>{t('import.failedTitle')}</DialogTitle>
             <DialogDescription role="alert">{state.message}</DialogDescription>
             <DialogFooter>
               <Button variant="ghost" onClick={onDismiss}>
-                Close
+                {tc('close')}
               </Button>
             </DialogFooter>
           </>

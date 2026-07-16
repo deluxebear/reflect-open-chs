@@ -6,6 +6,7 @@ import {
   useState,
   type ReactElement,
 } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   ArrowRight,
   CalendarDays,
@@ -78,6 +79,7 @@ export function MobileTaskEditSheet({
   onOpenNote,
   autoFocusEditor = false,
 }: MobileTaskEditSheetProps): ReactElement {
+  const { t } = useTranslation('mobile')
   const { graph } = useGraph()
   const { settings } = useSettings()
   const generation = graph?.generation ?? null
@@ -253,25 +255,27 @@ export function MobileTaskEditSheet({
             <TaskSheetKeymap onDone={finishEdit} />
           </NoteEditor>
         </div>
-        <div className="flex flex-wrap items-center gap-1.5" aria-label="Schedule">
+        <div className="flex flex-wrap items-center gap-1.5" aria-label={t('taskSheet.scheduleAria')}>
           <ScheduleChip
-            label="Today"
+            label={t('taskSheet.today')}
             active={dueDate === today}
             onClick={() => schedule(today)}
           />
           <ScheduleChip
-            label="Tomorrow"
+            label={t('taskSheet.tomorrow')}
             active={dueDate === addDaysIso(today, 1)}
             onClick={() => schedule(addDaysIso(today, 1))}
           />
           <ScheduleChip
-            label="Next week"
+            label={t('taskSheet.nextWeek')}
             active={dueDate === addDaysIso(today, 7)}
             onClick={() => schedule(addDaysIso(today, 7))}
           />
           <ScheduleChip
             label={
-              dueDate !== null ? formatDayLabel(dueDate, settings.dateFormat) : 'Pick date'
+              dueDate !== null
+                ? formatDayLabel(dueDate, settings.dateFormat)
+                : t('taskSheet.pickDate')
             }
             icon={<CalendarDays aria-hidden className="size-3.5" />}
             active={showCalendar}
@@ -279,7 +283,7 @@ export function MobileTaskEditSheet({
           />
           {dueDate !== null ? (
             <ScheduleChip
-              label="Clear"
+              label={t('taskSheet.clear')}
               icon={<X aria-hidden className="size-3.5" />}
               active={false}
               onClick={() => schedule(null)}
@@ -297,7 +301,7 @@ export function MobileTaskEditSheet({
             onClick={complete}
           >
             {task.checked ? <Undo2 /> : <CircleCheck />}
-            {task.checked ? 'Reopen' : 'Complete'}
+            {task.checked ? t('taskSheet.reopen') : t('taskSheet.complete')}
           </Button>
           <Button
             variant="ghost"
@@ -306,7 +310,7 @@ export function MobileTaskEditSheet({
             onClick={convertToBullet}
           >
             <List />
-            Convert to bullet
+            {t('taskSheet.convertToBullet')}
           </Button>
           <Button
             variant="ghost"
@@ -315,7 +319,7 @@ export function MobileTaskEditSheet({
             onClick={openNote}
           >
             <ArrowRight />
-            Open note
+            {t('taskSheet.openNote')}
           </Button>
           <Button
             variant="ghost"
@@ -324,7 +328,7 @@ export function MobileTaskEditSheet({
             onClick={remove}
           >
             <Trash2 />
-            Delete
+            {t('taskSheet.delete')}
           </Button>
         </div>
       </DrawerContent>

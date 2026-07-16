@@ -1,7 +1,8 @@
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { ShortcutList } from '@/components/shortcut-list'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { APP_SHORTCUTS, EDITOR_SHORTCUTS } from '@/lib/shortcuts'
+import { appShortcuts, editorShortcuts } from '@/lib/shortcuts'
 import { useShortcuts } from '@/providers/shortcuts-provider'
 
 /**
@@ -11,6 +12,11 @@ import { useShortcuts } from '@/providers/shortcuts-provider'
  */
 export function ShortcutsDialog(): ReactElement {
   const { open, closeShortcuts } = useShortcuts()
+  const { t, i18n } = useTranslation('shell')
+  // Rebuild when language changes so descriptions track the active catalog.
+  void i18n.language
+  const shortcuts = appShortcuts()
+  const editor = editorShortcuts()
 
   return (
     <Dialog
@@ -27,14 +33,14 @@ export function ShortcutsDialog(): ReactElement {
         className="grid max-h-[calc(100dvh-2rem)] grid-rows-[auto_minmax(0,1fr)] overflow-hidden sm:max-w-3xl lg:max-w-5xl xl:max-w-6xl"
       >
         <DialogHeader className="pr-8">
-          <DialogTitle>Keyboard shortcuts</DialogTitle>
+          <DialogTitle>{t('shortcuts.title')}</DialogTitle>
         </DialogHeader>
         <div className="min-h-0 overflow-y-auto pr-1">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-[minmax(14rem,1fr)_minmax(0,2fr)] xl:grid-cols-[minmax(14rem,1fr)_minmax(0,3fr)]">
-            <ShortcutList heading="App" shortcuts={APP_SHORTCUTS} />
+            <ShortcutList heading={t('shortcuts.app')} shortcuts={shortcuts} />
             <ShortcutList
-              heading="Editor"
-              shortcuts={EDITOR_SHORTCUTS}
+              heading={t('shortcuts.editor')}
+              shortcuts={editor}
               listClassName="lg:columns-2 xl:columns-3 lg:gap-8"
             />
           </div>

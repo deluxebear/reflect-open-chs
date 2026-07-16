@@ -2,6 +2,7 @@ import { useId, useState, type ReactElement, type ReactNode } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { hasBridge, icloudStatus } from '@reflect/core'
 import { Cloud, Folder, FolderPlus } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { InlineAlert } from '@/components/inline-alert'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -33,15 +34,14 @@ function isIcloudCapablePlatform(): boolean {
 export function GraphChooser(): ReactElement {
   const { recents, error, pickAndOpen, openRecent, createAt, forget } = useGraph()
   const { colorFor } = useGraphColors()
+  const { t } = useTranslation('shell')
   const icloudCapable = isIcloudCapablePlatform()
 
   return (
     <ChooserShell>
       <div className="space-y-1.5 text-center">
-        <h1 className="text-2xl font-semibold tracking-tight text-text">Welcome to Reflect</h1>
-        <p className="text-sm text-text-secondary">
-          Your notes are plain markdown files. Choose where to keep them.
-        </p>
+        <h1 className="text-2xl font-semibold tracking-tight text-text">{t('chooser.title')}</h1>
+        <p className="text-sm text-text-secondary">{t('chooser.subtitle')}</p>
       </div>
 
       <div
@@ -56,9 +56,9 @@ export function GraphChooser(): ReactElement {
         <section className="flex flex-col gap-4 rounded-xl border border-border bg-surface p-5 shadow-sm">
           <CardHeader
             icon={<Folder aria-hidden className="size-4" strokeWidth={1.75} />}
-            title="A folder you choose"
+            title={t('chooser.folderTitle')}
           >
-            Keep notes in any folder on this {icloudCapable ? 'Mac' : 'computer'}.
+            {icloudCapable ? t('chooser.folderDescMac') : t('chooser.folderDescComputer')}
           </CardHeader>
           <Button
             type="button"
@@ -67,7 +67,7 @@ export function GraphChooser(): ReactElement {
             onClick={() => void pickAndOpen()}
           >
             <FolderPlus aria-hidden strokeWidth={1.75} />
-            Choose a folder…
+            {t('chooser.chooseFolder')}
           </Button>
         </section>
       </div>
@@ -80,7 +80,9 @@ export function GraphChooser(): ReactElement {
 
       {recents.length > 0 ? (
         <div className="mx-auto w-full max-w-sm space-y-2">
-          <p className="px-2 text-2xs font-medium tracking-wide text-text-muted">Recent</p>
+          <p className="px-2 text-2xs font-medium tracking-wide text-text-muted">
+            {t('chooser.recent')}
+          </p>
           <ul className="space-y-px">
             {recents.map((recent) => {
               const color = colorFor(recent.root)
@@ -112,10 +114,10 @@ export function GraphChooser(): ReactElement {
                     variant="ghost"
                     size="xs"
                     onClick={() => void forget(recent.root)}
-                    aria-label={`Forget ${recent.name}`}
+                    aria-label={t('chooser.forgetAria', { name: recent.name })}
                     className="shrink-0 text-text-muted opacity-0 transition-opacity duration-100 hover:text-text-secondary group-hover:opacity-100 focus-visible:opacity-100 group-focus-within:opacity-100"
                   >
-                    Forget
+                    {t('chooser.forget')}
                   </Button>
                 </li>
               )
@@ -195,6 +197,7 @@ function IcloudCard({
   openRecent: (root: string) => Promise<boolean>
   createAt: (root: string) => Promise<boolean>
 }): ReactElement {
+  const { t } = useTranslation('shell')
   const [typedName, setTypedName] = useState<string | null>(null)
   const [busy, setBusy] = useState<IcloudBusy>(null)
   const nameId = useId()
@@ -211,7 +214,8 @@ function IcloudCard({
   // list the row starts empty — a prefilled default would collide with the
   // usual first graph ("Notes") and paint the screen invalid before the
   // user touched it.
-  const name = typedName ?? (existing.length > 0 ? '' : 'Notes')
+  const defaultName = t('chooser.defaultGraphName')
+  const name = typedName ?? (existing.length > 0 ? '' : defaultName)
   const cleanName = cleanGraphName(name)
   // macOS folder names are case-insensitive — a same-named create would
   // land inside the existing graph instead of next to it.
@@ -234,21 +238,24 @@ function IcloudCard({
     void openRecent(root).finally(() => setBusy(null))
   }
 
+  const description =
+    existing.length > 0
+      ? t('chooser.icloudOpenExisting')
+      : available
+        ? t('chooser.icloudSyncs')
+        : status === undefined
+          ? t('chooser.icloudChecking')
+          : t('chooser.icloudSignIn')
+
   return (
     <section className="flex flex-col gap-4 rounded-xl border border-border bg-surface p-5 shadow-sm">
       <CardHeader
         icon={<Cloud aria-hidden className="size-4" strokeWidth={1.75} />}
-        title="iCloud"
-        badge={<Badge variant="secondary">Recommended</Badge>}
+        title={t('chooser.icloud')}
+        badge={<Badge variant="secondary">{t('chooser.recommended')}</Badge>}
         tinted
       >
-        {existing.length > 0
-          ? 'Open an existing graph from iCloud Drive.'
-          : available
-            ? 'Syncs across your Mac and iPhone. Backed up automatically.'
-            : status === undefined
-              ? 'Checking iCloud…'
-              : 'Sign in to iCloud on this Mac to sync your notes across devices.'}
+        {description}
       </CardHeader>
       {existing.length > 0 ? (
         <ul className="space-y-1.5">
@@ -266,7 +273,9 @@ function IcloudCard({
                 ) : (
                   <Cloud aria-hidden strokeWidth={1.75} />
                 )}
-                <span className="truncate">{graphNameFromRoot(root, 'your notes')}</span>
+                <span className="truncate">
+                  {graphNameFromRoot(root, t('chooser.yourNotes'))}
+                </span>
               </Button>
             </li>
           ))}
@@ -276,11 +285,11 @@ function IcloudCard({
         // Compact create row under the list: a new graph next to the
         // existing ones is the secondary action here, not the headline.
         <div className="mt-auto space-y-2">
-          <ChooserDivider>or create new graph</ChooserDivider>
+          <ChooserDivider>{t('chooser.orCreateNew')}</ChooserDivider>
           <div className="flex gap-2">
             <Input
-              aria-label="Name"
-              placeholder="New name"
+              aria-label={t('chooser.name')}
+              placeholder={t('chooser.newName')}
               value={name}
               disabled={pending}
               aria-invalid={nameTaken}
@@ -299,18 +308,18 @@ function IcloudCard({
               onClick={() => void create()}
             >
               {busy === 'create' ? <Spinner /> : null}
-              Create
+              {t('chooser.create')}
             </Button>
           </div>
           {nameTaken ? (
-            <p className="text-xs text-destructive">That name already exists in iCloud Drive.</p>
+            <p className="text-xs text-destructive">{t('chooser.nameTaken')}</p>
           ) : null}
         </div>
       ) : (
         <div className="mt-auto space-y-2">
           <div className="space-y-1.5">
             <label htmlFor={nameId} className="text-xs font-medium text-text-secondary">
-              Name
+              {t('chooser.name')}
             </label>
             <Input
               id={nameId}
@@ -331,7 +340,7 @@ function IcloudCard({
             onClick={() => void create()}
           >
             {busy === 'create' ? <Spinner /> : <Cloud aria-hidden strokeWidth={1.75} />}
-            {busy === 'create' ? 'Setting up…' : 'Create'}
+            {busy === 'create' ? t('chooser.settingUp') : t('chooser.create')}
           </Button>
         </div>
       )}

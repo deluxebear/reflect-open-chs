@@ -1,4 +1,5 @@
-import { useState, type ReactElement } from 'react'
+import { useMemo, useState, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useQuery } from '@tanstack/react-query'
 import {
   aiProvider,
@@ -7,6 +8,7 @@ import {
   listNotes,
   type AiProviderConfig,
   type EditorTextSize,
+  type LocalePreference,
   type ThemePreference,
 } from '@reflect/core'
 import { useAiProviders } from '@/hooks/use-ai-providers'
@@ -32,18 +34,6 @@ import { useSettings } from '@/providers/settings-provider'
 import { useSyncContext } from '@/providers/sync-provider'
 import { useRouter } from '@/routing/router'
 
-const THEME_OPTIONS: readonly SegmentedOption<ThemePreference>[] = [
-  { value: 'system', label: 'System' },
-  { value: 'light', label: 'Light' },
-  { value: 'dark', label: 'Dark' },
-]
-
-const TEXT_SIZE_OPTIONS: readonly SegmentedOption<EditorTextSize>[] = [
-  { value: 'small', label: 'Small' },
-  { value: 'medium', label: 'Medium' },
-  { value: 'large', label: 'Large' },
-]
-
 /**
  * The mobile Settings screen — a pushed card (route kind `settings`) in the
  * iOS inset-grouped idiom, replacing the old bottom-sheet hodgepodge. The
@@ -54,6 +44,8 @@ const TEXT_SIZE_OPTIONS: readonly SegmentedOption<EditorTextSize>[] = [
  * graphs sync through the container instead, Plan 21), and can disconnect.
  */
 export function MobileSettings(): ReactElement {
+  const { t } = useTranslation('mobile')
+  const { t: ts } = useTranslation('settings')
   const { back, canBack, navigate } = useRouter()
   const { graph, mobileStorageKind } = useGraph()
   const { settings, updateSettings } = useSettings()
@@ -71,6 +63,33 @@ export function MobileSettings(): ReactElement {
   // content; `manageOpen` alone drives visibility (the edit-sheet pattern).
   const [managedProvider, setManagedProvider] = useState<AiProviderConfig | null>(null)
   const [manageOpen, setManageOpen] = useState(false)
+
+  const themeOptions = useMemo(
+    (): readonly SegmentedOption<ThemePreference>[] => [
+      { value: 'system', label: t('settings.themeSystem') },
+      { value: 'light', label: t('settings.themeLight') },
+      { value: 'dark', label: t('settings.themeDark') },
+    ],
+    [t],
+  )
+
+  const textSizeOptions = useMemo(
+    (): readonly SegmentedOption<EditorTextSize>[] => [
+      { value: 'small', label: t('settings.sizeSmall') },
+      { value: 'medium', label: t('settings.sizeMedium') },
+      { value: 'large', label: t('settings.sizeLarge') },
+    ],
+    [t],
+  )
+
+  const localeOptions = useMemo(
+    (): readonly SegmentedOption<LocalePreference>[] => [
+      { value: 'system', label: ts('appearance.locale.system') },
+      { value: 'en', label: ts('appearance.locale.en') },
+      { value: 'zh-CN', label: ts('appearance.locale.zh-CN') },
+    ],
+    [ts],
+  )
 
   const { data: notes } = useQuery({
     queryKey: [INDEX_QUERY_SCOPE, graph?.root, 'mobile-note-count'],
@@ -107,9 +126,9 @@ export function MobileSettings(): ReactElement {
 
   const storageLabel =
     mobileStorageKind === 'icloud'
-      ? 'iCloud Drive'
+      ? t('settings.icloudDrive')
       : mobileStorageKind === 'local'
-        ? 'This device'
+        ? t('settings.thisDevice')
         : undefined
 
   return (
@@ -118,7 +137,7 @@ export function MobileSettings(): ReactElement {
       style={{ paddingTop: 'env(safe-area-inset-top)' }}
     >
       <MobileScreenHeader
-        title="Settings"
+        title={t('settings.title')}
         onBack={() => (canBack ? back() : navigate({ kind: 'today' }))}
       />
       <main
@@ -126,7 +145,7 @@ export function MobileSettings(): ReactElement {
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
         <div className="flex flex-col gap-6 px-4 py-4">
-          <SettingsGroup header="Graph">
+          <SettingsGroup header={t('settings.graph')}>
             <SettingsNavRow
               label={graph?.name ?? '—'}
               value={storageLabel}
@@ -134,29 +153,35 @@ export function MobileSettings(): ReactElement {
             />
           </SettingsGroup>
 
-          <SettingsGroup header="Appearance">
+          <SettingsGroup header={t('settings.appearance')}>
             <SettingsSegmentedRow
-              label="Theme"
+              label={t('settings.theme')}
               value={settings.theme}
-              options={THEME_OPTIONS}
+              options={themeOptions}
               onChange={(theme) => updateSettings({ theme })}
             />
             <SettingsSegmentedRow
-              label="Text size"
+              label={t('settings.textSize')}
               value={settings.editorTextSize}
-              options={TEXT_SIZE_OPTIONS}
+              options={textSizeOptions}
               onChange={(editorTextSize) => updateSettings({ editorTextSize })}
+            />
+            <SettingsSegmentedRow
+              label={t('settings.language')}
+              value={settings.locale}
+              options={localeOptions}
+              onChange={(locale) => updateSettings({ locale })}
             />
           </SettingsGroup>
 
-          <SettingsGroup header="Editor">
+          <SettingsGroup header={t('settings.editor')}>
             <SettingsSwitchRow
-              label="Start with a bullet"
+              label={t('settings.startWithBullet')}
               checked={settings.editorDefaultBullet}
               onCheckedChange={(editorDefaultBullet) => updateSettings({ editorDefaultBullet })}
             />
             <SettingsSwitchRow
-              label="Bullet after a heading"
+              label={t('settings.bulletAfterHeading')}
               checked={settings.editorBulletAfterHeading}
               onCheckedChange={(editorBulletAfterHeading) =>
                 updateSettings({ editorBulletAfterHeading })
@@ -164,43 +189,49 @@ export function MobileSettings(): ReactElement {
             />
           </SettingsGroup>
 
-          <SettingsGroup
-            header="AI"
-            footer="Keys stay in this device’s keychain and are never synced."
-          >
+          <SettingsGroup header={t('settings.ai')} footer={t('settings.aiFooter')}>
             {providers.map((provider) => (
               <SettingsNavRow
                 key={provider.id}
                 label={aiProvider(provider.provider).label}
-                value={`·····${provider.keyHint}${provider.id === defaultProvider?.id ? ' · Default' : ''}`}
+                value={`·····${provider.keyHint}${provider.id === defaultProvider?.id ? t('settings.defaultSuffix') : ''}`}
                 onPress={() => {
                   setManagedProvider(provider)
                   setManageOpen(true)
                 }}
               />
             ))}
-            <SettingsActionRow label="Add AI provider" onPress={() => setAddProviderOpen(true)} />
+            <SettingsActionRow
+              label={t('settings.addAiProvider')}
+              onPress={() => setAddProviderOpen(true)}
+            />
           </SettingsGroup>
 
           {repo !== null || status !== null || canConnect ? (
             <SettingsGroup
-              header="Backup"
+              header={t('settings.backup')}
               footer={
-                canConnect
-                  ? 'Sync notes with Reflect on your other devices.'
-                  : (status?.detail ?? null)
+                canConnect ? t('settings.backupFooterConnect') : (status?.detail ?? null)
               }
             >
               {repo !== null ? (
-                <SettingsValueRow label="GitHub" value={`${repo.owner}/${repo.name}`} />
+                <SettingsValueRow
+                  label={t('settings.github')}
+                  value={`${repo.owner}/${repo.name}`}
+                />
               ) : null}
-              {status !== null ? <SettingsValueRow label="Status" value={status.label} /> : null}
+              {status !== null ? (
+                <SettingsValueRow label={t('settings.status')} value={status.label} />
+              ) : null}
               {canConnect ? (
-                <SettingsActionRow label="Connect GitHub" onPress={() => setConnectOpen(true)} />
+                <SettingsActionRow
+                  label={t('settings.connectGithub')}
+                  onPress={() => setConnectOpen(true)}
+                />
               ) : null}
               {repo !== null ? (
                 <SettingsActionRow
-                  label="Disconnect GitHub"
+                  label={t('settings.disconnectGithub')}
                   tone="destructive"
                   pending={disconnecting}
                   onPress={() => void disconnect()}
@@ -209,13 +240,13 @@ export function MobileSettings(): ReactElement {
             </SettingsGroup>
           ) : null}
 
-          <SettingsGroup header="About">
+          <SettingsGroup header={t('settings.about')}>
             <SettingsValueRow
-              label="Notes"
+              label={t('settings.notes')}
               value={notes === undefined ? '…' : String(notes.length)}
             />
             <SettingsValueRow
-              label="Version"
+              label={t('settings.version')}
               value={version === null ? '…' : marketingVersion(version)}
             />
           </SettingsGroup>

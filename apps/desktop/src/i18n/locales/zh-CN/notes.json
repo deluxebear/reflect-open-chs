@@ -1,0 +1,58 @@
+{
+  "aria": "全部笔记",
+  "title": "笔记",
+  "newNote": "新建笔记",
+  "trash": "移到废纸篓",
+  "trashCountAria": "移到废纸篓（{{count}}）",
+  "filterByTagAria": "按标签筛选",
+  "filterAll": "全部",
+  "filterCustom": "自定义",
+  "filterByTagCommand": "按其他标签筛选",
+  "filterByTagPlaceholder": "按任意标签筛选…",
+  "filterByTyped": "按 #{{tag}} 筛选",
+  "noMatchingTags": "没有匹配的标签。",
+  "typeTagToFilter": "输入标签以筛选。",
+  "invalidTagName": "不是有效的标签名。",
+  "columns": {
+    "subject": "标题",
+    "snippet": "摘要",
+    "tags": "标签",
+    "updated": "更新"
+  },
+  "empty": "还没有笔记。",
+  "emptyTagged": "没有带 #{{tag}} 标签的笔记。",
+  "trashTitle_one": "将 {{count}} 篇笔记移到废纸篓？",
+  "trashTitle_other": "将 {{count}} 篇笔记移到废纸篓？",
+  "trashDescription_one": "它会移到系统废纸篓，可从中恢复。",
+  "trashDescription_other": "它们会移到系统废纸篓，可从中恢复。",
+  "backlinks": {
+    "aria": "反向链接",
+    "loadError": "无法加载反向链接。",
+    "heading_one": "反向链接（{{count}}）",
+    "heading_other": "反向链接（{{count}}）"
+  },
+  "templates": {
+    "insertTitle": "插入模板",
+    "insertDescription": "选择要在光标处插入的模板",
+    "insertPlaceholder": "插入模板…",
+    "empty": "暂无模板",
+    "newTemplate": "新建模板",
+    "createTitle": "新建模板",
+    "createDescription": "会在图中的 templates/ 文件夹创建 Markdown 文件。",
+    "namePlaceholder": "模板名称",
+    "nameRequired": "请输入名称。",
+    "create": "创建"
+  },
+  "conflict": {
+    "title": "此笔记在两台设备上同时被编辑。",
+    "body": "下方已标出两个版本。请选择要保留的内容 — 所有版本仍可在备份历史中恢复。",
+    "keepNamed": "保留“{{name}}”",
+    "keepOurs": "保留本设备版本",
+    "keepTheirs": "保留其他设备版本",
+    "keepOtherVersions": "保留其他版本",
+    "keepBoth": "两个都保留",
+    "keepAll": "全部保留",
+    "resolveError": "无法解决冲突：{{error}}"
+  }
+}
+

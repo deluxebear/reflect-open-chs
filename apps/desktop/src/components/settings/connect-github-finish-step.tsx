@@ -1,4 +1,5 @@
 import type { ReactElement, ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { InlineAlert } from '@/components/inline-alert'
 import { Button } from '@/components/ui/button'
 import type { ConnectGithubWizard } from '@/hooks/use-connect-github-wizard'
@@ -26,11 +27,12 @@ export function ConnectGithubFinishStep({
   wizard,
   layout,
 }: ConnectGithubFinishStepProps): ReactElement {
+  const { t } = useTranslation('settings')
   const view = wizard.finishView
   const buttonSize = layout === 'row' ? ('sm' as const) : undefined
   const groupClass = layout === 'row' ? 'flex gap-2' : 'flex flex-col gap-2'
 
-  function changeRepository(label = 'Change repository'): ReactNode {
+  function changeRepository(label: string): ReactNode {
     return (
       <Button variant="outline" size={buttonSize} onClick={wizard.backToRepo}>
         {label}
@@ -42,7 +44,8 @@ export function ConnectGithubFinishStep({
     <div className="flex flex-col gap-3">
       {wizard.user !== null ? (
         <p className="text-xs text-text-muted">
-          Signed in as <strong className="text-text">{wizard.user.login}</strong>
+          {t('githubConnect.signedInAs')}{' '}
+          <strong className="text-text">{wizard.user.login}</strong>
         </p>
       ) : null}
 
@@ -50,22 +53,24 @@ export function ConnectGithubFinishStep({
         <>
           <InlineAlert tone="error">
             <strong>
-              {view.repo.owner}/{view.repo.name} is public.
+              {t('githubConnect.publicRepo', {
+                owner: view.repo.owner,
+                name: view.repo.name,
+              })}
             </strong>{' '}
-            Anyone on the internet can read everything in this graph, including notes marked
-            private.
+            {t('githubConnect.publicWarning')}
           </InlineAlert>
           <div className={groupClass}>
-            {layout === 'row' ? changeRepository('Choose another repo') : null}
+            {layout === 'row' ? changeRepository(t('githubConnect.chooseAnother')) : null}
             <Button
               variant="destructive"
               size={buttonSize}
               disabled={wizard.pending || wizard.user === null}
               onClick={wizard.confirmPublic}
             >
-              Back up to a public repo
+              {t('githubConnect.backupPublic')}
             </Button>
-            {layout === 'stack' ? changeRepository('Choose another repo') : null}
+            {layout === 'stack' ? changeRepository(t('githubConnect.chooseAnother')) : null}
           </div>
         </>
       ) : null}
@@ -73,31 +78,25 @@ export function ConnectGithubFinishStep({
       {view.kind === 'createGuide' ? (
         <>
           <p className="text-sm text-text">
-            Create{' '}
-            <strong>
-              {view.owner}/{view.name}
-            </strong>{' '}
-            on GitHub. Reflect will connect it as soon as it exists.
+            {t('githubConnect.createOnGithub', { owner: view.owner, name: view.name })}
           </p>
           <div className={groupClass}>
             <Button size={buttonSize} onClick={wizard.openCreatePage}>
-              Create on GitHub…
+              {t('githubConnect.createOnGithubButton')}
             </Button>
-            {changeRepository()}
+            {changeRepository(t('githubConnect.changeRepo'))}
           </div>
-          <p className="text-xs text-text-muted">Waiting for the repository…</p>
+          <p className="text-xs text-text-muted">{t('githubConnect.waitingRepo')}</p>
           {wizard.authKind === 'app' ? (
             <p className="text-xs text-text-muted">
-              If it doesn’t connect,{' '}
+              {t('githubConnect.grantIfNeededPrefix')}
               <button type="button" className="underline" onClick={wizard.openInstallPage}>
-                grant the Reflect app access
-              </button>{' '}
-              to just this repository.
+                {t('githubConnect.grantIfNeededLink')}
+              </button>
+              {t('githubConnect.grantIfNeededSuffix')}
             </p>
           ) : (
-            <p className="text-xs text-text-muted">
-              If it doesn’t connect, add it to your token’s repository access.
-            </p>
+            <p className="text-xs text-text-muted">{t('githubConnect.grantIfNeededPat')}</p>
           )}
         </>
       ) : null}
@@ -105,39 +104,30 @@ export function ConnectGithubFinishStep({
       {view.kind === 'grantAccess' ? (
         <>
           <p className="text-sm text-text">
-            Give Reflect access to{' '}
-            <strong>
-              {view.repo.owner}/{view.repo.name}
-            </strong>{' '}
-            so it can back up here.
+            {t('githubConnect.grantAccess', {
+              owner: view.repo.owner,
+              name: view.repo.name,
+            })}
           </p>
           <div className={groupClass}>
             <Button size={buttonSize} onClick={wizard.openInstallPage}>
-              Grant access on GitHub…
+              {t('githubConnect.grantAccessButton')}
             </Button>
-            {changeRepository()}
+            {changeRepository(t('githubConnect.changeRepo'))}
           </div>
-          {/* Steer to per-repo selection: the backup needs exactly one repo,
-              so "All repositories" is needless account-wide risk. */}
-          <p className="text-xs text-text-muted">
-            On GitHub, choose <strong>Only select repositories</strong> — Reflect only needs this
-            one.
-          </p>
-          <p className="text-xs text-text-muted">Waiting for access…</p>
+          <p className="text-xs text-text-muted">{t('githubConnect.onlySelectRepos')}</p>
+          <p className="text-xs text-text-muted">{t('githubConnect.waitingAccess')}</p>
         </>
       ) : null}
 
-      {view.kind === 'connecting' ? <p className="text-sm text-text-muted">Connecting…</p> : null}
+      {view.kind === 'connecting' ? (
+        <p className="text-sm text-text-muted">{t('githubConnect.connecting')}</p>
+      ) : null}
 
       {!wizard.pending && wizard.error !== null ? (
         <>
           <InlineAlert tone="error">{wizard.error}</InlineAlert>
-          {view.kind === 'idle' ? (
-            // A failed connect must never strand the user here — offer the
-            // way back to a different repository. (The parked handoffs render
-            // their own escapes.)
-            changeRepository()
-          ) : null}
+          {view.kind === 'idle' ? changeRepository(t('githubConnect.changeRepo')) : null}
         </>
       ) : null}
     </div>

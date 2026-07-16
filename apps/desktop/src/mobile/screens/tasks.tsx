@@ -1,6 +1,7 @@
 import { useDeferredValue, useMemo, useRef, useState, type ReactElement } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Archive, CircleCheck, Plus, SlidersHorizontal } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import {
   getCompletedTasks,
   getOpenTasks,
@@ -42,6 +43,7 @@ import { useRouter } from '@/routing/router'
  * tasks.
  */
 export function MobileTasks(): ReactElement {
+  const { t } = useTranslation('tasks')
   const { graph } = useGraph()
   const { navigate, arrivalSeq, arrivalFocusEditor } = useRouter()
   const today = useToday()
@@ -146,8 +148,8 @@ export function MobileTasks(): ReactElement {
       <header className="flex shrink-0 items-center gap-1 border-b border-border px-4 pb-2 pt-1">
         <SearchInput
           ref={searchInputRef}
-          placeholder="Search tasks…"
-          aria-label="Search tasks"
+          placeholder={t('searchPlaceholder')}
+          aria-label={t('searchAria')}
           value={query}
           onValueChange={setQuery}
         />
@@ -156,7 +158,7 @@ export function MobileTasks(): ReactElement {
             variant="ghost"
             size="icon"
             className="size-10 shrink-0"
-            aria-label={`Archive ${recentlyCompleted.length} completed`}
+            aria-label={t('archiveCompletedAria', { count: recentlyCompleted.length })}
             onClick={archiveCompleted}
           >
             <Archive />
@@ -166,7 +168,7 @@ export function MobileTasks(): ReactElement {
           variant="ghost"
           size="icon"
           className="size-10 shrink-0"
-          aria-label="Task filters"
+          aria-label={t('taskFilters')}
           onClick={() => {
             hapticImpactLight()
             setFiltersOpen(true)
@@ -177,22 +179,22 @@ export function MobileTasks(): ReactElement {
       </header>
       {isError ? (
         <p role="alert" className="px-4 py-6 text-sm text-text-muted">
-          Couldn’t load tasks.
+          {t('loadError')}
         </p>
       ) : enabled && !ready && groups.length === 0 ? (
         // Loading only gates what would otherwise be a false empty state: with
         // archived flipping on, the open groups keep showing while the
         // completed history loads (desktop likewise gates only the message).
-        <div className="flex flex-1 items-center justify-center" aria-label="Loading tasks">
+        <div className="flex flex-1 items-center justify-center" aria-label={t('loadingAria')}>
           <Spinner className="size-5 text-text-muted" />
         </div>
       ) : groups.length === 0 ? (
         <div className="flex flex-1 flex-col items-center justify-center gap-3 text-text-muted">
           <CircleCheck className="size-6" />
-          <p className="text-sm">{needle ? 'No matching tasks' : 'No tasks to show'}</p>
+          <p className="text-sm">{needle ? t('noMatching') : t('empty')}</p>
           {needle === '' ? (
             <Button variant="outline" onClick={() => onAdd(todaysDailyTarget(today))}>
-              Add a task
+              {t('addATask')}
             </Button>
           ) : null}
         </div>
@@ -212,7 +214,7 @@ export function MobileTasks(): ReactElement {
       )}
       <Button
         size="icon"
-        aria-label="New task"
+        aria-label={t('newTask')}
         className="fixed right-4 z-40 size-12 rounded-full shadow-lg"
         style={{ bottom: 'calc(max(env(safe-area-inset-bottom), var(--keyboard-height, 0px)) + 4.25rem)' }}
         onClick={() => onAdd(todaysDailyTarget(today))}

@@ -3,6 +3,7 @@ import { openUrl } from '@tauri-apps/plugin-opener'
 import { useQuery } from '@tanstack/react-query'
 import { getConflictedNotes, getDuplicateNoteIds, hasBridge } from '@reflect/core'
 import { ExternalLink } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { ConnectGithubDialog } from '@/components/settings/connect-github-dialog'
 import { ConflictedNoteLinks } from '@/components/settings/conflicted-note-links'
 import { SettingsField } from '@/components/settings/field'
@@ -55,6 +56,7 @@ function githubRepoBrowserUrl(repo: NonNullable<Extract<BackupState, { phase: 'c
 export function BackupSettingsField(): ReactElement {
   const { backup, disconnectGraph, signOut, backUpNow } = useSync()
   const { graph } = useGraph()
+  const { t } = useTranslation('settings')
   const [connectOpen, setConnectOpen] = useState(false)
   const [signOutOpen, setSignOutOpen] = useState(false)
   const openRepoAttempt = useRef(0)
@@ -124,22 +126,22 @@ export function BackupSettingsField(): ReactElement {
   return (
     <>
       <SettingsField
-        legend={genericRemote ? 'Backup' : 'GitHub backup'}
+        legend={genericRemote ? t('sync.backup.legend') : t('sync.backup.legendGithub')}
         description={
           genericRemote
-            ? 'This graph backs up to its own git remote. Edits back up automatically a few moments after you stop typing.'
-            : 'Back up this graph to a GitHub repository. Edits back up automatically a few moments after you stop typing.'
+            ? t('sync.backup.descriptionRemote')
+            : t('sync.backup.descriptionGithub')
         }
       >
         <div className="mt-3 flex flex-col gap-2">
           {backup.phase === 'loading' ? (
-            <p className="text-xs text-text-muted">Checking backup status…</p>
+            <p className="text-xs text-text-muted">{t('sync.backup.checking')}</p>
           ) : null}
 
           {backup.phase === 'disconnected' ? (
             <div>
               <Button size="sm" onClick={() => setConnectOpen(true)}>
-                Connect GitHub…
+                {t('sync.backup.connect')}
               </Button>
             </div>
           ) : null}

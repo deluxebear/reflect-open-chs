@@ -1,4 +1,5 @@
 import { useState, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { aiProvider, errorMessage, type AiProviderConfig } from '@reflect/core'
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer'
 import { SettingsActionRow, SettingsGroup } from '@/mobile/settings-list'
@@ -29,6 +30,7 @@ export function AiProviderActionsDrawer({
   onMakeDefault,
   onRemove,
 }: AiProviderActionsDrawerProps): ReactElement {
+  const { t } = useTranslation('mobile')
   const [removing, setRemoving] = useState(false)
 
   // A failed removal (keychain write, settings store) keeps the sheet open —
@@ -47,7 +49,7 @@ export function AiProviderActionsDrawer({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent aria-label="Manage AI provider">
+      <DrawerContent aria-label={t('aiProvider.manageAria')}>
         {provider !== null ? (
           <>
             <DrawerTitle className="px-4 pt-1">
@@ -56,7 +58,9 @@ export function AiProviderActionsDrawer({
             <div className="flex flex-col gap-6 px-4 pb-8 pt-4">
               <SettingsGroup>
                 <SettingsActionRow
-                  label={isDefault ? 'Default provider' : 'Use as default'}
+                  label={
+                    isDefault ? t('aiProvider.defaultProvider') : t('aiProvider.useAsDefaultAction')
+                  }
                   disabled={isDefault}
                   onPress={() => {
                     onMakeDefault(provider.id)
@@ -64,7 +68,7 @@ export function AiProviderActionsDrawer({
                   }}
                 />
                 <SettingsActionRow
-                  label="Remove provider"
+                  label={t('aiProvider.remove')}
                   tone="destructive"
                   pending={removing}
                   onPress={() => void remove(provider.id)}

@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+# Shim for `swift` used during Tauri iOS cargo builds (swift-rs).
+#
+# On Xcode 27 / Swift 6.4, `swift build --arch arm64` for a multi-platform
+# package (macOS + iOS) injects a *second* `-sdk MacOSX -target macos…` pair.
+# Module scanning then loads AppKit/WebKit from the macOS SDK while the
+# compile target is `ios-simulator`, and the build dies with UIKit/AppKit
+# resolution errors.
+#
+# Replacing `--arch …` with `--triple <ios-triple>` (already passed via
+# `-Xswiftc -target`) makes SPM build only for iOS and succeeds.
+#
+# After a successful iOS triple build, also place a symlink at the
+# `arm64-apple-macosx/{debug,release}` path that swift-rs hard-codes when
+# emitting `cargo:rustc-link-search` (it always looks under macosx).
+set -euo pipefail
+
+REAL_SWIFT="${SWIFT_IOS_SHIM_REAL:-/usr/bin/swift}"
+
+if [[ "${1:-}" != "build" ]]; then
+  exec "$REAL_SWIFT" "$@"
+fi
+
+ios_triple=""
+build_path=""
+configuration="debug"
+args=("$@")
+for ((i = 0; i < ${#args[@]}; i++)); do
+  if [[ "${args[$i]}" == "-Xswiftc" && $((i + 3)) -lt ${#args[@]} ]]; then
+    if [[ "${args[$((i + 1))]}" == "-target" && "${args[$((i + 2))]}" == "-Xswiftc" ]]; then
+      candidate="${args[$((i + 3))]}"
+      if [[ "$candidate" == *"-apple-ios"* ]]; then
+        ios_triple="$candidate"
+      fi
+    fi
+  fi
+  if [[ "${args[$i]}" == "--build-path" && $((i + 1)) -lt ${#args[@]} ]]; then
+    build_path="${args[$((i + 1))]}"
+  fi
+  if [[ "${args[$i]}" == "-c" && $((i + 1)) -lt ${#args[@]} ]]; then
+    configuration="${args[$((i + 1))]}"
+  fi
+done
+
+if [[ -z "$ios_triple" ]]; then
+  exec "$REAL_SWIFT" "$@"
+fi
+
+filtered=()
+skip_next=0
+for ((i = 0; i < ${#args[@]}; i++)); do
+  if ((skip_next)); then
+    skip_next=0
+    continue
+  fi
+  if [[ "${args[$i]}" == "--arch" || "${args[$i]}" == "--triple" ]]; then
+    skip_next=1
+    continue
+  fi
+  filtered+=("${args[$i]}")
+done
+
+# filtered[0] is "build"
+set +e
+"$REAL_SWIFT" build --triple "$ios_triple" "${filtered[@]:1}"
+status=$?
+set -e
+if ((status != 0)); then
+  exit "$status"
+fi
+
+# swift-rs always links from {build-path}/{arch}-apple-macosx/{configuration}
+if [[ -n "$build_path" && -d "$build_path" ]]; then
+  arch="arm64"
+  if [[ "$ios_triple" == x86_64-* ]]; then
+    arch="x86_64"
+  fi
+  legacy_dir="${build_path}/${arch}-apple-macosx/${configuration}"
+  # SPM iOS triple output (Xcode 27 / Swift 6.4)
+  products_dir="${build_path}/out/Products/Debug-iphonesimulator"
+  if [[ "$configuration" == "release" ]]; then
+    products_dir="${build_path}/out/Products/Release-iphonesimulator"
+  fi
+  # Device builds (non-sim) use Debug-iphoneos / Release-iphoneos
+  if [[ "$ios_triple" != *"-simulator" ]]; then
+    products_dir="${build_path}/out/Products/Debug-iphoneos"
+    if [[ "$configuration" == "release" ]]; then
+      products_dir="${build_path}/out/Products/Release-iphoneos"
+    fi
+  fi
+  if [[ -d "$products_dir" ]]; then
+    mkdir -p "$(dirname "$legacy_dir")"
+    rm -rf "$legacy_dir"
+    ln -sfn "$products_dir" "$legacy_dir"
+  fi
+fi
+
+exit 0

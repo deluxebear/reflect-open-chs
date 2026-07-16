@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ReactElement } from 'react'
 import { openUrl } from '@tauri-apps/plugin-opener'
+import { useTranslation } from 'react-i18next'
 import { isDeviceFlowConfigured, saveGithubAuth, type GithubUser } from '@reflect/core'
 import { InlineAlert } from '@/components/inline-alert'
 import { Button } from '@/components/ui/button'
@@ -35,6 +36,7 @@ const FIELD_LABEL_CLASS = 'text-xs font-medium text-text-secondary'
  * wizard uses to connect `owner/name` without ever asking for the owner.
  */
 export function GithubAuthStep({ onAuthed, repoName }: GithubAuthStepProps): ReactElement {
+  const { t } = useTranslation('settings')
   const deviceFlow = useDeviceFlowAuth()
   const pat = useAsyncAction()
   const [patValue, setPatValue] = useState('')
@@ -81,7 +83,7 @@ export function GithubAuthStep({ onAuthed, repoName }: GithubAuthStepProps): Rea
   async function verifyAndFinish(): Promise<void> {
     const user = await fetchSignedInUser()
     if (user === null) {
-      throw new Error('GitHub rejected that token — check it and try again.')
+      throw new Error(t('githubConnect.tokenRejected'))
     }
     reportAuthed(user)
   }
@@ -122,7 +124,7 @@ export function GithubAuthStep({ onAuthed, repoName }: GithubAuthStepProps): Rea
   async function savePat(): Promise<void> {
     const token = patValue.trim()
     if (token.length === 0) {
-      pat.setError('Paste a token first.')
+      pat.setError(t('githubConnect.pasteTokenFirst'))
       return
     }
     // Keychain writes can fail (locked keychain, denied access) and GitHub
@@ -147,33 +149,25 @@ export function GithubAuthStep({ onAuthed, repoName }: GithubAuthStepProps): Rea
               disabled={deviceFlow.busy || pat.pending}
               size="sm"
             >
-              Sign in with GitHub
+              {t('githubConnect.signIn')}
             </Button>
             <button
               type="button"
               className="text-left text-xs text-text-muted underline"
               onClick={() => setUsePat(true)}
             >
-              Use a personal access token instead
+              {t('githubConnect.usePatInstead')}
             </button>
           </>
         ) : (
           <>
             <p className="text-xs text-text-muted">
-              Paste a fine-grained personal access token with <strong>Contents</strong> read/write
-              access to{' '}
-              {repoName !== undefined ? (
-                <>
-                  the <strong>{repoName}</strong> repository
-                </>
-              ) : (
-                'your backup repository'
-              )}{' '}
-              (GitHub → Settings → Developer settings → Fine-grained tokens). It is stored in
-              your OS keychain, never in your graph.
+              {repoName !== undefined
+                ? t('githubConnect.patHelpNamed', { repo: repoName })
+                : t('githubConnect.patHelpGeneric')}
             </p>
             <label className="flex flex-col gap-1">
-              <span className={FIELD_LABEL_CLASS}>Personal access token</span>
+              <span className={FIELD_LABEL_CLASS}>{t('githubConnect.patLabel')}</span>
               <Input
                 autoFocus
                 type="password"
@@ -183,7 +177,7 @@ export function GithubAuthStep({ onAuthed, repoName }: GithubAuthStepProps): Rea
               />
             </label>
             <Button onClick={() => void savePat()} disabled={pat.pending} size="sm">
-              {pat.pending ? 'Checking…' : 'Save token'}
+              {pat.pending ? t('githubConnect.checking') : t('githubConnect.saveToken')}
             </Button>
             {isDeviceFlowConfigured() ? (
               <button
@@ -191,7 +185,7 @@ export function GithubAuthStep({ onAuthed, repoName }: GithubAuthStepProps): Rea
                 className="text-left text-xs text-text-muted underline"
                 onClick={() => setUsePat(false)}
               >
-                Sign in with GitHub instead
+                {t('githubConnect.signInInstead')}
               </button>
             ) : null}
           </>
@@ -199,24 +193,20 @@ export function GithubAuthStep({ onAuthed, repoName }: GithubAuthStepProps): Rea
       ) : (
         <div className="flex flex-col gap-2">
           <p className="text-xs text-text-muted">
-            {copyState === 'copied'
-              ? 'Code copied — paste it on the GitHub page:'
-              : 'GitHub will ask for this one-time code:'}
+            {copyState === 'copied' ? t('githubConnect.codeCopied') : t('githubConnect.codePrompt')}
           </p>
           <p className="select-text text-center font-mono text-xl tracking-[0.3em] text-text">
             {flowView.userCode}
           </p>
           <Button size="sm" onClick={() => void copyCodeAndOpen(flowView)}>
-            {copyState === 'failed' ? 'Open GitHub' : 'Copy code and open GitHub'}
+            {copyState === 'failed' ? t('githubConnect.openGithub') : t('githubConnect.copyAndOpen')}
           </Button>
           {copyState === 'failed' ? (
-            <p className="text-xs text-text-muted">
-              Couldn’t copy automatically — select the code above and copy it first.
-            </p>
+            <p className="text-xs text-text-muted">{t('githubConnect.copyFailed')}</p>
           ) : null}
           {openFailed ? (
             <p className="select-text text-xs text-text-muted">
-              Couldn’t open the browser — visit {flowView.verificationUri} yourself.
+              {t('githubConnect.openFailed', { uri: flowView.verificationUri })}
             </p>
           ) : null}
         </div>

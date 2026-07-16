@@ -1,4 +1,5 @@
 import { useState, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Cloud, HardDrive } from 'lucide-react'
 import { InlineAlert } from '@/components/inline-alert'
 import { Button } from '@/components/ui/button'
@@ -32,6 +33,7 @@ type PendingChoice = string | 'icloud-create' | 'local' | null
  * once the lookup finished.
  */
 export function MobileOnboardingScreen(): ReactElement {
+  const { t } = useTranslation('mobile')
   const { mobileStorageInfo, mobileStorageResolving, completeOnboarding } = useGraph()
   const action = useAsyncAction()
   const [pendingChoice, setPendingChoice] = useState<PendingChoice>(null)
@@ -63,11 +65,9 @@ export function MobileOnboardingScreen(): ReactElement {
           </div>
           <div className="space-y-2">
             <h1 className="text-[28px] font-semibold leading-tight tracking-tight">
-              Start with iCloud sync
+              {t('onboarding.title')}
             </h1>
-            <p className="text-sm leading-6 text-text-secondary">
-              Keep your notes up to date across iPhone, iPad, and Mac with iCloud Drive.
-            </p>
+            <p className="text-sm leading-6 text-text-secondary">{t('onboarding.subtitle')}</p>
           </div>
         </header>
 
@@ -101,7 +101,7 @@ export function MobileOnboardingScreen(): ReactElement {
               ) : (
                 <HardDrive aria-hidden strokeWidth={1.75} />
               )}
-              {pendingChoice === 'local' ? 'Setting up…' : 'Or, use this device only'}
+              {pendingChoice === 'local' ? t('onboarding.settingUp') : t('onboarding.localOnly')}
             </Button>
           </div>
         </div>
@@ -113,11 +113,12 @@ export function MobileOnboardingScreen(): ReactElement {
 }
 
 function IcloudUnavailableSection(): ReactElement {
+  const { t } = useTranslation('mobile')
   return (
     <section className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-4">
-      <OnboardingIcloudHeader description="Turn on iCloud Drive to keep your notes synced between devices." />
+      <OnboardingIcloudHeader description={t('onboarding.icloudUnavailableDesc')} />
       <p className="rounded-lg bg-muted/60 px-3 py-2 text-xs leading-5 text-text-muted">
-        Sign in to iCloud on this device, then reopen Reflect.
+        {t('onboarding.icloudSignIn')}
       </p>
     </section>
   )

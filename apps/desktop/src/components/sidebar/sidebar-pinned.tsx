@@ -1,4 +1,5 @@
 import { useCallback, useState, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   closestCenter,
   DndContext,
@@ -30,6 +31,7 @@ export function SidebarPinned(): ReactElement | null {
   const reorder = useReorderPinnedNotes(pinned)
   const { settings } = useSettings()
   const { route } = useRouter()
+  const { t } = useTranslation('shell')
   const [activePath, setActivePath] = useState<string | null>(null)
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }))
   const activeNote =
@@ -59,9 +61,9 @@ export function SidebarPinned(): ReactElement | null {
   return (
     // px-6.5 starts the section's text at the nav rows' icon edge (the nav's
     // px-4 plus each row's px-2.5).
-    <section aria-label="Pinned notes" className="px-6.5">
+    <section aria-label={t('sidebar.pinned')} className="px-6.5">
       <h2 className="pt-4 text-2xs font-medium leading-5 tracking-wide text-text-muted">
-        Pinned notes
+        {t('sidebar.pinned')}
       </h2>
       <DndContext
         sensors={sensors}

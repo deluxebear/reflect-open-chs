@@ -1,0 +1,381 @@
+{
+  "pageTitle": "Settings",
+  "pageAria": "Settings",
+  "navigator": {
+    "ariaLabel": "Settings sections"
+  },
+  "sections": {
+    "appearance": "Appearance",
+    "editor": "Editor",
+    "date-time": "Date & time",
+    "templates": "Note templates",
+    "all-notes": "All notes",
+    "search": "Search",
+    "ai-providers": "AI providers",
+    "ai-prompts": "AI prompts",
+    "agents": "Agents",
+    "integrations": "Integrations",
+    "sync": "Sync",
+    "import": "Import",
+    "about": "About",
+    "destructive": "Danger zone"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "add": "Add",
+    "save": "Save",
+    "rename": "Rename",
+    "disable": "Disable",
+    "tryAgain": "Try again"
+  },
+  "appearance": {
+    "theme": {
+      "legend": "Theme",
+      "description": "System follows your OS appearance. Saved with your settings.",
+      "system": "System",
+      "light": "Light",
+      "dark": "Dark"
+    },
+    "locale": {
+      "legend": "Language",
+      "description": "Controls Reflect’s interface language. Your notes stay as you wrote them.",
+      "system": "System",
+      "en": "English",
+      "zh-CN": "简体中文"
+    }
+  },
+  "editor": {
+    "markdownSyntax": {
+      "legend": "Markdown syntax",
+      "description": "How literal markdown characters (**, `, etc.) are displayed while editing.",
+      "hide": "Hide",
+      "hideDesc": "Always hidden",
+      "hybrid": "Hybrid",
+      "hybridDesc": "Only around the cursor",
+      "show": "Show",
+      "showDesc": "Always visible"
+    },
+    "textSize": {
+      "legend": "Text size",
+      "description": "The reading size of the note editor.",
+      "small": "Small",
+      "smallDesc": "Compact",
+      "medium": "Medium",
+      "mediumDesc": "Default",
+      "large": "Large",
+      "largeDesc": "Comfortable"
+    },
+    "fullWidth": {
+      "legend": "Full-width notes",
+      "description": "Stretch note text across the window with a small edge margin."
+    },
+    "spellCheck": {
+      "legend": "Spell check",
+      "description": "Underline misspelled words while you type."
+    },
+    "defaultBullet": {
+      "legend": "Start with a bullet",
+      "description": "New and empty notes open with a single bullet point, ready to type."
+    },
+    "bulletAfterHeading": {
+      "legend": "Bullet after a heading",
+      "description": "Pressing Return at the end of a heading starts a new bullet."
+    },
+    "keyboard": {
+      "legend": "Keyboard shortcuts",
+      "description": "Show every app and editor shortcut.",
+      "showAll": "Show all"
+    }
+  },
+  "dateTime": {
+    "dateFormat": {
+      "legend": "Date format",
+      "description": "The style for dates shown throughout Reflect, including daily note titles.",
+      "aria": "Date format"
+    },
+    "weekStart": {
+      "legend": "Start week on",
+      "description": "The first day shown in calendars.",
+      "aria": "Start week on",
+      "monday": "Monday",
+      "sunday": "Sunday"
+    },
+    "timeFormat": {
+      "legend": "Time format",
+      "description": "How times are shown throughout Reflect — 8:22pm or 20:22.",
+      "12h": "12-hour",
+      "24h": "24-hour"
+    }
+  },
+  "templates": {
+    "legend": "Note templates",
+    "description": "Markdown files in your graph's templates/ folder, inserted from the ⌘K palette.",
+    "new": "New template",
+    "renameTitle": "Rename template",
+    "renameAria": "Template name",
+    "renameAriaLabel": "Rename {{title}}",
+    "deleteAriaLabel": "Delete {{title}}",
+    "deleteTitle": "Delete template?",
+    "deleteDescription": "“{{title}}” moves to the trash and can be recovered from there.",
+    "trashing": "Trashing template"
+  },
+  "allNotes": {
+    "filterTags": {
+      "legend": "Filter tags",
+      "description": "Tags pinned as one-click filters at the top of the All Notes screen.",
+      "empty": "No pinned tags — the screen shows only the All tab and the Custom menu.",
+      "addAria": "Add filter tag",
+      "placeholder": "Add a tag (e.g. book)",
+      "add": "Add",
+      "removeAria": "Remove {{tag}}",
+      "invalidTag": "\"{{tag}}\" can't be a tag — tags start with a letter and use letters, numbers, /, _ or -."
+    }
+  },
+  "search": {
+    "semantic": {
+      "legend": "Semantic search",
+      "description": "Find notes by meaning, not just keywords — smarter ⌘K results and related notes. Runs entirely on this device; enabling downloads a small model (~90 MB) once.",
+      "enable": "Enable semantic search",
+      "modelReady": "Model downloaded ({{model}})",
+      "loadFailed": "Couldn’t load the model: {{message}}",
+      "downloadProgress": "Downloading the model — {{downloaded}} of {{total}}",
+      "preparing": "Preparing the model…",
+      "downloadAria": "Semantic search model download",
+      "megabytes": "{{count}} MB"
+    },
+    "ocr": {
+      "legend": "OCR assets",
+      "description": "Make text in images and PDFs searchable. Private notes are skipped.",
+      "autoLabel": "OCR new assets automatically",
+      "backfill": "Backfill assets",
+      "backfilling": "Backfilling…",
+      "needProvider": "Add an AI provider to enable this.",
+      "confirmTitle": "Backfill assets?",
+      "confirmDescription": "Images and PDFs in non-private notes will be sent to your AI provider so their text can appear in search. Assets that already have OCR are skipped."
+    },
+    "rebuild": {
+      "legend": "Rebuild index",
+      "description": "Reflect keeps a local index of your notes to power search and links. If results ever look stale or incomplete, rebuild it — your notes are never changed.",
+      "button": "Rebuild index",
+      "rebuilding": "Rebuilding…"
+    }
+  },
+  "aiProviders": {
+    "empty": "No AI providers configured. Add a provider API key to use AI features — keys are stored in your OS keychain and calls go directly to the provider.",
+    "add": "Add provider",
+    "dialog": {
+      "title": "Add AI provider",
+      "description": "The API key is stored in your OS keychain, never in your graph.",
+      "provider": "Provider",
+      "providerAria": "Provider",
+      "defaultModel": "Default model",
+      "defaultModelAria": "Default model",
+      "modelSearchPlaceholder": "Search or type a model name…",
+      "modelUseTyped": "Press Enter to use “{{value}}”",
+      "apiKey": "API key",
+      "apiKeyRequired": "Enter an API key.",
+      "useAsDefault": "Use as the default provider",
+      "unverified": "Couldn't reach {{provider}} to verify the key. Submit again to save it unverified.",
+      "saveAnyway": "Save anyway",
+      "addProvider": "Add provider"
+    }
+  },
+  "aiPrompts": {
+    "empty": "No saved prompts. Select text in a note and press ⌘⇧J to run the built-in prompts; prompts you save here appear after them.",
+    "add": "Add prompt",
+    "dialog": {
+      "addTitle": "Add prompt",
+      "editTitle": "Edit prompt",
+      "description": "The prompt runs on the text you select in a note. Use {{token}} where the selection should appear.",
+      "label": "Label",
+      "labelPlaceholder": "Translate to French",
+      "prompt": "Prompt",
+      "promptPlaceholder": "Translate the following text to French.\n\n{{token}}",
+      "result": "Result",
+      "modeReplace": "Replaces the selection",
+      "modeAppend": "Inserted below the selection",
+      "addButton": "Add prompt",
+      "saveButton": "Save"
+    }
+  },
+  "githubConnect": {
+    "title": "Connect GitHub",
+    "stepRepo": "Back up this graph to a private GitHub repository.",
+    "stepRepoMobile": "Back up this graph to a private GitHub repository and sync it with Reflect on your other devices.",
+    "stepAuth": "Sign in so Reflect can push your backups.",
+    "stepFinish": "Connecting your repository…",
+    "createNew": "Create a new private repository",
+    "useExisting": "Use an existing repository",
+    "newRepoAria": "New repository name",
+    "existingRepoAria": "Existing repository",
+    "repoName": "Repository name",
+    "repository": "Repository",
+    "ownerNamePlaceholder": "owner/name",
+    "continue": "Continue",
+    "signedInAs": "Signed in as",
+    "publicRepo": "{{owner}}/{{name}} is public.",
+    "publicWarning": "Anyone on the internet can read everything in this graph, including notes marked private.",
+    "chooseAnother": "Choose another repo",
+    "backupPublic": "Back up to a public repo",
+    "changeRepo": "Change repository",
+    "createOnGithub": "Create {{owner}}/{{name}} on GitHub. Reflect will connect it as soon as it exists.",
+    "createOnGithubButton": "Create on GitHub…",
+    "waitingRepo": "Waiting for the repository…",
+    "grantIfNeededPrefix": "If it doesn’t connect, ",
+    "grantIfNeededLink": "grant the Reflect app access",
+    "grantIfNeededSuffix": " to just this repository.",
+    "grantIfNeededPat": "If it doesn’t connect, add it to your token’s repository access.",
+    "grantAccess": "Give Reflect access to {{owner}}/{{name}} so it can back up here.",
+    "grantAccessButton": "Grant access on GitHub…",
+    "onlySelectRepos": "On GitHub, choose Only select repositories — Reflect only needs this one.",
+    "waitingAccess": "Waiting for access…",
+    "connecting": "Connecting…",
+    "signIn": "Sign in with GitHub",
+    "usePatInstead": "Use a personal access token instead",
+    "patHelpNamed": "Paste a fine-grained personal access token with Contents read/write access to the {{repo}} repository (GitHub → Settings → Developer settings → Fine-grained tokens). It is stored in your OS keychain, never in your graph.",
+    "patHelpGeneric": "Paste a fine-grained personal access token with Contents read/write access to your backup repository (GitHub → Settings → Developer settings → Fine-grained tokens). It is stored in your OS keychain, never in your graph.",
+    "patLabel": "Personal access token",
+    "checking": "Checking…",
+    "saveToken": "Save token",
+    "signInInstead": "Sign in with GitHub instead",
+    "codeCopied": "Code copied — paste it on the GitHub page:",
+    "codePrompt": "GitHub will ask for this one-time code:",
+    "openGithub": "Open GitHub",
+    "copyAndOpen": "Copy code and open GitHub",
+    "copyFailed": "Couldn’t copy automatically — select the code above and copy it first.",
+    "openFailed": "Couldn’t open the browser — visit {{uri}} yourself.",
+    "tokenRejected": "GitHub rejected that token — check it and try again.",
+    "pasteTokenFirst": "Paste a token first."
+  },
+  "import": {
+    "legend": "Reflect V1",
+    "description": "Choose the .zip export from Reflect V1. Its notes and attachments are added to this graph; nothing already here is replaced.",
+    "dialogTitle": "Import Reflect V1 export",
+    "zipFilter": "Zip archives",
+    "importZip": "Import zip...",
+    "importing": "Importing...",
+    "runningTitle": "Importing from Reflect V1",
+    "doneTitle": "Import complete",
+    "failedTitle": "Import failed",
+    "done": "Done",
+    "cancelling": "Cancelling…",
+    "reading": "Reading the export…",
+    "downloading": "Downloading attachments… {{done}} of {{total}}",
+    "addingNotes": "Adding notes… {{done}} of {{total}}",
+    "filesImported_one": "{{count}} file imported",
+    "filesImported_other": "{{count}} files imported",
+    "dailiesMerged_one": "{{count}} daily note merged",
+    "dailiesMerged_other": "{{count}} daily notes merged",
+    "renamed": "{{count}} renamed to avoid a name clash",
+    "skipped": "{{count}} already present",
+    "attachmentsDownloaded_one": "{{count}} attachment downloaded",
+    "attachmentsDownloaded_other": "{{count}} attachments downloaded",
+    "failedAssets_one": " {{count}} attachment couldn't be downloaded and still links to Reflect V1.",
+    "failedAssets_other": " {{count}} attachments couldn't be downloaded and still link to Reflect V1."
+  },
+  "about": {
+    "productName": "Reflect Open",
+    "updates": {
+      "legend": "Updates",
+      "description": "Reflect checks for new versions on launch and installs them only when you say so.",
+      "checking": "Checking…",
+      "install": "Install {{version}}",
+      "downloading": "Downloading…",
+      "downloadingPercent": "Downloading {{percent}}%",
+      "restart": "Restart to update",
+      "retryInstall": "Retry install",
+      "check": "Check for updates",
+      "upToDate": "You're up to date."
+    }
+  },
+  "destructive": {
+    "forget": {
+      "legend": "Saved graph",
+      "description": "Forget this graph. Files stay on disk.",
+      "button": "Forget graph",
+      "confirmTitle": "Forget graph?",
+      "confirmDescription": "Remove {{graphId}} from saved graphs. Files stay on disk.",
+      "forgetting": "Forgetting…"
+    },
+    "delete": {
+      "legend": "Delete graph",
+      "description": "Move this graph and all of its notes to the trash.",
+      "button": "Delete graph",
+      "confirmTitle": "Delete graph?",
+      "confirmDescription": "Move {{graphId}} and all of its notes to the trash. Type {{graphName}} to confirm.",
+      "nameAria": "Graph name",
+      "deleting": "Deleting…"
+    }
+  },
+  "agents": {
+    "skill": {
+      "legend": "Agent skill",
+      "description": "Teach Claude Code and other agents to read “{{name}}” with the reflect CLI.",
+      "conflict": "A file Reflect doesn’t manage already exists there. Move it aside to install.",
+      "installed": "Installed",
+      "install": "Install skill",
+      "update": "Update skill",
+      "remove": "Remove"
+    }
+  },
+  "integrations": {
+    "contacts": {
+      "legend": "Contacts",
+      "description": "Suggest a contact's email and phone when a note's title matches their name.",
+      "denied": "Reflect doesn’t have contacts access.",
+      "openSettings": "Open System Settings",
+      "deniedHint": "to allow it, then return here.",
+      "notAsked": "Reflect hasn’t asked for contacts access yet.",
+      "allowAccess": "Allow contacts access"
+    },
+    "calendar": {
+      "legend": "Calendar events",
+      "description": "Show the day's meetings from Apple Calendar beside the daily note.",
+      "needPermission": "Reflect needs permission to read your calendars.",
+      "cantRead": "Reflect can’t read your calendars. Allow it under Privacy & Security → Calendars.",
+      "grantAccess": "Grant access",
+      "openSettings": "Open System Settings",
+      "noneFound": "No calendars found. Add accounts in System Settings → Internet Accounts.",
+      "selected": "{{enabled}}/{{total}} calendars selected",
+      "choose": "Choose calendars…",
+      "chooseTitle": "Choose calendars",
+      "chooseDescription": "Select the calendars Reflect shows beside your daily note."
+    }
+  },
+  "sync": {
+    "backup": {
+      "legend": "Backup",
+      "legendGithub": "GitHub backup",
+      "descriptionGithub": "Back up this graph to a GitHub repository. Edits back up automatically a few moments after you stop typing.",
+      "descriptionRemote": "This graph backs up to its own git remote. Edits back up automatically a few moments after you stop typing.",
+      "connect": "Connect GitHub…",
+      "checking": "Checking backup status…",
+      "backedUp": "Backed up",
+      "backingUp": "Backing up…",
+      "backUpNow": "Back up now",
+      "disconnect": "Disconnect"
+    },
+    "icloud": {
+      "legend": "iCloud Drive",
+      "hosted": "This graph lives in iCloud Drive — edits sync to your other devices, and conflicts resolve automatically where possible.",
+      "available": "Copy this graph into iCloud Drive to sync it with your other devices.",
+      "unavailable": "iCloud Drive isn’t reachable from this app — sign in to iCloud, or use a build with iCloud enabled.",
+      "checkingDownloads": "Checking downloaded notes…",
+      "allDownloaded": "All note files are downloaded.",
+      "oneDownloading": "1 note is still downloading from iCloud.",
+      "manyDownloading": "{{count}} notes are still downloading from iCloud.",
+      "noReview": "No notes need review.",
+      "oneNeedsReview": "1 note needs review",
+      "manyNeedReview": "{{count}} notes need review",
+      "oneFork": "1 sync fork",
+      "manyForks": "{{count}} sync forks",
+      "noGraphs": "No graphs in iCloud Drive yet.",
+      "oneGraph": "1 graph in iCloud Drive.",
+      "manyGraphs": "{{count}} graphs in iCloud Drive.",
+      "moveButton": "Move graph to iCloud…",
+      "disconnectFail": "The graph moved to iCloud, but GitHub backup could not be disconnected from the original folder: {{message}}",
+      "openFail": "The copy landed in iCloud but could not be opened — open it from Saved graphs."
+    }
+  }
+}

@@ -4,6 +4,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { useQueryClient } from '@tanstack/react-query'
 import { errorMessage } from '@reflect/core'
 import type { PinnedNote } from '@reflect/core'
+import { useTranslation } from 'react-i18next'
 import {
   invalidatePinnedNotesCache,
   updatePinnedNotesCache,
@@ -27,6 +28,7 @@ interface SidebarSortablePinnedRowProps {
 export const SidebarSortablePinnedRow = memo(function SidebarSortablePinnedRow({
   note,
 }: SidebarSortablePinnedRowProps): ReactElement {
+  const { t } = useTranslation('shell')
   const { route } = useRouter()
   const navigateNoteLink = useNoteLinkNavigation()
   const { settings } = useSettings()
@@ -59,7 +61,7 @@ export const SidebarSortablePinnedRow = memo(function SidebarSortablePinnedRow({
       void openNativeContextMenu({
         items: [
           {
-            text: 'Unpin Note',
+            text: t('sidebar.unpinNote'),
             action: () => {
               updatePinnedNotesCache(queryClient, graph.root, (current) =>
                 current?.filter((pinnedNote) => pinnedNote.path !== note.path),
@@ -72,10 +74,10 @@ export const SidebarSortablePinnedRow = memo(function SidebarSortablePinnedRow({
           },
         ],
       }).catch((cause: unknown) => {
-        startOperation('Opening note menu').fail(errorMessage(cause))
+        startOperation(t('sidebar.openingNoteMenu')).fail(errorMessage(cause))
       })
     },
-    [graph, note.path, queryClient],
+    [graph, note.path, queryClient, t],
   )
 
   return (

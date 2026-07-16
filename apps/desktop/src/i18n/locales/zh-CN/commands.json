@@ -1,0 +1,195 @@
+{
+  "menu": {
+    "reflect": "Reflect",
+    "file": "文件",
+    "edit": "编辑",
+    "view": "显示",
+    "window": "窗口",
+    "help": "帮助",
+    "about": "关于 Reflect",
+    "settings": "设置…",
+    "hide": "隐藏 Reflect",
+    "quit": "退出 Reflect",
+    "zoom": "缩放",
+    "services": "服务",
+    "hideOthers": "隐藏其他",
+    "showAll": "全部显示",
+    "undo": "撤销",
+    "redo": "重做",
+    "cut": "剪切",
+    "copy": "拷贝",
+    "paste": "粘贴",
+    "selectAll": "全选",
+    "closeWindow": "关闭",
+    "minimize": "最小化",
+    "bringAllToFront": "前置全部窗口"
+  },
+  "graph": {
+    "switch1": {
+      "title": "切换到图 1",
+      "keywords": "graph,workspace,switch,recent,图"
+    },
+    "switch2": {
+      "title": "切换到图 2",
+      "keywords": "graph,workspace,switch,recent,图"
+    },
+    "switch3": {
+      "title": "切换到图 3",
+      "keywords": "graph,workspace,switch,recent,图"
+    },
+    "switch4": {
+      "title": "切换到图 4",
+      "keywords": "graph,workspace,switch,recent,图"
+    },
+    "switch5": {
+      "title": "切换到图 5",
+      "keywords": "graph,workspace,switch,recent,图"
+    },
+    "switch6": {
+      "title": "切换到图 6",
+      "keywords": "graph,workspace,switch,recent,图"
+    },
+    "switch7": {
+      "title": "切换到图 7",
+      "keywords": "graph,workspace,switch,recent,图"
+    },
+    "switch8": {
+      "title": "切换到图 8",
+      "keywords": "graph,workspace,switch,recent,图"
+    },
+    "switch9": {
+      "title": "切换到图 9",
+      "keywords": "graph,workspace,switch,recent,图"
+    }
+  },
+  "nav": {
+    "today": {
+      "title": "回到今天",
+      "keywords": "daily,now,日记,今日,今天"
+    },
+    "allNotes": {
+      "title": "全部笔记",
+      "keywords": "notes,list,browse,library,全部笔记,笔记列表"
+    },
+    "tasks": {
+      "title": "任务",
+      "keywords": "todo,todos,checklist,checkbox,open,任务,待办"
+    }
+  },
+  "note": {
+    "new": {
+      "title": "新建笔记",
+      "keywords": "create,新建,新笔记"
+    },
+    "openInNewWindow": {
+      "title": "在新窗口打开笔记",
+      "keywords": "window,duplicate,pop out,新窗口"
+    },
+    "togglePin": {
+      "title": "置顶或取消置顶笔记",
+      "keywords": "pinned,favorite,bookmark,sidebar,置顶"
+    },
+    "togglePrivate": {
+      "title": "标记或取消私密笔记",
+      "keywords": "privacy,lock,secret,hide,ai,私密,锁定"
+    },
+    "publishGist": {
+      "title": "用私密链接分享",
+      "keywords": "gist,github,share,publish,private link,export,分享"
+    },
+    "attachFile": {
+      "title": "附加文件…",
+      "keywords": "upload,attachment,import,pdf,document,insert,附件"
+    },
+    "copyDeepLink": {
+      "title": "复制深度链接",
+      "keywords": "url,share,clipboard,reflect://,address,链接"
+    },
+    "random": {
+      "title": "打开随机笔记",
+      "keywords": "shuffle,serendipity,随机"
+    }
+  },
+  "chat": {
+    "open": {
+      "title": "对话",
+      "keywords": "ai,assistant,copilot,ask,对话,聊天"
+    },
+    "new": {
+      "title": "新对话",
+      "keywords": "ai,assistant,copilot,conversation,新对话"
+    }
+  },
+  "history": {
+    "back": {
+      "title": "后退"
+    },
+    "forward": {
+      "title": "前进"
+    }
+  },
+  "palette": {
+    "open": {
+      "title": "搜索…",
+      "keywords": "find,open,搜索"
+    }
+  },
+  "template": {
+    "insert": {
+      "title": "插入模板…",
+      "keywords": "snippet,boilerplate,stamp,模板"
+    },
+    "new": {
+      "title": "新建模板",
+      "keywords": "template,snippet,boilerplate,create,模板"
+    }
+  },
+  "audioMemo": {
+    "toggle": {
+      "title": "录制语音备忘",
+      "keywords": "voice,mic,dictate,transcribe,speech,capture,录音"
+    }
+  },
+  "theme": {
+    "toggle": {
+      "title": "切换主题",
+      "keywords": "dark,light,appearance,主题"
+    }
+  },
+  "sidebar": {
+    "toggle": {
+      "title": "显示或隐藏侧栏",
+      "keywords": "collapse,expand,navigation,focus,侧栏"
+    }
+  },
+  "settings": {
+    "open": {
+      "title": "打开设置",
+      "keywords": "preferences,config,options,设置"
+    }
+  },
+  "shortcuts": {
+    "show": {
+      "title": "键盘快捷键",
+      "keywords": "cheat,sheet,keys,bindings,hotkeys,help,快捷键"
+    }
+  },
+  "semantic": {
+    "enable": {
+      "title": "启用语义搜索",
+      "keywords": "embeddings,ai,similar,model,语义搜索"
+    }
+  },
+  "index": {
+    "rebuild": {
+      "title": "重建搜索索引",
+      "keywords": "reindex,refresh,重建索引"
+    }
+  },
+  "dev": {
+    "toggleDevtools": {
+      "title": "开发者工具",
+      "keywords": "devtools,inspector,debug,console,inspect,web inspector,开发者工具"
+    }
+  }
+}

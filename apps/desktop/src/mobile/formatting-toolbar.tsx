@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   ArrowDown,
   ArrowUp,
@@ -34,6 +35,7 @@ import { hapticImpactLight } from '@/mobile/haptics'
  * visible even when the formatting buttons overflow on narrow screens.
  */
 export function MobileFormattingToolbar(): ReactElement | null {
+  const { t } = useTranslation('mobile')
   const toolbar = useFormattingToolbar()
   if (toolbar === null) {
     return null
@@ -42,55 +44,55 @@ export function MobileFormattingToolbar(): ReactElement | null {
   return (
     <div
       role="toolbar"
-      aria-label="Formatting"
+      aria-label={t('formatting.aria')}
       className="flex shrink-0 items-center border-t border-border"
     >
       <div className="flex min-w-0 flex-1 items-center overflow-x-auto px-1">
         <ToolbarButton
-          label="Slash command"
+          label={t('formatting.slash')}
           icon={<Slash className="size-5" />}
           onPress={() => commands.insertTrigger('/')}
         />
         <ToolbarButton
-          label="Bullet list"
+          label={t('formatting.bulletList')}
           icon={<List className="size-5" />}
           onPress={commands.toggleBulletList}
         />
         <ToolbarButton
-          label="Cycle checklist and task"
+          label={t('formatting.cycleChecklist')}
           icon={<ListTodo className="size-5" />}
           onPress={commands.cycleCheckableList}
         />
         <ToolbarButton
-          label="Link note"
+          label={t('formatting.linkNote')}
           icon={<Brackets className="size-5" />}
           onPress={() => commands.insertTrigger('[[')}
         />
         <ToolbarButton
-          label="Tag"
+          label={t('formatting.tag')}
           icon={<Hash className="size-5" />}
           onPress={() => commands.insertTrigger('#')}
         />
         <ToolbarButton
-          label="Outdent"
+          label={t('formatting.outdent')}
           icon={<IndentDecrease className="size-5" />}
           disabled={!capabilities.canDedent}
           onPress={commands.dedent}
         />
         <ToolbarButton
-          label="Indent"
+          label={t('formatting.indent')}
           icon={<IndentIncrease className="size-5" />}
           disabled={!capabilities.canIndent}
           onPress={commands.indent}
         />
         <ToolbarButton
-          label="Move up"
+          label={t('formatting.moveUp')}
           icon={<ArrowUp className="size-5" />}
           disabled={!capabilities.canMoveUp}
           onPress={commands.moveUp}
         />
         <ToolbarButton
-          label="Move down"
+          label={t('formatting.moveDown')}
           icon={<ArrowDown className="size-5" />}
           disabled={!capabilities.canMoveDown}
           onPress={commands.moveDown}
@@ -98,7 +100,7 @@ export function MobileFormattingToolbar(): ReactElement | null {
       </div>
       <div className="shrink-0 border-l border-border px-1">
         <ToolbarButton
-          label="Hide keyboard"
+          label={t('formatting.hideKeyboard')}
           icon={<ChevronDown className="size-5" />}
           onPress={commands.dismissKeyboard}
         />

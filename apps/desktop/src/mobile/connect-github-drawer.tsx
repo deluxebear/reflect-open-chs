@@ -1,4 +1,5 @@
 import { useId, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { InlineAlert } from '@/components/inline-alert'
 import { ConnectGithubFinishStep } from '@/components/settings/connect-github-finish-step'
 import { GithubAuthStep } from '@/components/settings/github-auth-step'
@@ -12,12 +13,6 @@ interface ConnectGithubDrawerProps {
   onOpenChange: (open: boolean) => void
   /** Delay between repo-existence polls on the create handoff (test hook). */
   pollIntervalMs?: number
-}
-
-const STEP_DESCRIPTIONS: Record<ConnectWizardStep, string> = {
-  repo: 'Back up this graph to a private GitHub repository and sync it with Reflect on your other devices.',
-  auth: 'Sign in so Reflect can push your backups.',
-  finish: 'Connecting your repository…',
 }
 
 const FIELD_LABEL_CLASS = 'text-xs font-medium text-text-secondary'
@@ -39,9 +34,10 @@ export function ConnectGithubDrawer({
   onOpenChange,
   pollIntervalMs,
 }: ConnectGithubDrawerProps): ReactElement {
+  const { t } = useTranslation('settings')
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent aria-label="Connect GitHub">
+      <DrawerContent aria-label={t('githubConnect.title')}>
         {open ? (
           <ConnectWizardSheet
             onClose={() => onOpenChange(false)}
@@ -61,6 +57,7 @@ function ConnectWizardSheet({
   onClose: () => void
   pollIntervalMs?: number
 }): ReactElement {
+  const { t } = useTranslation('settings')
   // Never derived from the graph name: the local graph's display name is the
   // sandbox folder's basename — literally "Documents".
   const wizard = useConnectGithubWizard({
@@ -71,10 +68,21 @@ function ConnectWizardSheet({
   const createNameId = useId()
   const existingRepoId = useId()
 
+  const stepDescription = (step: ConnectWizardStep): string => {
+    switch (step) {
+      case 'repo':
+        return t('githubConnect.stepRepoMobile')
+      case 'auth':
+        return t('githubConnect.stepAuth')
+      case 'finish':
+        return t('githubConnect.stepFinish')
+    }
+  }
+
   return (
     <div className="flex flex-col gap-3">
-      <DrawerTitle>Connect GitHub</DrawerTitle>
-      <p className="text-xs text-text-muted">{STEP_DESCRIPTIONS[wizard.step]}</p>
+      <DrawerTitle>{t('githubConnect.title')}</DrawerTitle>
+      <p className="text-xs text-text-muted">{stepDescription(wizard.step)}</p>
 
       {wizard.step === 'repo' ? (
         <>
@@ -86,12 +94,12 @@ function ConnectWizardSheet({
                 checked={wizard.mode === 'create'}
                 onChange={() => wizard.setMode('create')}
               />
-              Create a new private repository
+              {t('githubConnect.createNew')}
             </label>
             {wizard.mode === 'create' ? (
               <div className="flex flex-col gap-1.5">
                 <label htmlFor={createNameId} className={FIELD_LABEL_CLASS}>
-                  Repository name
+                  {t('githubConnect.repoName')}
                 </label>
                 <Input
                   id={createNameId}
@@ -113,17 +121,17 @@ function ConnectWizardSheet({
                 checked={wizard.mode === 'existing'}
                 onChange={() => wizard.setMode('existing')}
               />
-              Use an existing repository
+              {t('githubConnect.useExisting')}
             </label>
             {wizard.mode === 'existing' ? (
               <div className="flex flex-col gap-1.5">
                 <label htmlFor={existingRepoId} className={FIELD_LABEL_CLASS}>
-                  Repository
+                  {t('githubConnect.repository')}
                 </label>
                 <Input
                   id={existingRepoId}
                   value={wizard.existingRepo}
-                  placeholder="owner/name"
+                  placeholder={t('githubConnect.ownerNamePlaceholder')}
                   autoCapitalize="none"
                   autoCorrect="off"
                   enterKeyHint="go"
@@ -137,7 +145,7 @@ function ConnectWizardSheet({
               </div>
             ) : null}
           </div>
-          <Button onClick={wizard.continueFromRepo}>Continue</Button>
+          <Button onClick={wizard.continueFromRepo}>{t('githubConnect.continue')}</Button>
         </>
       ) : null}
 

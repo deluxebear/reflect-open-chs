@@ -1,5 +1,6 @@
 import type { ReactElement, ReactNode } from 'react'
 import { Sparkles } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { InlineAlert } from '@/components/inline-alert'
 import { ensureEmbeddingsVisibly, retryFailedEmbeddings } from '@/lib/semantic'
 import { useEmbedStatus } from '@/lib/use-embed-status'
@@ -20,6 +21,7 @@ import { SettingsSection } from './section'
 export function SearchSection(): ReactElement {
   const { settings, updateSettings } = useSettings()
   const status = useEmbedStatus()
+  const { t } = useTranslation('settings')
 
   let control: ReactNode
   if (!settings.semanticSearchEnabled) {
@@ -37,7 +39,7 @@ export function SearchSection(): ReactElement {
         className="inline-flex items-center gap-1.5 rounded-md bg-accent px-2.5 py-1.5 text-xs font-medium text-text-on-brand shadow-sm transition-colors duration-100 hover:bg-accent-hover"
       >
         <Sparkles aria-hidden strokeWidth={1.75} className="size-3.5" />
-        Enable semantic search
+        {t('search.semantic.enable')}
       </button>
     )
   } else if (status.status === 'ready') {
@@ -45,35 +47,37 @@ export function SearchSection(): ReactElement {
       <div className="flex items-center justify-between gap-4">
         <span className="flex items-center gap-2 text-xs text-text-muted">
           <span aria-hidden className="size-1.5 rounded-full bg-emerald-500" />
-          Model downloaded ({status.model})
+          {t('search.semantic.modelReady', { model: status.model })}
         </span>
         <button
           type="button"
           onClick={() => updateSettings({ semanticSearchEnabled: false })}
           className="shrink-0 rounded-md border border-border px-2.5 py-1.5 text-xs font-medium text-text-secondary transition-colors duration-100 hover:bg-surface-hover"
         >
-          Disable
+          {t('common.disable')}
         </button>
       </div>
     )
   } else if (status.status === 'failed') {
     control = (
       <div>
-        <InlineAlert tone="error">Couldn’t load the model: {status.message}</InlineAlert>
+        <InlineAlert tone="error">
+          {t('search.semantic.loadFailed', { message: status.message })}
+        </InlineAlert>
         <div className="mt-2 flex items-center gap-2">
           <button
             type="button"
             onClick={() => void ensureEmbeddingsVisibly()}
             className="rounded-md border border-border px-2.5 py-1.5 text-xs font-medium text-text-secondary transition-colors duration-100 hover:bg-surface-hover"
           >
-            Try again
+            {t('common.tryAgain')}
           </button>
           <button
             type="button"
             onClick={() => updateSettings({ semanticSearchEnabled: false })}
             className="rounded-md border border-border px-2.5 py-1.5 text-xs font-medium text-text-secondary transition-colors duration-100 hover:bg-surface-hover"
           >
-            Disable
+            {t('common.disable')}
           </button>
         </div>
       </div>
@@ -88,8 +92,8 @@ export function SearchSection(): ReactElement {
   return (
     <SettingsSection id="search">
       <SettingsField
-        legend="Semantic search"
-        description="Find notes by meaning, not just keywords — smarter ⌘K results and related notes. Runs entirely on this device; enabling downloads a small model (~90 MB) once."
+        legend={t('search.semantic.legend')}
+        description={t('search.semantic.description')}
       >
         <div className="mt-3">{control}</div>
       </SettingsField>

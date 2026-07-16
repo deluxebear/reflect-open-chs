@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react'
 import { open } from '@tauri-apps/plugin-dialog'
 import { FileArchive } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { SettingsField } from '@/components/settings/field'
 import { SettingsSection } from '@/components/settings/section'
 import { Button } from '@/components/ui/button'
@@ -14,14 +15,15 @@ import { useV1Import } from '@/providers/v1-import-provider'
  */
 export function ImportSection(): ReactElement {
   const { state, startImport } = useV1Import()
+  const { t } = useTranslation('settings')
   const running = state.phase === 'running'
 
   async function chooseAndImport(): Promise<void> {
     const result = await open({
       multiple: false,
       directory: false,
-      title: 'Import Reflect V1 export',
-      filters: [{ name: 'Zip archives', extensions: ['zip'] }],
+      title: t('import.dialogTitle'),
+      filters: [{ name: t('import.zipFilter'), extensions: ['zip'] }],
     })
     const path = typeof result === 'string' ? result : null
     if (path === null) {
@@ -32,10 +34,7 @@ export function ImportSection(): ReactElement {
 
   return (
     <SettingsSection id="import">
-      <SettingsField
-        legend="Reflect V1"
-        description="Choose the .zip export from Reflect V1. Its notes and attachments are added to this graph; nothing already here is replaced."
-      >
+      <SettingsField legend={t('import.legend')} description={t('import.description')}>
         <div className="mt-2">
           <Button
             type="button"
@@ -45,7 +44,7 @@ export function ImportSection(): ReactElement {
             onClick={() => void chooseAndImport()}
           >
             <FileArchive aria-hidden strokeWidth={1.75} />
-            {running ? 'Importing...' : 'Import zip...'}
+            {running ? t('import.importing') : t('import.importZip')}
           </Button>
         </div>
       </SettingsField>

@@ -1,5 +1,6 @@
 import { useState, type ReactElement } from 'react'
 import type { AiProvidersState } from '@reflect/core'
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -25,6 +26,7 @@ import { SettingsField } from './field'
 export function DescribeAssetsField(): ReactElement {
   const { settings, updateSettings } = useSettings()
   const { graph } = useGraph()
+  const { t } = useTranslation('settings')
   const [confirming, setConfirming] = useState(false)
   const [running, setRunning] = useState(false)
 
@@ -49,17 +51,14 @@ export function DescribeAssetsField(): ReactElement {
   }
 
   return (
-    <SettingsField
-      legend="OCR assets"
-      description="Make text in images and PDFs searchable. Private notes are skipped."
-    >
+    <SettingsField legend={t('search.ocr.legend')} description={t('search.ocr.description')}>
       <div className="mt-3 flex items-center gap-3">
         <Switch
-          aria-label="OCR new assets automatically"
+          aria-label={t('search.ocr.autoLabel')}
           checked={settings.describeAssets}
           onCheckedChange={(checked) => updateSettings({ describeAssets: checked })}
         />
-        <span className="text-xs text-text-muted">OCR new assets automatically</span>
+        <span className="text-xs text-text-muted">{t('search.ocr.autoLabel')}</span>
       </div>
       <div className="mt-3 flex flex-col items-start">
         <Button
@@ -70,28 +69,30 @@ export function DescribeAssetsField(): ReactElement {
           onClick={() => setConfirming(true)}
           className="text-text-secondary"
         >
-          {running ? 'Backfilling…' : 'Backfill assets'}
+          {running ? t('search.ocr.backfilling') : t('search.ocr.backfill')}
         </Button>
         {!hasProvider ? (
-          <p className="mt-2 text-xs text-text-muted">Add an AI provider to enable this.</p>
+          <p className="mt-2 text-xs text-text-muted">{t('search.ocr.needProvider')}</p>
         ) : null}
       </div>
       {confirming ? (
-        <Dialog open onOpenChange={(isOpen) => { if (!isOpen) setConfirming(false) }}>
+        <Dialog
+          open
+          onOpenChange={(isOpen) => {
+            if (!isOpen) setConfirming(false)
+          }}
+        >
           <DialogContent showCloseButton={false} className="max-w-sm">
             <DialogHeader>
-              <DialogTitle>Backfill assets?</DialogTitle>
-              <DialogDescription>
-                Images and PDFs in non-private notes will be sent to your AI provider so their
-                text can appear in search. Assets that already have OCR are skipped.
-              </DialogDescription>
+              <DialogTitle>{t('search.ocr.confirmTitle')}</DialogTitle>
+              <DialogDescription>{t('search.ocr.confirmDescription')}</DialogDescription>
             </DialogHeader>
             <DialogFooter>
               <Button type="button" variant="ghost" size="sm" onClick={() => setConfirming(false)}>
-                Cancel
+                {t('common.cancel')}
               </Button>
               <Button type="button" size="sm" onClick={() => void runBackfill()}>
-                Backfill assets
+                {t('search.ocr.backfill')}
               </Button>
             </DialogFooter>
           </DialogContent>

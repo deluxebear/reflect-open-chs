@@ -2,6 +2,7 @@ import type { ReactElement } from 'react'
 import type { GraphInfo } from '@reflect/core'
 import { revealItemInDir } from '@tauri-apps/plugin-opener'
 import { Check, FolderOpen, LocateFixed, Settings } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { GraphSwatch } from '@/components/graph-swatch'
 import { ShortcutKeys } from '@/components/shortcut-keys'
 import { Button } from '@/components/ui/button'
@@ -40,17 +41,20 @@ function graphSwitchBindingFor(index: number): string | null {
  * pulsing accent dot while backing up, amber when offline with queued
  * changes, red when backup needs attention. Detail lives in Settings.
  */
-function backupDot(backup: BackupState): { className: string; label: string } | null {
+function backupDot(
+  backup: BackupState,
+  labels: { backingUp: string; offline: string; failed: string },
+): { className: string; label: string } | null {
   if (backup.phase !== 'connected' || backup.status.state === 'idle') {
     return null
   }
   switch (backup.status.state) {
     case 'syncing':
-      return { className: 'bg-accent motion-safe:animate-pulse', label: 'Backing up' }
+      return { className: 'bg-accent motion-safe:animate-pulse', label: labels.backingUp }
     case 'offline':
-      return { className: 'bg-amber-500', label: 'Backup waiting for a connection' }
+      return { className: 'bg-amber-500', label: labels.offline }
     case 'error':
-      return { className: 'bg-red-500', label: 'Backup failed — see Settings' }
+      return { className: 'bg-red-500', label: labels.failed }
   }
 }
 
@@ -70,10 +74,15 @@ interface GraphFooterProps {
 export function GraphFooter({ graph, context }: GraphFooterProps): ReactElement {
   const { recents, indexing, openRecent, chooseGraph } = useGraph()
   const { colorFor, setColor } = useGraphColors()
+  const { t } = useTranslation('shell')
   const currentColor = colorFor(graph.root) ?? DEFAULT_GRAPH_COLOR
   const { backup } = useSync()
   const { route } = useRouter()
-  const dot = backupDot(backup)
+  const dot = backupDot(backup, {
+    backingUp: t('graphFooter.backingUp'),
+    offline: t('graphFooter.backupOffline'),
+    failed: t('graphFooter.backupFailed'),
+  })
   const settingsActive = route.kind === 'settings'
 
   return (
@@ -107,7 +116,7 @@ export function GraphFooter({ graph, context }: GraphFooterProps): ReactElement 
                 ) : null}
                 {indexing ? (
                   <span role="status" className="sr-only">
-                    Indexing
+                    {t('graphFooter.indexing')}
                   </span>
                 ) : null}
               </Button>
@@ -115,7 +124,11 @@ export function GraphFooter({ graph, context }: GraphFooterProps): ReactElement 
           </TooltipTrigger>
           <TooltipContent>{graph.root}</TooltipContent>
         </Tooltip>
-        <DropdownMenuContent aria-label="Switch graph" side="top" sideOffset={6}>
+        <DropdownMenuContent
+          aria-label={t('graphFooter.switchGraph')}
+          side="top"
+          sideOffset={6}
+        >
           {recents.map((recent, index) => {
             const current = recent.root === graph.root
             const binding = graphSwitchBindingFor(index)
@@ -147,9 +160,9 @@ export function GraphFooter({ graph, context }: GraphFooterProps): ReactElement 
           <DropdownMenuSub>
             <DropdownMenuSubTrigger className={MENU_ITEM_CLASS}>
               <GraphSwatch color={currentColor} className="size-3.5 rounded" />
-              <span className="min-w-0 flex-1 truncate">Graph color</span>
+              <span className="min-w-0 flex-1 truncate">{t('graphFooter.graphColor')}</span>
             </DropdownMenuSubTrigger>
-            <DropdownMenuSubContent aria-label="Graph color">
+            <DropdownMenuSubContent aria-label={t('graphFooter.graphColor')}>
               {GRAPH_COLOR_OPTIONS.map((option) => (
                 <DropdownMenuItem
                   key={option.id}
@@ -157,7 +170,9 @@ export function GraphFooter({ graph, context }: GraphFooterProps): ReactElement 
                   className={MENU_ITEM_CLASS}
                 >
                   <GraphSwatch color={option.id} className="size-3.5 rounded" />
-                  <span className="min-w-0 flex-1">{option.label}</span>
+                  <span className="min-w-0 flex-1">
+                    {t(`graphFooter.colors.${option.id}`, { defaultValue: option.label })}
+                  </span>
                   {option.id === currentColor ? (
                     <Check aria-hidden className="size-3.5 shrink-0 text-accent" />
                   ) : null}
@@ -174,7 +189,7 @@ export function GraphFooter({ graph, context }: GraphFooterProps): ReactElement 
             className={MENU_ITEM_CLASS}
           >
             <LocateFixed aria-hidden strokeWidth={1.75} className="size-3.5 shrink-0" />
-            <span className="min-w-0 flex-1 truncate">Reveal graph in Finder</span>
+            <span className="min-w-0 flex-1 truncate">{t('graphFooter.revealInFinder')}</span>
           </DropdownMenuItem>
           {/* Graph switching re-roots every window; note windows hide it. */}
           {isMainWindow() ? (
@@ -183,7 +198,7 @@ export function GraphFooter({ graph, context }: GraphFooterProps): ReactElement 
               className={MENU_ITEM_CLASS}
             >
               <FolderOpen aria-hidden strokeWidth={1.75} className="size-3.5 shrink-0" />
-              <span className="min-w-0 flex-1 truncate">Open another graph…</span>
+              <span className="min-w-0 flex-1 truncate">{t('graphFooter.openAnother')}</span>
             </DropdownMenuItem>
           ) : null}
           <DropdownMenuItem
@@ -191,7 +206,7 @@ export function GraphFooter({ graph, context }: GraphFooterProps): ReactElement 
             className={MENU_ITEM_CLASS}
           >
             <Settings aria-hidden strokeWidth={1.75} className="size-3.5 shrink-0" />
-            <span className="min-w-0 flex-1 truncate">User settings</span>
+            <span className="min-w-0 flex-1 truncate">{t('graphFooter.userSettings')}</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -201,7 +216,7 @@ export function GraphFooter({ graph, context }: GraphFooterProps): ReactElement 
             type="button"
             variant="ghost"
             size="icon-sm"
-            aria-label="Open settings"
+            aria-label={t('graphFooter.openSettings')}
             aria-current={settingsActive ? 'page' : undefined}
             onClick={() => void runCommand('settings.open', context)}
             className={cn(
@@ -215,7 +230,8 @@ export function GraphFooter({ graph, context }: GraphFooterProps): ReactElement 
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          Settings {SETTINGS_BINDING && <ShortcutKeys binding={SETTINGS_BINDING} />}
+          {t('graphFooter.settings')}{' '}
+          {SETTINGS_BINDING && <ShortcutKeys binding={SETTINGS_BINDING} />}
         </TooltipContent>
       </Tooltip>
     </div>

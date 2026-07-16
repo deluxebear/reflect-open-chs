@@ -1,5 +1,6 @@
 import { useState, type ReactElement } from 'react'
 import { CloudOff, CloudUpload } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { ShortcutKeys } from '@/components/shortcut-keys'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { useNoteRowOverlay } from '@/hooks/note-row-overlay'
@@ -25,6 +26,7 @@ interface NoteGistActionProps {
  */
 export function NoteGistAction({ path, keybinding = null }: NoteGistActionProps): ReactElement | null {
   const { graph } = useGraph()
+  const { t } = useTranslation('context')
   const connected = useGithubConnected()
   const row = useNoteRow(path)
   // `row` already reflects a just-published or just-unpublished URL (the
@@ -68,15 +70,15 @@ export function NoteGistAction({ path, keybinding = null }: NoteGistActionProps)
 
   const isBusy = isPublishing || isUnpublishing
   const label = isUnpublishing
-    ? 'Unpublishing…'
+    ? t('noteActions.unpublishing')
     : isPublishing
-    ? 'Publishing…'
-    : published
-      ? 'Unpublish link'
-      : 'Share with private link'
+      ? t('noteActions.publishing')
+      : published
+        ? t('noteActions.unpublishLink')
+        : t('noteActions.shareLink')
   const tooltip = published
-    ? 'Delete the private GitHub gist for this note'
-    : 'Creates a secret GitHub gist and copies its private link'
+    ? t('noteActions.unpublishTooltip')
+    : t('noteActions.shareTooltip')
   const Icon = published ? CloudOff : CloudUpload
 
   return (

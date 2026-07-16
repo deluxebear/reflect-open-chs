@@ -1,6 +1,7 @@
 import { Fragment, type MutableRefObject, type ReactElement } from 'react'
 import { Plus } from 'lucide-react'
 import { groupTaskContexts, type OpenTask, type TaskGroup } from '@reflect/core'
+import { useTranslation } from 'react-i18next'
 import { addTargetForGroup, taskGroupHeaderStyle } from '@/lib/tasks/task-group-presentation'
 import type { InsertTaskTarget } from '@/lib/tasks/task-insert-target'
 import { taskKey } from '@/lib/tasks/task-identity'
@@ -46,11 +47,20 @@ export function TaskGroupSection({
   convertControllerRef,
   onOpen,
 }: TaskGroupSectionProps): ReactElement {
+  const { t } = useTranslation('tasks')
   const showSource = group.kind !== 'note'
   const { notePath } = group
   const { icon, colorClass } = taskGroupHeaderStyle(group)
   const addTarget = addTargetForGroup(group, today)
   const contexts = groupTaskContexts(group.tasks)
+  const groupTitle =
+    group.kind === 'current' || group.kind === 'overdue' || group.kind === 'upcoming'
+      ? t(`groups.${group.kind}`)
+      : group.label
+  const addAria =
+    group.kind === 'current'
+      ? t('addToToday')
+      : t('addToNote', { label: group.label })
 
   return (
     <section>
@@ -63,27 +73,27 @@ export function TaskGroupSection({
               onClick={(event) => onOpen(notePath, event)}
               className="truncate hover:underline focus-visible:underline focus-visible:outline-none"
             >
-              {group.label}
+              {groupTitle}
             </button>
           ) : (
-            <span className="truncate">{group.label}</span>
+            <span className="truncate">{groupTitle}</span>
           )}
         </h2>
         {addTarget !== null ? (
           <button
             type="button"
-            aria-label={`Add a task to ${group.kind === 'current' ? 'today' : group.label}`}
+            aria-label={addAria}
             onClick={() => onAdd(addTarget)}
             className="ml-auto flex flex-none items-center gap-1 rounded px-1.5 py-0.5 text-xs font-medium text-text-muted transition-colors hover:text-text focus-visible:text-text focus-visible:outline-none"
           >
             <Plus aria-hidden className="size-3.5" />
-            Add
+            {t('add')}
           </button>
         ) : null}
       </div>
       <ul className="flex flex-col py-1">
         {group.tasks.length === 0 ? (
-          <li className="px-4 py-1.5 text-sm text-text-muted lg:px-12">No tasks</li>
+          <li className="px-4 py-1.5 text-sm text-text-muted lg:px-12">{t('noTasksInGroup')}</li>
         ) : (
           contexts.map((context) => {
             const firstTask = context.tasks[0]!

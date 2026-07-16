@@ -1,7 +1,9 @@
 import { useState, type ReactElement, type ReactNode } from 'react'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { type WeekStartDay } from '@reflect/core'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { dateFnsLocaleForLanguage } from '@/i18n/date-fns-locale'
 import { formatDayLabel } from '@/lib/dates'
 import { addMonths, buildMonthGrid, monthLabel, monthOf, weekdayLabels } from '@/lib/month-grid'
 import { cn } from '@/lib/utils'
@@ -40,6 +42,8 @@ export function TaskScheduleCalendar({
   children,
 }: TaskScheduleCalendarProps): ReactElement {
   const { settings } = useSettings()
+  const { t, i18n } = useTranslation('tasks')
+  const dateLocale = dateFnsLocaleForLanguage(i18n.language)
   const weekStartsOn = toWeekStartsOn(settings.weekStartDay)
   const [month, setMonth] = useState(() => monthOf(today))
   // Re-anchor to today's month each time the popover opens, without an effect.
@@ -60,13 +64,13 @@ export function TaskScheduleCalendar({
   return (
     <Popover open={open} onOpenChange={onOpenChange}>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
-      <PopoverContent align="end" className="w-auto p-0" aria-label="Schedule">
+      <PopoverContent align="end" className="w-auto p-0" aria-label={t('schedulePopoverAria')}>
         <header className="flex items-center justify-between px-4 pt-3 pb-1">
-          <div className="text-sm font-semibold text-text">{monthLabel(month)}</div>
+          <div className="text-sm font-semibold text-text">{monthLabel(month, dateLocale)}</div>
           <nav className="flex items-center gap-1 text-text-muted">
             <button
               type="button"
-              aria-label="Previous month"
+              aria-label={t('prevMonth')}
               onClick={() => setMonth(addMonths(month, -1))}
               className="rounded-md p-0.5 transition-colors hover:bg-surface-hover hover:text-text"
             >
@@ -74,7 +78,7 @@ export function TaskScheduleCalendar({
             </button>
             <button
               type="button"
-              aria-label="Next month"
+              aria-label={t('nextMonth')}
               onClick={() => setMonth(addMonths(month, 1))}
               className="rounded-md p-0.5 transition-colors hover:bg-surface-hover hover:text-text"
             >
@@ -84,7 +88,7 @@ export function TaskScheduleCalendar({
         </header>
 
         <div className="grid grid-cols-7 px-3 text-center">
-          {weekdayLabels(weekStartsOn).map((weekday) => (
+          {weekdayLabels(weekStartsOn, dateLocale).map((weekday) => (
             <div key={weekday} className="py-1 text-xs font-medium text-text-muted">
               {weekday}
             </div>
@@ -122,7 +126,7 @@ export function TaskScheduleCalendar({
             className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-xs text-text-muted transition-colors hover:bg-surface-hover hover:text-text focus-visible:outline-none"
           >
             <X className="size-3.5" />
-            Clear date
+            {t('clearDate')}
           </button>
         </div>
       </PopoverContent>

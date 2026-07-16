@@ -1,4 +1,5 @@
 import { useRef, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -41,6 +42,8 @@ export function AllNotesTrashDialog({
   paths,
   onTrashed,
 }: AllNotesTrashDialogProps): ReactElement {
+  const { t } = useTranslation('notes')
+  const { t: tc } = useTranslation('common')
   const { trash, isTrashing } = useNoteTrash()
   const confirmButtonRef = useRef<HTMLButtonElement>(null)
   // Guards against a double-submit: the button's `disabled={isTrashing}` only
@@ -83,17 +86,12 @@ export function AllNotesTrashDialog({
           confirmButtonRef.current?.focus()
         }}
       >
-        <DialogTitle>
-          Trash {count} {count === 1 ? 'note' : 'notes'}?
-        </DialogTitle>
-        <DialogDescription>
-          {count === 1 ? 'It moves' : 'They move'} to your system Trash, where you can restore{' '}
-          {count === 1 ? 'it' : 'them'}.
-        </DialogDescription>
+        <DialogTitle>{t('trashTitle', { count })}</DialogTitle>
+        <DialogDescription>{t('trashDescription', { count })}</DialogDescription>
         <DialogFooter>
           <DialogClose asChild>
             <Button variant="ghost" disabled={isTrashing}>
-              Cancel
+              {tc('cancel')}
             </Button>
           </DialogClose>
           <Button
@@ -102,7 +100,7 @@ export function AllNotesTrashDialog({
             disabled={isTrashing}
             onClick={() => void onConfirm()}
           >
-            Trash
+            {t('trash')}
           </Button>
         </DialogFooter>
       </DialogContent>

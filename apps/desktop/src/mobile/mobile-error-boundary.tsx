@@ -1,4 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react'
+import { t } from '@/i18n'
 
 interface MobileErrorBoundaryState {
   message: string | null
@@ -28,7 +29,7 @@ export class MobileErrorBoundary extends Component<
     if (this.state.message !== null) {
       return (
         <div className="flex h-dvh w-screen flex-col items-center justify-center gap-2 px-8 text-center">
-          <p className="text-sm font-medium">Something broke</p>
+          <p className="text-sm font-medium">{t('mobile:errorBoundary.title')}</p>
           <p className="text-sm text-text-muted">{this.state.message}</p>
         </div>
       )

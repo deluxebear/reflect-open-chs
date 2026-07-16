@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { Square } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { RecordingPopover } from '@/components/audio-memo/recording-popover'
 import { MicIcon } from '@/components/icons/mic-icon'
 import { Button } from '@/components/ui/button'
@@ -18,6 +19,8 @@ import { useAudioMemo } from '@/providers/audio-memo-provider'
  */
 export function AudioMemoButton(): ReactElement {
   const memo = useAudioMemo()
+  const { t } = useTranslation('shell')
+  const recordLabel = t('audioMemo.record')
 
   if (memo.phase === 'idle' || memo.phase === 'requesting') {
     return (
@@ -26,7 +29,7 @@ export function AudioMemoButton(): ReactElement {
           <Button
             variant="ghost"
             size="icon-sm"
-            aria-label="Record audio memo"
+            aria-label={recordLabel}
             aria-disabled={!memo.available || undefined}
             onClick={() => {
               if (memo.available) {
@@ -42,7 +45,7 @@ export function AudioMemoButton(): ReactElement {
           </Button>
         </TooltipTrigger>
         <TooltipContent side="bottom">
-          {memo.unavailableReason ?? 'Record audio memo'}
+          {memo.unavailableReason ?? recordLabel}
         </TooltipContent>
       </Tooltip>
     )
@@ -55,7 +58,7 @@ export function AudioMemoButton(): ReactElement {
           <Button
             variant="ghost"
             size="icon-sm"
-            aria-label="Record audio memo"
+            aria-label={recordLabel}
             onClick={() => memo.toggle()}
             className="text-text-muted hover:text-text-secondary dark:hover:text-text"
           >
@@ -67,7 +70,8 @@ export function AudioMemoButton(): ReactElement {
     )
   }
 
-  const activeLabel = memo.phase === 'recording' ? 'Stop recording' : 'Discard audio memo'
+  const activeLabel =
+    memo.phase === 'recording' ? t('audioMemo.stop') : t('audioMemo.discard')
 
   return (
     <Popover open>

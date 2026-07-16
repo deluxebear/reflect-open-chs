@@ -1,0 +1,195 @@
+{
+  "menu": {
+    "reflect": "Reflect",
+    "file": "File",
+    "edit": "Edit",
+    "view": "View",
+    "window": "Window",
+    "help": "Help",
+    "about": "About Reflect",
+    "settings": "Settings…",
+    "hide": "Hide Reflect",
+    "quit": "Quit Reflect",
+    "zoom": "Zoom",
+    "services": "Services",
+    "hideOthers": "Hide Others",
+    "showAll": "Show All",
+    "undo": "Undo",
+    "redo": "Redo",
+    "cut": "Cut",
+    "copy": "Copy",
+    "paste": "Paste",
+    "selectAll": "Select All",
+    "closeWindow": "Close",
+    "minimize": "Minimize",
+    "bringAllToFront": "Bring All to Front"
+  },
+  "graph": {
+    "switch1": {
+      "title": "Switch to graph 1",
+      "keywords": "graph,workspace,switch,recent,图"
+    },
+    "switch2": {
+      "title": "Switch to graph 2",
+      "keywords": "graph,workspace,switch,recent,图"
+    },
+    "switch3": {
+      "title": "Switch to graph 3",
+      "keywords": "graph,workspace,switch,recent,图"
+    },
+    "switch4": {
+      "title": "Switch to graph 4",
+      "keywords": "graph,workspace,switch,recent,图"
+    },
+    "switch5": {
+      "title": "Switch to graph 5",
+      "keywords": "graph,workspace,switch,recent,图"
+    },
+    "switch6": {
+      "title": "Switch to graph 6",
+      "keywords": "graph,workspace,switch,recent,图"
+    },
+    "switch7": {
+      "title": "Switch to graph 7",
+      "keywords": "graph,workspace,switch,recent,图"
+    },
+    "switch8": {
+      "title": "Switch to graph 8",
+      "keywords": "graph,workspace,switch,recent,图"
+    },
+    "switch9": {
+      "title": "Switch to graph 9",
+      "keywords": "graph,workspace,switch,recent,图"
+    }
+  },
+  "nav": {
+    "today": {
+      "title": "Go to today",
+      "keywords": "daily,now,日记,今日,今天"
+    },
+    "allNotes": {
+      "title": "All notes",
+      "keywords": "notes,list,browse,library,全部笔记,笔记列表"
+    },
+    "tasks": {
+      "title": "Tasks",
+      "keywords": "todo,todos,checklist,checkbox,open,任务,待办"
+    }
+  },
+  "note": {
+    "new": {
+      "title": "New note",
+      "keywords": "create,新建,新笔记"
+    },
+    "openInNewWindow": {
+      "title": "Open note in new window",
+      "keywords": "window,duplicate,pop out,新窗口"
+    },
+    "togglePin": {
+      "title": "Pin or unpin note",
+      "keywords": "pinned,favorite,bookmark,sidebar,置顶"
+    },
+    "togglePrivate": {
+      "title": "Mark or un-mark note as private",
+      "keywords": "privacy,lock,secret,hide,ai,私密,锁定"
+    },
+    "publishGist": {
+      "title": "Share with private link",
+      "keywords": "gist,github,share,publish,private link,export,分享"
+    },
+    "attachFile": {
+      "title": "Attach file…",
+      "keywords": "upload,attachment,import,pdf,document,insert,附件"
+    },
+    "copyDeepLink": {
+      "title": "Copy deep link",
+      "keywords": "url,share,clipboard,reflect://,address,链接"
+    },
+    "random": {
+      "title": "Open random note",
+      "keywords": "shuffle,serendipity,随机"
+    }
+  },
+  "chat": {
+    "open": {
+      "title": "Chat",
+      "keywords": "ai,assistant,copilot,ask,对话,聊天"
+    },
+    "new": {
+      "title": "New chat",
+      "keywords": "ai,assistant,copilot,conversation,新对话"
+    }
+  },
+  "history": {
+    "back": {
+      "title": "Back"
+    },
+    "forward": {
+      "title": "Forward"
+    }
+  },
+  "palette": {
+    "open": {
+      "title": "Search…",
+      "keywords": "find,open,搜索"
+    }
+  },
+  "template": {
+    "insert": {
+      "title": "Insert template…",
+      "keywords": "snippet,boilerplate,stamp,模板"
+    },
+    "new": {
+      "title": "New template",
+      "keywords": "template,snippet,boilerplate,create,模板"
+    }
+  },
+  "audioMemo": {
+    "toggle": {
+      "title": "Record audio memo",
+      "keywords": "voice,mic,dictate,transcribe,speech,capture,录音"
+    }
+  },
+  "theme": {
+    "toggle": {
+      "title": "Toggle theme",
+      "keywords": "dark,light,appearance,主题"
+    }
+  },
+  "sidebar": {
+    "toggle": {
+      "title": "Toggle sidebar",
+      "keywords": "collapse,expand,navigation,focus,侧栏"
+    }
+  },
+  "settings": {
+    "open": {
+      "title": "Open settings",
+      "keywords": "preferences,config,options,设置"
+    }
+  },
+  "shortcuts": {
+    "show": {
+      "title": "Keyboard shortcuts",
+      "keywords": "cheat,sheet,keys,bindings,hotkeys,help,快捷键"
+    }
+  },
+  "semantic": {
+    "enable": {
+      "title": "Enable semantic search",
+      "keywords": "embeddings,ai,similar,model,语义搜索"
+    }
+  },
+  "index": {
+    "rebuild": {
+      "title": "Rebuild search index",
+      "keywords": "reindex,refresh,重建索引"
+    }
+  },
+  "dev": {
+    "toggleDevtools": {
+      "title": "Developer tools",
+      "keywords": "devtools,inspector,debug,console,inspect,web inspector,开发者工具"
+    }
+  }
+}

@@ -1,13 +1,10 @@
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { EmbedProgress } from '@reflect/core'
 
 interface ModelDownloadProgressProps {
   /** Byte counts from an active download, once the runtime has reported them. */
   progress?: EmbedProgress | undefined
-}
-
-function formatMegabytes(bytes: number): string {
-  return `${Math.round(bytes / 1_000_000)} MB`
 }
 
 /**
@@ -17,20 +14,26 @@ function formatMegabytes(bytes: number): string {
  * phase after the last byte lands).
  */
 export function ModelDownloadProgress({ progress }: ModelDownloadProgressProps): ReactElement {
+  const { t } = useTranslation('settings')
+  const formatMegabytes = (bytes: number): string =>
+    t('search.semantic.megabytes', { count: Math.round(bytes / 1_000_000) })
   const fraction =
     progress !== undefined && progress.total > 0
       ? Math.min(progress.downloaded / progress.total, 1)
       : null
   const label =
     progress !== undefined && fraction !== null && fraction < 1
-      ? `Downloading the model — ${formatMegabytes(progress.downloaded)} of ${formatMegabytes(progress.total)}`
-      : 'Preparing the model…'
+      ? t('search.semantic.downloadProgress', {
+          downloaded: formatMegabytes(progress.downloaded),
+          total: formatMegabytes(progress.total),
+        })
+      : t('search.semantic.preparing')
 
   return (
     <div>
       <div
         role="progressbar"
-        aria-label="Semantic search model download"
+        aria-label={t('search.semantic.downloadAria')}
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={fraction !== null ? Math.round(fraction * 100) : undefined}

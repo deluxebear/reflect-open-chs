@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { ChevronDownIcon, RotateCcwIcon } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import type { AiPromptMode, ChatModelOption } from '@reflect/core'
 import { Button } from '@/components/ui/button'
 import {
@@ -33,16 +34,17 @@ export function AiPreviewActions({
   onRetry,
   onAcceptAs,
 }: AiPreviewActionsProps): ReactElement {
+  const { t } = useTranslation('editor')
   return (
     <div className="flex items-center">
       <Button variant="ghost" size="sm" onClick={() => onRetry(null)}>
         <RotateCcwIcon data-icon="inline-start" />
-        Retry
+        {t('ai.retry')}
       </Button>
       {modelOptions.length > 0 ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm" aria-label="Retry with another model">
+            <Button variant="ghost" size="sm" aria-label={t('ai.retryOtherModel')}>
               <ChevronDownIcon />
             </Button>
           </DropdownMenuTrigger>
@@ -64,7 +66,7 @@ export function AiPreviewActions({
           size="sm"
           onClick={() => onAcceptAs(mode === 'replace' ? 'append' : 'replace')}
         >
-          {mode === 'replace' ? 'Insert below' : 'Replace selection'}
+          {mode === 'replace' ? t('ai.insertBelow') : t('ai.replaceSelection')}
         </Button>
       ) : null}
     </div>

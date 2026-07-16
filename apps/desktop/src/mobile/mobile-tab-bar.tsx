@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, type ReactElement } from 'react'
 import { CircleCheck, Files, MessageSquare, SquarePen } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 import { hapticImpactLight } from '@/mobile/haptics'
 import type { Route } from '@/routing/route'
@@ -43,6 +44,7 @@ interface MobileTabBarProps {
  * (the keyboard-up state), leaving consumers their own fallback.
  */
 export function MobileTabBar({ tab, onSelect }: MobileTabBarProps): ReactElement {
+  const { t } = useTranslation('shell')
   const navRef = useRef<HTMLElement | null>(null)
 
   useLayoutEffect(() => {
@@ -67,30 +69,30 @@ export function MobileTabBar({ tab, onSelect }: MobileTabBarProps): ReactElement
   return (
     <nav
       ref={navRef}
-      aria-label="Sections"
+      aria-label={t('mobileTabs.aria')}
       className="flex shrink-0 border-t border-border"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       <TabButton
-        label="Daily"
+        label={t('mobileTabs.daily')}
         icon={<SquarePen className="size-5" />}
         active={tab === 'daily'}
         onClick={() => onSelect('daily')}
       />
       <TabButton
-        label="All"
+        label={t('mobileTabs.all')}
         icon={<Files className="size-5" />}
         active={tab === 'all'}
         onClick={() => onSelect('all')}
       />
       <TabButton
-        label="Tasks"
+        label={t('mobileTabs.tasks')}
         icon={<CircleCheck className="size-5" />}
         active={tab === 'tasks'}
         onClick={() => onSelect('tasks')}
       />
       <TabButton
-        label="Chat"
+        label={t('mobileTabs.chat')}
         icon={<MessageSquare className="size-5" />}
         active={tab === 'chat'}
         onClick={() => onSelect('chat')}

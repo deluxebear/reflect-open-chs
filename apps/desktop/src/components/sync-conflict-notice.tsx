@@ -1,6 +1,7 @@
 import { type ReactElement, type ReactNode } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { GitMerge } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import {
   conflictMarkerBlockCount,
   conflictMarkerLabels,
@@ -44,6 +45,7 @@ interface SyncConflictNoticeProps {
  * actions. The buttons are touch-sized there, but still call the same resolver.
  */
 export function SyncConflictNotice({ path, className }: SyncConflictNoticeProps): ReactElement | null {
+  const { t } = useTranslation('notes')
   const { graph } = useGraph()
   const { busy, error, resolve } = useConflictResolution(path)
   const { data } = useQuery({
@@ -86,11 +88,8 @@ export function SyncConflictNotice({ path, className }: SyncConflictNoticeProps)
       <div className="flex gap-2">
         <GitMerge aria-hidden className="mt-0.5 size-3.5 shrink-0" />
         <div className="min-w-0 flex-1">
-          <p className="font-semibold">This note was edited on two devices at once.</p>
-          <p className="mt-0.5">
-            Both versions are highlighted below. Choose what to keep — every version stays
-            recoverable in the backup history.
-          </p>
+          <p className="font-semibold">{t('conflict.title')}</p>
+          <p className="mt-0.5">{t('conflict.body')}</p>
         </div>
       </div>
       <div className={cn('flex flex-wrap gap-2', mobile ? 'mt-3' : 'mt-2.5')}>
@@ -100,7 +99,7 @@ export function SyncConflictNotice({ path, className }: SyncConflictNoticeProps)
           disabled={busy}
           onClick={() => void resolve('ours')}
         >
-          {named ? `Keep “${labels.ours}”` : 'Keep this device’s version'}
+          {named ? t('conflict.keepNamed', { name: labels.ours }) : t('conflict.keepOurs')}
         </ResolveButton>
         <ResolveButton
           dot="theirs"
@@ -109,10 +108,10 @@ export function SyncConflictNotice({ path, className }: SyncConflictNoticeProps)
           onClick={() => void resolve('theirs')}
         >
           {manySided
-            ? 'Keep the other versions'
+            ? t('conflict.keepOtherVersions')
             : named
-              ? `Keep “${labels.theirs}”`
-              : 'Keep the other device’s'}
+              ? t('conflict.keepNamed', { name: labels.theirs })
+              : t('conflict.keepTheirs')}
         </ResolveButton>
         <ResolveButton
           dot="both"
@@ -120,11 +119,13 @@ export function SyncConflictNotice({ path, className }: SyncConflictNoticeProps)
           disabled={busy}
           onClick={() => void resolve('both')}
         >
-          {manySided ? 'Keep all' : 'Keep both'}
+          {manySided ? t('conflict.keepAll') : t('conflict.keepBoth')}
         </ResolveButton>
       </div>
       {error !== null ? (
-        <p className="mt-2 text-red-700 dark:text-red-300">Couldn’t resolve: {error}</p>
+        <p className="mt-2 text-red-700 dark:text-red-300">
+          {t('conflict.resolveError', { error })}
+        </p>
       ) : null}
     </InlineAlert>
   )

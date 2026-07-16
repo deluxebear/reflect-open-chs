@@ -1,4 +1,5 @@
 import { useCallback, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { untitledNotePath } from '@reflect/core'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -23,6 +24,7 @@ import { useRouter } from '@/routing/router'
  * day change scrolls the carousel rather than remounting it.
  */
 export function MobileDaily({ date }: { date: string }): ReactElement {
+  const { t } = useTranslation('mobile')
   const { navigate, entryId, arrivalSeq, arrivalFocusEditor } = useRouter()
   // One live `today` for the whole surface: the strip marks today's cell and
   // the `select` below decide "is this today?" from the *same* value, so they
@@ -72,7 +74,7 @@ export function MobileDaily({ date }: { date: string }): ReactElement {
       />
       <Button
         size="icon"
-        aria-label="New note"
+        aria-label={t('daily.newNote')}
         className="fixed right-4 z-40 size-12 rounded-full shadow-lg"
         style={{ bottom: 'calc(max(env(safe-area-inset-bottom), var(--keyboard-height, 0px)) + 4.25rem)' }}
         onClick={() => navigate({ kind: 'note', path: untitledNotePath() })}

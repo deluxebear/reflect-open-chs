@@ -10,6 +10,7 @@ import {
 } from 'react'
 import { errorMessage, hasBridge, type GraphInfo } from '@reflect/core'
 import { useAudioMemoPipeline, type PendingAudioCapture } from '@/hooks/use-audio-memo-pipeline'
+import { t } from '@/i18n'
 import type { AudioMemoPhase } from '@/providers/audio-memo-provider'
 import { hapticImpactLight } from '@/mobile/haptics'
 import {
@@ -85,9 +86,6 @@ const MobileAudioMemoContext = createContext<MobileAudioMemoContextValue | null>
 
 /** Auto-stop cap: bounds the transcription payload (desktop parity). */
 const MAX_DURATION_MS = 10 * 60_000
-
-const MIC_DENIED_REASON =
-  'Microphone access was denied. Allow it for Reflect in the Settings app.'
 
 interface MobileAudioMemoProviderProps {
   graph: GraphInfo
@@ -182,7 +180,9 @@ export function MobileAudioMemoProvider({
       await startRecorder()
       hapticImpactLight()
     } catch (cause) {
-      pipeline.reportError(isMicDeniedError(cause) ? MIC_DENIED_REASON : errorMessage(cause))
+      pipeline.reportError(
+        isMicDeniedError(cause) ? t('mobile:audio.micDenied') : errorMessage(cause),
+      )
     }
   }, [available, startRecorder, pipeline, setDrawerOpen])
 

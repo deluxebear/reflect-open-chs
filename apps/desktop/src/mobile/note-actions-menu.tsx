@@ -1,5 +1,6 @@
 import { useState, type ReactElement } from 'react'
 import { MoreHorizontal, Pin, PinOff, Share, Trash2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { errorMessage } from '@reflect/core'
 import { Button } from '@/components/ui/button'
 import {
@@ -38,6 +39,8 @@ interface NoteActionsMenuProps {
  * {@link deleteOpenNote} so the open session is discarded rather than flushed.
  */
 export function NoteActionsMenu({ path, onDeleted }: NoteActionsMenuProps): ReactElement {
+  const { t } = useTranslation('context')
+  const { t: tc } = useTranslation('common')
   const { graph } = useGraph()
   const isPinned = usePinnedNotes().some((note) => note.path === path)
   const [actionsOpen, setActionsOpen] = useState(false)
@@ -74,12 +77,17 @@ export function NoteActionsMenu({ path, onDeleted }: NoteActionsMenuProps): Reac
     <>
       <Drawer open={actionsOpen} onOpenChange={setActionsOpen}>
         <DrawerTrigger asChild>
-          <Button variant="ghost" size="icon" className="size-10" aria-label="Note actions">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-10"
+            aria-label={t('noteActions.title')}
+          >
             <MoreHorizontal />
           </Button>
         </DrawerTrigger>
         <DrawerContent>
-          <DrawerTitle className="sr-only">Note actions</DrawerTitle>
+          <DrawerTitle className="sr-only">{t('noteActions.title')}</DrawerTitle>
           <div className="flex flex-col gap-1">
             <Button
               variant="ghost"
@@ -91,7 +99,7 @@ export function NoteActionsMenu({ path, onDeleted }: NoteActionsMenuProps): Reac
               }}
             >
               {isPinned ? <PinOff /> : <Pin />}
-              {isPinned ? 'Unpin' : 'Pin'}
+              {isPinned ? t('noteActions.unpinShort') : t('noteActions.pinShort')}
             </Button>
             <Button
               variant="ghost"
@@ -103,7 +111,7 @@ export function NoteActionsMenu({ path, onDeleted }: NoteActionsMenuProps): Reac
               }}
             >
               <Share />
-              Share
+              {t('noteActions.share')}
             </Button>
             <Button
               variant="ghost"
@@ -115,7 +123,7 @@ export function NoteActionsMenu({ path, onDeleted }: NoteActionsMenuProps): Reac
               }}
             >
               <Trash2 />
-              Delete
+              {t('noteActions.delete')}
             </Button>
           </div>
         </DrawerContent>
@@ -123,20 +131,17 @@ export function NoteActionsMenu({ path, onDeleted }: NoteActionsMenuProps): Reac
 
       <Dialog open={confirmingDelete} onOpenChange={(open) => !busy && setConfirmingDelete(open)}>
         <DialogContent>
-          <DialogTitle>Delete this note?</DialogTitle>
-          <DialogDescription>
-            It moves to the graph’s trash and disappears from your notes. You can recover it on
-            desktop.
-          </DialogDescription>
+          <DialogTitle>{t('noteActions.trashConfirmTitle')}</DialogTitle>
+          <DialogDescription>{t('noteActions.trashConfirmDescription')}</DialogDescription>
           {error !== null && <p className="text-sm text-destructive">{error}</p>}
           <DialogFooter>
             <DialogClose asChild>
               <Button variant="ghost" disabled={busy}>
-                Cancel
+                {tc('cancel')}
               </Button>
             </DialogClose>
             <Button variant="destructive" disabled={busy} onClick={confirmDelete}>
-              Delete
+              {t('noteActions.delete')}
             </Button>
           </DialogFooter>
         </DialogContent>

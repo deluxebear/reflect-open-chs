@@ -1,4 +1,5 @@
 import { type ComponentProps, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { CircleX } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -30,6 +31,7 @@ export function SearchInput({
   value,
   ...props
 }: SearchInputProps): ReactElement {
+  const { t } = useTranslation('mobile')
   return (
     <div className="relative w-full min-w-0">
       <Input
@@ -58,7 +60,7 @@ export function SearchInput({
           variant="ghost"
           size="icon"
           className="absolute inset-y-0 right-0 size-8 text-text-muted"
-          aria-label="Clear search"
+          aria-label={t('search.clear')}
           onPointerDown={(event) => event.preventDefault()}
           onClick={() => onValueChange('')}
         >

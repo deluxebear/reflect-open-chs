@@ -1,6 +1,7 @@
 import { useState, type ReactElement } from 'react'
 import { errorMessage, isDaily } from '@reflect/core'
 import { Trash2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -28,6 +29,7 @@ interface NoteTrashActionProps {
 export function NoteTrashAction({ path }: NoteTrashActionProps): ReactElement | null {
   const { graph } = useGraph()
   const { navigate } = useRouter()
+  const { t } = useTranslation('context')
   const [confirmingTrash, setConfirmingTrash] = useState(false)
   const [isTrashing, setIsTrashing] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -41,7 +43,7 @@ export function NoteTrashAction({ path }: NoteTrashActionProps): ReactElement | 
     if (generation === undefined) {
       return
     }
-    const operation = startOperation('Trashing note')
+    const operation = startOperation(t('noteActions.trashing'))
     setIsTrashing(true)
     setError(null)
     try {
@@ -69,25 +71,23 @@ export function NoteTrashAction({ path }: NoteTrashActionProps): ReactElement | 
           <Trash2 size={14} aria-hidden />
         </span>
         <span className="min-w-0 flex-1 truncate text-xs font-medium transition-colors duration-100 group-hover:text-destructive">
-          Trash note
+          {t('noteActions.trash')}
         </span>
       </button>
 
       <Dialog open={confirmingTrash} onOpenChange={(open) => !isTrashing && setConfirmingTrash(open)}>
         <DialogContent>
-          <DialogTitle>Trash this note?</DialogTitle>
-          <DialogDescription>
-            It moves to your system Trash, where you can restore it.
-          </DialogDescription>
+          <DialogTitle>{t('noteActions.trashConfirmTitle')}</DialogTitle>
+          <DialogDescription>{t('noteActions.trashConfirmDescription')}</DialogDescription>
           {error !== null ? <p className="text-sm text-destructive">{error}</p> : null}
           <DialogFooter>
             <DialogClose asChild>
               <Button variant="ghost" disabled={isTrashing}>
-                Cancel
+                {t('noteActions.cancel')}
               </Button>
             </DialogClose>
             <Button variant="destructive" disabled={isTrashing} onClick={() => void onTrash()}>
-              Trash note
+              {t('noteActions.trash')}
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -1,5 +1,6 @@
 import { type ReactElement } from 'react'
 import { Check } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer'
 import type { TaskFilters } from '@/lib/tasks/task-filters'
 import { cn } from '@/lib/utils'
@@ -12,12 +13,12 @@ interface TaskFiltersDrawerProps {
   toggle: (key: keyof TaskFilters) => void
 }
 
-const BUCKETS: ReadonlyArray<{ key: keyof TaskFilters; label: string }> = [
-  { key: 'pinned', label: 'Pinned notes' },
-  { key: 'current', label: 'Current' },
-  { key: 'overdue', label: 'Overdue' },
-  { key: 'upcoming', label: 'Upcoming' },
-  { key: 'other', label: 'Other notes' },
+const BUCKET_KEYS: ReadonlyArray<keyof TaskFilters> = [
+  'pinned',
+  'current',
+  'overdue',
+  'upcoming',
+  'other',
 ]
 
 /**
@@ -33,17 +34,24 @@ export function TaskFiltersDrawer({
   filters,
   toggle,
 }: TaskFiltersDrawerProps): ReactElement {
+  const { t } = useTranslation('tasks')
+
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent aria-label="Task filters">
-        <DrawerTitle>Task filters</DrawerTitle>
+      <DrawerContent aria-label={t('taskFilters')}>
+        <DrawerTitle>{t('taskFilters')}</DrawerTitle>
         <div className="flex flex-col">
-          {BUCKETS.map(({ key, label }) => (
-            <FilterRow key={key} label={label} checked={filters[key]} onToggle={() => toggle(key)} />
+          {BUCKET_KEYS.map((key) => (
+            <FilterRow
+              key={key}
+              label={t(`mobileFilters.${key}`)}
+              checked={filters[key]}
+              onToggle={() => toggle(key)}
+            />
           ))}
           <div className="my-1 border-t border-border" />
           <FilterRow
-            label="Show archived"
+            label={t('mobileFilters.archived')}
             checked={filters.archived}
             onToggle={() => toggle('archived')}
           />
@@ -79,7 +87,7 @@ function FilterRow({
           checked ? 'border-accent bg-accent text-white' : 'border-border',
         )}
       >
-        {checked ? <Check aria-hidden className="size-3.5" strokeWidth={3} /> : null}
+        {checked ? <Check className="size-3.5" strokeWidth={3} /> : null}
       </span>
       {label}
     </button>

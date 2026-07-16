@@ -1,5 +1,6 @@
 import { useEffect, type ReactElement } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import type { AiPrompt, AiPromptMode } from '@reflect/core'
 import { Button } from '@/components/ui/button'
 import {
@@ -29,6 +30,7 @@ interface AiPromptDialogProps {
 }
 
 const FIELD_LABEL_CLASS = 'text-xs font-medium text-text-secondary'
+const SELECTION_TOKEN = '{{selectedText}}'
 
 /**
  * The add/edit dialog for a saved AI prompt: a label for the picker, the
@@ -37,6 +39,8 @@ const FIELD_LABEL_CLASS = 'text-xs font-medium text-text-secondary'
  * or is inserted below it.
  */
 export function AiPromptDialog({ prompt, onSave, onClose }: AiPromptDialogProps): ReactElement {
+  const { t } = useTranslation('settings')
+  const { t: tc } = useTranslation('common')
   const { register, control, handleSubmit, setValue, formState } = useForm<AiPromptDraft>({
     defaultValues: {
       label: prompt?.label ?? '',
@@ -72,11 +76,22 @@ export function AiPromptDialog({ prompt, onSave, onClose }: AiPromptDialogProps)
     >
       <DialogContent showCloseButton={false} className="max-w-md">
         <DialogHeader>
-          <DialogTitle>{prompt === null ? 'Add prompt' : 'Edit prompt'}</DialogTitle>
+          <DialogTitle>
+            {prompt === null ? t('aiPrompts.dialog.addTitle') : t('aiPrompts.dialog.editTitle')}
+          </DialogTitle>
           <DialogDescription>
-            The prompt runs on the text you select in a note. Use{' '}
-            <code className="font-mono text-xs">{'{{selectedText}}'}</code> where the selection
-            should appear.
+            {t('aiPrompts.dialog.description', { token: SELECTION_TOKEN })
+              .split(SELECTION_TOKEN)
+              .flatMap((part, index) =>
+                index === 0
+                  ? [part]
+                  : [
+                      <code key={index} className="font-mono text-xs">
+                        {SELECTION_TOKEN}
+                      </code>,
+                      part,
+                    ],
+              )}
           </DialogDescription>
         </DialogHeader>
         <form
@@ -86,25 +101,25 @@ export function AiPromptDialog({ prompt, onSave, onClose }: AiPromptDialogProps)
           }}
         >
           <label className="flex flex-col gap-1.5">
-            <span className={FIELD_LABEL_CLASS}>Label</span>
+            <span className={FIELD_LABEL_CLASS}>{t('aiPrompts.dialog.label')}</span>
             <Input
               {...register('label', { required: true })}
               aria-invalid={formState.errors.label !== undefined || undefined}
-              placeholder="Translate to French"
+              placeholder={t('aiPrompts.dialog.labelPlaceholder')}
               autoFocus
             />
           </label>
           <label className="flex flex-col gap-1.5">
-            <span className={FIELD_LABEL_CLASS}>Prompt</span>
+            <span className={FIELD_LABEL_CLASS}>{t('aiPrompts.dialog.prompt')}</span>
             <Textarea
               {...register('body', { required: true })}
               aria-invalid={formState.errors.body !== undefined || undefined}
               rows={5}
-              placeholder={'Translate the following text to French.\n\n{{selectedText}}'}
+              placeholder={t('aiPrompts.dialog.promptPlaceholder', { token: SELECTION_TOKEN })}
             />
           </label>
           <label className="flex flex-col gap-1.5">
-            <span className={FIELD_LABEL_CLASS}>Result</span>
+            <span className={FIELD_LABEL_CLASS}>{t('aiPrompts.dialog.result')}</span>
             <Select
               value={mode}
               onValueChange={(value) => setValue('mode', value as AiPromptMode)}
@@ -113,16 +128,18 @@ export function AiPromptDialog({ prompt, onSave, onClose }: AiPromptDialogProps)
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="replace">Replaces the selection</SelectItem>
-                <SelectItem value="append">Inserted below the selection</SelectItem>
+                <SelectItem value="replace">{t('aiPrompts.dialog.modeReplace')}</SelectItem>
+                <SelectItem value="append">{t('aiPrompts.dialog.modeAppend')}</SelectItem>
               </SelectContent>
             </Select>
           </label>
           <div className="flex justify-end gap-2">
             <Button type="button" variant="ghost" onClick={onClose}>
-              Cancel
+              {tc('cancel')}
             </Button>
-            <Button type="submit">{prompt === null ? 'Add prompt' : 'Save'}</Button>
+            <Button type="submit">
+              {prompt === null ? t('aiPrompts.dialog.addButton') : t('aiPrompts.dialog.saveButton')}
+            </Button>
           </div>
         </form>
       </DialogContent>

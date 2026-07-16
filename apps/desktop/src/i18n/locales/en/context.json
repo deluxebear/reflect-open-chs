@@ -1,0 +1,59 @@
+{
+  "calendar": {
+    "aria": "Calendar",
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month",
+    "jumpToday": "Jump to today",
+    "jumpTodayHint": "Jump to Today"
+  },
+  "noteActions": {
+    "title": "Note actions",
+    "pin": "Pin this note",
+    "unpin": "Un-pin this note",
+    "pinShort": "Pin",
+    "unpinShort": "Unpin",
+    "share": "Share",
+    "delete": "Delete",
+    "pinFailure": "Updating pin",
+    "lock": "Lock note",
+    "unlock": "Unlock note",
+    "privacyFailure": "Updating privacy",
+    "lockTooltip": "Locks this note out of AI. Backup and sync still include it.",
+    "shareLink": "Share with private link",
+    "unpublishLink": "Unpublish link",
+    "publishing": "Publishing…",
+    "unpublishing": "Unpublishing…",
+    "shareTooltip": "Creates a secret GitHub gist and copies its private link",
+    "unpublishTooltip": "Delete the private GitHub gist for this note",
+    "trash": "Trash note",
+    "trashConfirmTitle": "Trash this note?",
+    "trashConfirmDescription": "It moves to your system Trash, where you can restore it.",
+    "trashing": "Trashing note",
+    "cancel": "Cancel"
+  },
+  "events": {
+    "title": "Events",
+    "addToDaily": "Add to daily note",
+    "addEvent": "Add event",
+    "meetingName": "Meeting name",
+    "attendees": "Attendees",
+    "addAttendee": "Add attendee",
+    "addAttendeeNamed": "Add “{{title}}”",
+    "removeAttendee": "Remove {{name}}",
+    "contact": "Contact",
+    "createBacklink": "Create backlinked note",
+    "addToDailyNote": "Add to daily note"
+  },
+  "similar": {
+    "title": "Similar notes"
+  },
+  "published": {
+    "title": "Published URL",
+    "copy": "Copy published URL",
+    "copied": "Copied",
+    "update": "Update published gist",
+    "updateStale": "Update gist with latest note",
+    "copySuccess": "Published URL copied",
+    "copyFailure": "Copying the published URL"
+  }
+}

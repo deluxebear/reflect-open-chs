@@ -1,4 +1,5 @@
 import { useState, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useQuery } from '@tanstack/react-query'
 import { Plus } from 'lucide-react'
 import {
@@ -32,6 +33,7 @@ import { useRouter } from '@/routing/router'
  * added a graph since the last look.
  */
 export function MobileGraphs(): ReactElement {
+  const { t } = useTranslation('mobile')
   const { back, canBack, navigate } = useRouter()
   const { graph, completeOnboarding } = useGraph()
   const [pendingRoot, setPendingRoot] = useState<string | null>(null)
@@ -84,7 +86,7 @@ export function MobileGraphs(): ReactElement {
       style={{ paddingTop: 'env(safe-area-inset-top)' }}
     >
       <MobileScreenHeader
-        title="Graphs"
+        title={t('graphs.title')}
         onBack={() => (canBack ? back() : navigate({ kind: 'settings' }))}
       />
       <main
@@ -93,19 +95,19 @@ export function MobileGraphs(): ReactElement {
       >
         <div className="flex flex-col gap-6 px-4 py-4">
           <SettingsGroup
-            header="iCloud Drive"
+            header={t('graphs.icloudHeader')}
             footer={
               resolving
                 ? null
                 : icloudDocumentsRoot === null
-                  ? 'iCloud Drive isn’t available on this device.'
-                  : 'Syncs with Reflect on your other devices.'
+                  ? t('graphs.icloudUnavailable')
+                  : t('graphs.icloudSyncs')
             }
           >
             {resolving ? (
               <div className="flex min-h-11 items-center gap-3 px-4 py-2.5 text-[15px] text-text-muted">
                 <Spinner />
-                Looking for your notes…
+                {t('graphs.lookingForNotes')}
               </div>
             ) : (
               <>
@@ -121,7 +123,7 @@ export function MobileGraphs(): ReactElement {
                 ))}
                 {icloudDocumentsRoot !== null ? (
                   <SettingsActionRow
-                    label="New graph"
+                    label={t('graphs.newGraph')}
                     icon={Plus}
                     disabled={busy}
                     onPress={() => setCreateOpen(true)}
@@ -132,9 +134,9 @@ export function MobileGraphs(): ReactElement {
           </SettingsGroup>
 
           {localRoot !== null ? (
-            <SettingsGroup footer="Notes stay on this device. Sync with GitHub from Settings.">
+            <SettingsGroup footer={t('graphs.localFooter')}>
               <SettingsSelectRow
-                label="This device"
+                label={t('graphs.thisDevice')}
                 selected={graph?.root === localRoot}
                 pending={pendingRoot === localRoot}
                 disabled={busy}

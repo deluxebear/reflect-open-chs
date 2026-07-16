@@ -1,5 +1,6 @@
 import { useMemo, type ReactElement } from 'react'
 import { ArrowUp, Plus, Square, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { ShortcutKeys } from '@/components/shortcut-keys'
 import {
   Attachment,
@@ -37,6 +38,7 @@ const NEW_CHAT_BINDING = keybindingFor('chat.new')
  * conversations; "New chat" appears once there's a conversation to leave.
  */
 export function ChatInput(): ReactElement {
+  const { t } = useTranslation('chat')
   const {
     turns,
     status,
@@ -94,7 +96,7 @@ export function ChatInput(): ReactElement {
                 </AttachmentMedia>
                 <AttachmentActions className="!top-0 !right-0 -translate-y-1/2 translate-x-1/2">
                   <AttachmentAction
-                    aria-label={`Remove ${attachment.name}`}
+                    aria-label={t('removeAttachmentAria', { name: attachment.name })}
                     className="size-4 rounded-full border border-border bg-surface p-0 text-text-muted hover:text-text"
                     onClick={() => removeAttachment(attachment.id)}
                   >
@@ -126,8 +128,8 @@ export function ChatInput(): ReactElement {
             event.preventDefault()
             void attachImages(files)
           }}
-          placeholder="Ask about your notes…"
-          aria-label="Chat message"
+          placeholder={t('placeholder')}
+          aria-label={t('messageAria')}
           rows={2}
           autoFocus
           /* Opts out of the global :focus-visible outline (styles/index.css);
@@ -146,11 +148,11 @@ export function ChatInput(): ReactElement {
             }}
           >
             <SelectTrigger
-              aria-label="Model"
+              aria-label={t('modelAria')}
               size="sm"
               className="w-auto max-w-64 border-none bg-transparent text-xs text-text-muted shadow-none"
             >
-              <SelectValue placeholder="Choose a model" />
+              <SelectValue placeholder={t('chooseModel')} />
             </SelectTrigger>
             <SelectContent>
               {groups.map((group) => (
@@ -172,22 +174,23 @@ export function ChatInput(): ReactElement {
               <TooltipTrigger asChild>
                 <Button variant="ghost" size="sm" onClick={newChat}>
                   <Plus aria-hidden data-icon="inline-start" />
-                  New chat
+                  {t('newChat')}
                 </Button>
               </TooltipTrigger>
               <TooltipContent side="top">
-                New chat {NEW_CHAT_BINDING ? <ShortcutKeys binding={NEW_CHAT_BINDING} /> : null}
+                {t('newChatTooltip')}{' '}
+                {NEW_CHAT_BINDING ? <ShortcutKeys binding={NEW_CHAT_BINDING} /> : null}
               </TooltipContent>
             </Tooltip>
           ) : null}
           {streaming ? (
-            <Button size="icon-sm" aria-label="Stop" onClick={stop}>
+            <Button size="icon-sm" aria-label={t('stop')} onClick={stop}>
               <Square aria-hidden className="size-3 fill-current" />
             </Button>
           ) : (
             <Button
               size="icon-sm"
-              aria-label="Send"
+              aria-label={t('send')}
               disabled={empty || activeModel === null}
               onClick={submit}
             >

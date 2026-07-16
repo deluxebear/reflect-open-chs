@@ -1,4 +1,5 @@
 import { useState, type ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer'
@@ -8,6 +9,7 @@ import {
   updatedPresetFilter,
   updatedRangeFilter,
   type UpdatedFilter,
+  type UpdatedPreset,
 } from './filter-state'
 
 interface UpdatedFilterDrawerProps {
@@ -16,6 +18,13 @@ interface UpdatedFilterDrawerProps {
   current: UpdatedFilter | null
   onApply: (filter: UpdatedFilter | null) => void
 }
+
+const PRESET_LABEL_KEYS: Record<UpdatedPreset, 'filters.presetToday' | 'filters.presetWeek' | 'filters.presetMonth'> =
+  {
+    today: 'filters.presetToday',
+    week: 'filters.presetWeek',
+    month: 'filters.presetMonth',
+  }
 
 /**
  * The Updated badge's picker (V1's date filter as a bottom sheet): relative
@@ -28,6 +37,7 @@ export function UpdatedFilterDrawer({
   current,
   onApply,
 }: UpdatedFilterDrawerProps): ReactElement {
+  const { t } = useTranslation('mobile')
   const [fromIso, setFromIso] = useState('')
   const [toIso, setToIso] = useState('')
 
@@ -51,43 +61,46 @@ export function UpdatedFilterDrawer({
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerContent>
-        <DrawerTitle>Updated</DrawerTitle>
+        <DrawerTitle>{t('filters.updated')}</DrawerTitle>
         <div className="flex flex-col">
-          {UPDATED_PRESETS.map(({ preset, label }) => (
-            <button
-              key={preset}
-              type="button"
-              onClick={() => apply(updatedPresetFilter(preset))}
-              className="flex h-12 w-full items-center border-b border-border text-left text-base"
-            >
-              <span className="min-w-0 flex-1">{label}</span>
-              {current?.label === label && <Check className="size-4 text-primary" />}
-            </button>
-          ))}
+          {UPDATED_PRESETS.map(({ preset }) => {
+            const label = t(PRESET_LABEL_KEYS[preset])
+            return (
+              <button
+                key={preset}
+                type="button"
+                onClick={() => apply(updatedPresetFilter(preset, new Date(), label))}
+                className="flex h-12 w-full items-center border-b border-border text-left text-base"
+              >
+                <span className="min-w-0 flex-1">{label}</span>
+                {current?.label === label && <Check className="size-4 text-primary" />}
+              </button>
+            )
+          })}
         </div>
         <div className="flex items-center gap-2">
           <Input
             type="date"
-            aria-label="Updated from"
+            aria-label={t('filters.updatedFrom')}
             value={fromIso}
             onChange={(event) => setFromIso(event.target.value)}
             className="text-base"
           />
-          <span className="text-xs text-text-muted">to</span>
+          <span className="text-xs text-text-muted">{t('filters.to')}</span>
           <Input
             type="date"
-            aria-label="Updated to"
+            aria-label={t('filters.updatedTo')}
             value={toIso}
             onChange={(event) => setToIso(event.target.value)}
             className="text-base"
           />
         </div>
         <Button disabled={range === null} onClick={() => apply(range)}>
-          Apply range
+          {t('filters.applyRange')}
         </Button>
         {current !== null && (
           <Button variant="ghost" onClick={() => apply(null)}>
-            Clear filter
+            {t('filters.clearFilter')}
           </Button>
         )}
       </DrawerContent>
